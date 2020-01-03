@@ -1,0 +1,235 @@
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录界面</title>
+    {% comment %}
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    {% endcomment %}
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/form-elements.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+
+    <link rel="shortcut icon" href="{% static 'assets/ico/favicon.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+          href="{% static 'assets/ico/apple-touch-icon-144-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114"
+          href="{% static 'assets/ico/apple-touch-icon-114-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72"
+          href="{% static 'assets/ico/apple-touch-icon-72-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'assets/ico/apple-touch-icon-57-precomposed.png' %}">
+
+
+    <!-- Javascript -->
+    <script src="{% static 'assets/js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.backstretch.min.js' %}"></script>
+    <script src="{% static 'assets/js/scripts.js' %}"></script>
+
+</head>
+
+<body style="background-image: {% static 'assets/img/backgrounds/background.jpg' %}">
+
+
+<script>
+    jQuery(document).ready(function () {
+        /*
+            Fullscreen background
+        */
+        $.backstretch("{% static 'assets/img/backgrounds/background.jpg' %}");
+
+        // using jQuery
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+
+        var go = true;
+
+        function mycheck() {
+            alert(go);
+            return go;
+        }
+
+
+        function csrfSafeMethod(method) {
+            // 这些HTTP方法不要求CSRF包含
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        /*
+            Form validation
+        */
+
+        $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function () {
+            $(this).removeClass('input-error');
+        });
+
+        var login_form = $('.login-form');
+
+        login_form.on('submit', function (e) {
+            var form_username = $('#form-username');
+            var form_password = $('#form-password');
+
+            let username = form_username.val();
+            let password = form_password.val();
+
+            if (username === '') {
+                form_username.addClass('input-error');
+                e.preventDefault();
+            } else {
+                form_username.removeClass('input-error');
+            }
+
+            if (password === '') {
+                form_password.addClass('input-error');
+                e.preventDefault();
+            } else {
+                form_password.removeClass('input-error');
+            }
+        });
+
+        var mycheck2 = function() {
+            var form_username = $('#form-username');
+                var form_password = $('#form-password');
+
+                let username = form_username.val();
+                let password = form_password.val();
+                alert(username);
+
+                $.post(
+                    "{% url 'tradingSystem:mylogin' %}",
+                    {"username": username, "password": password},
+                    function (ret) {
+                        if (ret['not_exist'] === "1") {
+                            alert("请检查用户名和密码");
+                            form_username.addClass('input-error');
+                            form_password.addClass('input-error');
+                            return false;
+                        } else {
+                            alert("成功");
+                            form_username.removeClass('input-error');
+                            form_password.removeClass('input-error');
+                            return true;
+                        }
+                    }
+                );
+        };
+
+        {% comment %}
+         $("#submit_button").click(function () {
+                var form_username = $('#form-username');
+                var form_password = $('#form-password');
+
+                let username = form_username.val();
+                let password = form_password.val();
+                alert(username);
+
+                $.post(
+                    "{% url 'backstage:mylogin' %}",
+                    {"username": username, "password": password},
+                    function (ret) {
+                        if (ret['not_exist'] === "1") {
+                            alert("请检查用户名和密码");
+                            form_username.addClass('input-error');
+                            form_password.addClass('input-error');
+                            return false;
+                        } else {
+                            alert("成功");
+                            form_username.removeClass('input-error');
+                            form_password.removeClass('input-error');
+                            return true;
+                        }
+                    }
+                );
+            });
+
+        {% endcomment %}
+    });
+</script>
+
+
+<!-- Top content -->
+{#        <div class="top-content">#}
+<div class="container">
+
+    <div class="inner-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 text">
+                    <h1><strong>股票交易管理系统</strong></h1>
+                    <div class="description">
+                        <p>
+                            请登录，没有账号？
+                            <strong>请<a>注册</a></strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                    <div class="form-top">
+                        <div class="form-top-left">
+                            <h3>登录界面</h3>
+                            <!--<p>Enter your username and password to log on:</p>-->
+                        </div>
+                        <div class="form-top-right">
+                            <i class="fa fa-key"></i>
+                        </div>
+                    </div>
+                    <div class="form-bottom">
+                        <form role="form" method="post" action="{% url 'tradingSystem:mylogin' %}"
+                              class="login-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label class="sr-only" for="form-username">Username</label>
+                                <input type="text" name="username" placeholder="Username..."
+                                       class="form-username form-control" id="form-username">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="form-password">Password</label>
+                                <input type="password" name="password" placeholder="Password..."
+                                       class="form-password form-control" id="form-password">
+                            </div>
+                            <button type="submit" class="btn" id="submit_button">登录</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2019-<a href="https://www.buct.edu.cn" target="_blank">Beijing University of Chemical
+        Technology</a>.</strong> All rights
+    reserved.
+</footer>
+
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}欢迎登录教务管理系统{% endblock %}
+
+{% block custom_nav %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">信息查询 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'backstage:my_personal_details' %}">查看个人信息</a></li>
+            <li><a href="{% url 'courseScheduling:time_exam' %}">查询考试时间</a> </li>
+            <li><a href="{% url 'courseScheduling:scheduling_home_page' %}">查询空闲教室</a></li>
+            <li class="divider"></li>
+            <li><a href="{% url 'scoreManagement:std_view_major_plan' %}">查看专业培养计划</a></li>
+            <li><a href="{% url 'scoreManagement:std_view_major_course' %}">查看专业课程计划</a></li>
+            <li class="divider"></li>
+            <li><a href="{% url 'scoreManagement:student_view_score' %}">查看考试成绩</a></li>
+            <li><a href="{% url 'scoreManagement:student_own_study' %}">查看个人学业情况</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="{% url 'courseSelection:select_course' %}" class="dropdown-toggle" data-toggle="dropdown">选课 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+{#            <li><a href="{% url 'courseSelection:stu_tongshi' %}">通识课</a></li>#}
+            <li><a href="{% url 'courseSelection:stu_major' %}">开始选课</a></li>
+            <li><a href="{% url 'courseSelection:tables' %}">查看个人课表</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">毕业设计 <span
+                class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'graduationManagement:student_choose_project' %}">题目浏览</a></li>
+            <li><a href="{% url 'graduationManagement:student_submit_project' %}">题目提交</a></li>
+            <li><a href="{% url 'graduationManagement:student_view_score' %}">查看成绩</a></li>
+        </ul>
+    </li>
+
+    <li><a href="{% url 'scoreManagement:assess_teacher' %}">教学评价</a></li>
+{% endblock %}
+
+
+{% block left_side_block %}
+    <!-- 不同用户自定义的左侧的侧边栏 -->
+    <li class="treeview">
+        <a href="{% url 'scoreManagement:score_home_page' %}">
+            <i class="fa fa-dashboard"></i> <span>信息查询</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="{% url 'backstage:my_personal_details' %}"><i class="fa fa-circle-o"></i>查看个人信息</a></li>
+            <li><a href="{% url 'scoreManagement:std_view_major_plan' %}"><i class="fa fa-circle-o"></i>查看专业培养计划</a>
+            </li>
+            <li><a href="{% url 'scoreManagement:std_view_major_course' %}"><i class="fa fa-circle-o"></i>查看专业课程计划</a>
+            </li>
+            <li><a href="{% url 'courseScheduling:time_exam' %}"><i class="fa fa-circle-o"></i>查询考试时间</a></li>
+            <li><a href="{% url 'courseScheduling:scheduling_home_page' %}"><i class="fa fa-circle-o"></i>查询空闲教室</a></li>
+            <li><a href="{% url 'scoreManagement:student_view_score' %}"><i class="fa fa-circle-o"></i>查看考试成绩</a></li>
+            <li><a href="{% url 'scoreManagement:student_own_study' %}"><i class="fa fa-circle-o"></i>查看个人学业情况</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
+        <a href="{% url 'courseSelection:select_course' %}" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-folder"></i> <span>选课</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span></a>
+        <ul class="treeview-menu">
+            <li><a href="{% url 'courseSelection:stu_major' %}"><i class="fa fa-circle-o"></i> <span>开始选课</span></a></li>
+            <li><a href="{% url 'courseSelection:tables' %}"><i class="fa fa-circle-o"></i> <span>查看个人课表</span></a></li>
+        </ul>
+
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-folder"></i> <span>毕业设计</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="{% url 'graduationManagement:student_choose_project' %}"><i class="fa fa-circle-o"></i>题目浏览</a>
+            </li>
+            <li><a href="{% url 'graduationManagement:student_submit_project' %}"><i class="fa fa-circle-o"></i>题目提交</a>
+            </li>
+            <li><a href="{% url 'graduationManagement:student_view_score' %}"><i class="fa fa-circle-o"></i>查看成绩</a>
+            </li>
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="{% url 'scoreManagement:assess_teacher' %}">
+            <i class="fa fa-share"></i> <span>教学评价</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+    </li>
+{% endblock %}
+{% block content %}
+       <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            通知
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">通知</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            {% block main %}
+
+                <!-- /.col -->
+                <div class="col-md-12">
+                    {% block details %}
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">通知集合</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body no-padding">
+
+                                <div class="table-responsive mailbox-messages">
+
+                                    <table class="table table-hover table-striped">
+                                        <tr>
+                                            <td style="vertical-align: middle">编号</td>
+                                            <td class="mailbox-name">通知主题</td>
+                                            <td class="mailbox-messages">签发</td>
+                                            <td class="mailbox-messages">对象</td>
+                                            <td class="mailbox-messages">年级</td>
+                                            <td class="mailbox-date">时间</td>
+                                            <td class="mailbox-messages">查看</td>
+                                        </tr>
+                                        <tbody>
+                                        {% for announcement in announcements %}
+                                            <tr>
+                                                <td style="vertical-align: middle">{{ forloop.counter }}</td>
+                                                <td class="mailbox-name">
+                                                    {{ announcement.title }}
+                                                </td>
+                                                <td class="mailbox-messages">{{ announcement.author }}</td>
+                                                <td class="mailbox-messages">{{ announcement.receiver }}</td>
+                                                <td class="mailbox-messages">{{ announcement.year }}</td>
+                                                <td class="mailbox-date">{{ announcement.time }}</td>
+                                                <td>
+                                                    <form action="{% url 'backstage:student_view' %}" method="post"
+                                                          id="form1">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-instagram" name="details"
+                                                                value={{ announcement.id }}>查看
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <!-- /.table -->
+                                </div>
+                                <!-- /.mail-box-messages -->
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /. box -->
+                    {% endblock %}
+                </div>
+                <!-- /.col -->
+            {% endblock %}
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+{% endblock %}

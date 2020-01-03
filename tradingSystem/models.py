@@ -109,8 +109,8 @@ class ForumTopic(models.Model):
     post_read = models.CharField(max_length=100)
     # 帖子涉及股票
     stock_id = models.ForeignKey(to=StockInfo,on_delete=models.CASCADE)
-    # 股票评论
-    stock_comment = models.IntegerField(max_length=6)
+    # 股票评论数
+    stock_comment = models.IntegerField()
 
     def __str__(self):
         return '-'.join([str(self.post_id), self.post_title])
