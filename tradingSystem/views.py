@@ -15,5 +15,8 @@ def mylogin(request):
     return redirect('tradingSystem:goto_login')
 
 
+def base(request):
+    return render(request, 'base.html')
+
 
 

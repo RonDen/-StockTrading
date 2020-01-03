@@ -29,7 +29,7 @@ install:
 # command to run tests
 script:
   - mysql --version 
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS trading;'
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS stocktrading;'
   - mysql -e 'create user "trading"@"localhost" identified by "trading";'
   - mysql -e 'grant all ON *.* to "trading"@"localhost";'
   - python manage.py makemigrations
