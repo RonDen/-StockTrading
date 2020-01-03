@@ -10,7 +10,7 @@ services:
 env:
   global:
     - TRAVIS=true
-    - DJANGO=2.1.7
+    - DJANGO=2.1.15
     - CODECOV_TOKEN="54368210-ad7d-4e89-82ba-e535fea06ff7"
 # command to install dependencies
 before_install:
@@ -29,10 +29,9 @@ install:
 # command to run tests
 script:
   - mysql --version 
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS ems;'
-  - mysql -e 'create user "EMS"@"localhost" identified by "password";'
-  - mysql -e 'grant all ON *.* to "EMS"@"localhost";'
-  - cd EMS
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS trading;'
+  - mysql -e 'create user "trading"@"localhost" identified by "trading";'
+  - mysql -e 'grant all ON *.* to "trading"@"localhost";'
   - python manage.py makemigrations
   - python manage.py migrate
   - coverage run manage.py test
