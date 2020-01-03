@@ -12,11 +12,28 @@ def goto_login(request):
 
 
 def mylogin(request):
-    return redirect('tradingSystem:goto_login')
+    if request.POST:
+        phone_number = request.POST.get('phone_number')
+        password = request.POST.get('password')
+        print(phone_number, password)
+        return render(request, 'index.html')
+        find = False
+        data = {'find': '1'}
+        if find:
+            return JsonResponse(data)
+    return render(request, 'index.html')
+
+
+def index(request):
+    return render(request, 'index.html')
 
 
 def base(request):
     return render(request, 'base.html')
+
+
+def register(request):
+    return render(request, 'register.html')
 
 
 

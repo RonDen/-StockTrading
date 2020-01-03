@@ -45,6 +45,20 @@
         <link rel="stylesheet"
               href="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.dataTables.min.css' %}">
 
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/morris/morris.css' %}">
+
+        <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/morris.js/morris.css' %}">
+
+        <!-- jvectormap -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/jvectormap/jquery-jvectormap.css' %}">
+
+        <!-- Date Picker -->
+        <link rel="stylesheet"
+              href="{% static 'AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+
+        <!-- Daterange picker -->
+        <link rel="stylesheet"
+              href="{% static 'AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
     {% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -56,7 +70,7 @@
 
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-yellow-light sidebar-mini">
 
 <div class="wrapper">
     <header class="main-header">
@@ -81,14 +95,16 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <!-- 用户信息: style can be found in dropdown.less -->
+
                     {% if request.user.is_authenticated %}
+
                         <li class="dropdown tasks-menu">
-                            <a href="{% url 'backstage:mylogout' %}">
+                            <a href="{% url 'tradingSystem:mylogout' %}">
                                 <i class="fa fa-coffee" href="#"></i>
                                 <span>logout</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header" href="{% url 'backstage:mylogout' %}">登出</li>
+                                <li class="header" href="{% url 'tradingSystem:mylogout' %}">登出</li>
                             </ul>
                         </li>
                         <li class="dropdown user user-menu">
@@ -100,7 +116,7 @@
                         </li>
                     {% else %}
                         <li class="dropdown user user-menu">
-                            <a href="{% url 'backstage:goto_login' %}" class="dropdown-toggle pull-right image">
+                            <a href="{% url 'tradingSystem:goto_login' %}" class="dropdown-toggle pull-right image">
                                 <span class="hidden-xs">您尚未登录，请登录！</span>
                             </a>
                         </li>
@@ -129,6 +145,7 @@
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 {% else %}
+                    <div>您尚未注册，点我<a href="{% url 'tradingSystem:register' %}">注册</a></div>
                 {% endif %}
             </div>
             <!-- search form -->
@@ -146,6 +163,7 @@
             <ul class="sidebar-menu">
                 <li class="header">导航栏</li>
                 {% block left_side_block %}
+
                 {% endblock %}
             </ul>
         </section>
@@ -208,6 +226,31 @@
 <script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.flash.min.js' %}"></script>
 <script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.html5.min.js' %}"></script>
 <script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.print.min.js' %}"></script>
+
+<script src="{% static 'AdminLTE/plugins/knob/jquery.knob.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/morris/morris.js' %}"></script>
+
+<script src="{% static 'AdminLTE/bower_components/morris.js/morris.min.js' %}"></script>
+<!-- Sparkline -->
+<script src="{% static 'AdminLTE/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js' %}"></script>
+<!-- jvectormap -->
+<script src="{% static 'AdminLTE/bower_components/jvectormap/jquery-jvectormap.js' %}"></script>
+
+<!-- jQuery Knob Chart -->
+<script src="{% static 'AdminLTE/bower_components/jquery-knob/dist/jquery.knob.min.js' %}"></script>
+
+<script src="{% static 'AdminLTE/bower_components/moment/min/moment.min.js' %}"></script>
+<!-- daterangepicker -->
+<script src="{% static 'AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+<!-- datepicker -->
+<script src="{% static 'AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+
+<!-- Slimscroll -->
+<script src="{% static 'AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- FastClick -->
+<script src="{% static 'AdminLTE/bower_components/fastclick/lib/fastclick.js' %}"></script>
+
 
 <script>
     {% comment %}
