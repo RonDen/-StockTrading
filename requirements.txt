@@ -1,0 +1,9 @@
+django==2.1.7
+pymysql
+pytest
+numpy
+pandas
+captcha==0.3
+mixer==6.1.3
+django-filter==2.0.0
+xlwt

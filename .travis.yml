@@ -1,0 +1,41 @@
+language: python
+sudo: true
+os:
+  - linux
+python:
+  - "3.6"
+# 使用的服务，必要的数据库服务
+services:
+  - mysql
+env:
+  global:
+    - TRAVIS=true
+    - DJANGO=2.1.7
+    - CODECOV_TOKEN="54368210-ad7d-4e89-82ba-e535fea06ff7"
+# command to install dependencies
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew update;
+      brew install python3 redis memcached;
+      virtualenv -p python3 ~/py-env;
+      . ~/py-env/bin/activate;
+    fi
+  - pip install codecov
+  - pip install coverage
+
+install:
+  - pip install -r requirements.txt
+#  - pip install boxx/
+# command to run tests
+script:
+  - mysql --version 
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS ems;'
+  - mysql -e 'create user "EMS"@"localhost" identified by "password";'
+  - mysql -e 'grant all ON *.* to "EMS"@"localhost";'
+  - cd EMS
+  - python manage.py makemigrations
+  - python manage.py migrate
+  - coverage run manage.py test
+after_success:
+  - codecov
+

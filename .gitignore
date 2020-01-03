@@ -1,0 +1,18 @@
+.idea/
+.vscode/
+*.pdf
+*.py[cod]
+__init__.cpython-36.pyc
+*cpython-36.pyc
+**/__init__.cpython-36.pyc
+**cpython-36**
+*$py.class
+*..pyc~Stashed changes
+__pycache__/
+**/__pycache__/
+**/migrations/*
+!**migrations/__init__.py
+*_initial.py
+*_auto*.py
+*.pyc
+
