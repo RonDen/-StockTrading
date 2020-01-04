@@ -1,10 +1,198 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "mybase.html" %}
+{% load static %}
+{% load staticfiles %}
+{% block title %}欢迎登录股票交易管理系统{% endblock %}
 
-</body>
-</html>
+{% block content %}
+
+    <section class="content-header">
+
+    </section>
+
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"></h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table id="stock_list" class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th>股票代码</th>
+                                    <th>股票全称</th>
+                                    <th>发行时间</th>
+                                    <th>昨日收盘价</th>
+                                    <th>今日开盘价</th>
+                                    <th>股票类型</th>
+                                    <th>股票所在版块</th>
+                                    <th>股票涨跌幅</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in stock %}
+                                    <tr>
+{#                                        <td>{{ forloop.counter }}</td>#}
+                                        <td><a href="tradingSystem:">{{ item.stock_id }}</a></td>
+                                        <td>{{ item.stock_name }}</td>
+                                        <td>{{ item.issuance_time }}</td>
+                                        <td>{{ item.closing_price_y }}</td>
+                                        <td>{{ item.open_price_t }}</td>
+                                        <td>{{ item.stock_type }}</td>
+                                        <td>{{ item.block }}</td>
+                                        <td>{{ item.change_extent }}</td>
+                                    </tr>
+                                {% endfor %}
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box-footer clearfix">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">购入股票</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">查看全部</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box box-solid bg-teal-gradient">
+                    <div class="box-header">
+                        <i class="fa fa-th"></i>
+
+                        <h3 class="box-title">Sales Graph</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i
+                                    class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i
+                                    class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body border-radius-none">
+                        <div class="chart" id="line-chart" style="height: 250px;"></div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer no-border">
+                        <div class="row">
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <input type="text" class="knob" data-readonly="true" value="20" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">Mail-Orders</div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <input type="text" class="knob" data-readonly="true" value="50" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">Online</div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center">
+                                <input type="text" class="knob" data-readonly="true" value="30" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">In-Store</div>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+        </div>
+
+    </section>
+{% endblock %}
+{% block script %}
+    <script>
+          $(function () {
+            $(".select2").select2();
+        });
+   $(function () {
+            var table = $('#stock_list').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: '课程信息表'
+                        },
+                        {
+                            extend: 'print',
+                            filename: "课程信息表",
+                        }
+                    ],
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            $('#stock_list').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('.select2').select2();
+        });
+    </script>
+{% endblock %}
