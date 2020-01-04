@@ -17,6 +17,7 @@ urlpatterns = [
     path('buy_in_stock', views.buy_in_stock, name='buy_in_stock'),
     path('user_profile', views.user_profile, name='user_profile'),
     path('log_out', views.log_out, name='log_out'),
+    path('do_register', views.do_register, name='do_register'),
 ]
 
 

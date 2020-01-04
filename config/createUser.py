@@ -85,6 +85,10 @@ def get_user_pic_path():
     return pic1
 
 
+def gen_photo_url():
+    return '../static/img/' + choice(pics)
+
+
 pics = get_user_pic_path()
 
 for u in UserTable.objects.all():

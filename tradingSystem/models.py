@@ -24,7 +24,7 @@ class UserTable(models.Model):
     # 银行卡类型
     account_type = models.CharField(max_length=45)
     # 银行卡余额
-    account_balance = models.FloatField()
+    account_balance = models.FloatField(null=True)
 
     def __str__(self):
         return '-'.join([self.user_name, self.phone_number])

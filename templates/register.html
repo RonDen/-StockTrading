@@ -4,61 +4,72 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
     <title>欢迎注册成为我们的投资者</title>
     <link rel="stylesheet" href="{% static 'register/css/frozenui.css' %}">
     <link rel="stylesheet" href="{% static 'register/css/login.css' %}">
-    <link rel="stylesheet" href="{% static 'register/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.css' %}">
+    <link rel="stylesheet" href="{% static 'register/css/base.css' %}"/>
+    <link rel="shortcut icon" href="{% static 'img/buct-logo.ico' %}">
+
 
 </head>
 <body>
 
-    <div class="c-title">
-        <div class="logo">
-            <img src="{% static 'img/buct_log.png' %}" width="42" height="32" alt="北京化工大学">
-        </div>
-        <p class="name">股票交易管理系统</p>
+<div class="c-title">
+    <div class="logo">
+        <img src="{% static 'img/buct_log.png' %}" width="42" height="32" alt="北京化工大学">
     </div>
+    <p class="name">股票交易管理系统</p>
+</div>
 
-    <div class="c-login">
-        <h1>注册</h1>
-        <form class="loginForm">
-            <input type="text" class="userLogo" placeholder="请您的姓名" lay-verify="required|userName" />
-            <input type="text" placeholder="请输入手机号码" lay-verify="phone|required" />
-            <input type="text" placeholder="请输入身份证号" lay-verify="required" />
-            <input type="text" class="userLogo" placeholder="请输入邮箱" lay-verify="email" />
-            <input type="password" placeholder="请输入密码" lay-verify="required" />
-            <input type="password" placeholder="请输入确认密码" lay-verify="required" />
-            <input type="text" class="codeDiv" placeholder="请输入银行卡类型" lay-verify="required" />
-            <input type="text" class="codeDiv" placeholder="请输入银行卡号" lay-verify="required" />
+<div class="c-login">
+    <h1>注册(*为必填内容)</h1>
+    {% if message %}
+        <div style="color: firebrick">{{ message }}</div>
+    {% endif %}
+    <form class="loginForm" id="registerForm" action="{% url 'tradingSystem:do_register' %}" method="get">
+        <input name="user_name" type="text" class="userLogo" placeholder="请您的姓名*" lay-verify="required|userName"/>
+        <input name="phone_number" type="text" placeholder="请输入手机号码*" lay-verify="phone|required"/>
+        <input name="user_sex" class="userLogo" type="text" placeholder="性别" lay-verify="required"/>
+        <input name="id_no" type="text" placeholder="请输入身份证号*" lay-verify="required"/>
+        <input name="user_email" type="text" class="userLogo" placeholder="请输入邮箱*" lay-verify="email"/>
+        <input name="password" type="password" placeholder="请输入密码*" lay-verify="required"/>
+        <input type="password" placeholder="请输入确认密码*" lay-verify="required"/>
+        <input name="account_type" type="text" placeholder="请输入银行卡类型" lay-verify="required"/>
+        <input name="account_number" type="text" class="codeDiv" placeholder="请输入银行卡号" lay-verify="required"/>
+        <input type="button" class="btn " value="注册" id="regBtn"/>
+    </form>
+</div>
 
-            <input type="button" value="注册" id="regBtn" />
-        </form>
-    </div>
+<script type="text/javascript" src="{% static 'register/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'register/js/base.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
+<script type="text/javascript">
+    /**
+     * 配置验证须知
+     * 1、要引入jquery.js、base.js、base.css
+     * 2、提交按钮应在<form></form>内部
+     * 3、在要验证的input中写上lay-verify="验证方法名|验证方法名" 可写多个但要用|分隔开
+     * 4、要添加验证方法可在base.js中添加
+     * 5、诺只想引用提示弹出：showTip.success("弹出提示内容");、showTip.fall("弹出提示内容")
+     * 6、base.css中可以自行修改弹窗样式
+     */
 
-    <script type="text/javascript" src="{% static 'register/js/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'register/js/base.js' %}"></script>
-    <script type="text/javascript">
-        /**
-         * 配置验证须知
-         * 1、要引入jquery.js、base.js、base.css
-         * 2、提交按钮应在<form></form>内部
-         * 3、在要验证的input中写上lay-verify="验证方法名|验证方法名" 可写多个但要用|分隔开
-         * 4、要添加验证方法可在base.js中添加
-         * 5、诺只想引用提示弹出：showTip.success("弹出提示内容");、showTip.fall("弹出提示内容")
-         * 6、base.css中可以自行修改弹窗样式
-         */
+    $('#regBtn').click(function () {
+        if (!checkInputFunction($('#regBtn'))) {
+            return false;
+        } else {
+            var form = document.getElementById("registerForm");
+            console.log(form);
+            form.submit();
+        }
+        //下面书写验证成功后执行的内容
+    });
 
-        $('#regBtn').click(function () {
-            if (!checkInputFunction($('#regBtn'))) {
-                return false;
-            }
-            else{
-
-            }
-            //下面书写验证成功后执行的内容
-        });
-    </script>
+    $('.select2').select2();
+</script>
 
 </body>
 </html>

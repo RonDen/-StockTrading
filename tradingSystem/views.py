@@ -4,12 +4,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest, JsonResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from tradingSystem import models
-import tushare as ts
 from django.core.exceptions import ObjectDoesNotExist
 
+import tushare as ts
+import uuid
+import os
+
+from tradingSystem import models
 from .models import UserTable, StockInfo, OptionalStockTable, ForumTopic, ForumTopicBack, HistoryTradeTable
 from .utils import get_top10
+from config.createUser import gen_photo_url
 
 
 def goto_login(request):
@@ -81,6 +85,41 @@ def base(request):
 
 def register(request):
     return render(request, 'register.html')
+
+
+def do_register(request):
+    user_name = request.GET['user_name']
+    phone_number = request.GET['phone_number']
+    user_sex = request.GET['user_sex']
+    id_no = request.GET['id_no']
+    user_email = request.GET['user_email']
+    password = request.GET['password']
+    account_type = request.GET['account_type']
+    account_number = request.GET['account_number']
+    photo_url = gen_photo_url()
+    message = ""
+    try:
+        user = UserTable.objects.create(
+            user_name=user_name,
+            user_email=user_email,
+            user_sex=user_sex,
+            user_id=str(uuid.uuid4())[:8],
+            id_no=id_no,
+            password=password,
+            account_type=account_type,
+            account_num=account_number,
+            phone_number=phone_number,
+            account_balance=0,
+            photo_url=photo_url
+        )
+        user.save()
+        print("success register user")
+        print(user)
+    except Exception:
+        print(Exception)
+        message = "注册失败，请检查或稍后再试！"
+        return render(request, 'register.html', locals())
+    return redirect('tradingSystem:goto_login')
 
 
 def stockdetails(request):
