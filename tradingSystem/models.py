@@ -18,7 +18,7 @@ class UserTable(models.Model):
     # 用户邮箱
     user_email = models.EmailField()
     # 用户头像路径
-    photo_url = models.CharField(max_length=100)
+    photo_url = models.CharField(max_length=45)
     # 银行卡号
     account_num = models.CharField(max_length=45)
     # 银行卡类型

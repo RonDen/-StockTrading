@@ -24,12 +24,14 @@ def mylogin(request):
         try:
             User.objects.get(username=phone_number)
             request.session['username'] = phone_number
+            request.session['online'] = True
             return redirect('tradingSystem:admin_index')
         except ObjectDoesNotExist:
             try:
                 user = UserTable.objects.get(phone_number=phone_number)
                 if user.password == password:
                     request.session['user_name'] = user.user_name
+                    request.session['online'] = True
                     request.session['photo_url'] = user.photo_url
                     request.session['user_id'] = user.user_id
                     request.session['user_email'] = user.user_email
@@ -37,7 +39,6 @@ def mylogin(request):
                     request.session['account_type'] = user.account_type
                     request.session['account_balance'] = user.account_balance
                     request.session['id_no'] = user.id_no
-
                     return redirect("tradingSystem:index")
                 else:
                     message = "您的密码错误"
@@ -46,12 +47,21 @@ def mylogin(request):
     return render(request, 'login.html', locals())
 
 
+def log_out(request):
+    request.session.flush()
+    return redirect('tradingSystem:goto_login')
+
+
 def index(request):
     top10stock = get_top10()
     context = {
         'top10stock': top10stock
     }
     return render(request, 'index.html', context)
+
+
+def user_profile(request):
+    return render(request, 'tradingSystem/user_profile.html')
 
 
 def admin_index(request):

@@ -84,7 +84,7 @@
                 <span class="sr-only">Toggle navigation</span>
             </a>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
+            <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav">
                     <ul class="nav navbar-nav">
                         <!-- Messages: style can be found in dropdown.less-->
@@ -94,15 +94,15 @@
                                 <span class="label label-success">4</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have 4 messages</li>
+                                <li class="header">你有4消息</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
                                         <li><!-- start message -->
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="{% static '/img/user4-128x128.jpg' %}" class="img-circle"
-                                                         alt="User Image">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
                                                 </div>
                                                 <h4>
                                                     Support Team
@@ -115,8 +115,8 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="{% static '/img/user4-128x128.jpg' %}" class="img-circle"
-                                                         alt="User Image">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
                                                 </div>
                                                 <h4>
                                                     AdminLTE Design Team
@@ -128,8 +128,8 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="{% static '/img/user3-128x128.jpg' %}" class="img-circle"
-                                                         alt="User Image">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
                                                 </div>
                                                 <h4>
                                                     Developers
@@ -141,8 +141,8 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="{% static '/img/user3-128x128.jpg' %}" class="img-circle"
-                                                         alt="User Image">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
                                                 </div>
                                                 <h4>
                                                     Sales Department
@@ -154,8 +154,8 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="{% static '/img/user3-128x128.jpg' %}" class="img-circle"
-                                                         alt="User Image">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
                                                 </div>
                                                 <h4>
                                                     Reviewers
@@ -176,7 +176,7 @@
                                 <span class="label label-warning">10</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have 10 notifications</li>
+                                <li class="header">你有10个通知</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
@@ -219,7 +219,7 @@
                                 <span class="label label-danger">9</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have 9 tasks</li>
+                                <li class="header">你有9项工作</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
@@ -297,15 +297,14 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="{% static '/img/user2-160x160.jpg' %}" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <img src="{{ request.session.photo_url }}" class="user-image" alt="用户头像">
+                                <span class="hidden-xs">{{ request.session.user_name }}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="{% static '/img/user2-160x160.jpg' %}" class="img-circle"
-                                         alt="User Image">
-
+                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                         alt="用户头像">
                                     <p>
                                         Alexander Pierce - Web Developer
                                         <small>Member since Nov. 2012</small>
@@ -339,7 +338,7 @@
                         </li>
                         <!-- Control Sidebar Toggle Button -->
                         <li>
-                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                            <a href="{% url 'tradingSystem:log_out' %}" ><i class="fa fa-sign-out"></i></a>
                         </li>
                     </ul>
                     {% block custom_nav %}
@@ -368,7 +367,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle pull-right image" data-toggle="dropdown">
                                 <img src="{% static 'img/head.jpg' %}" style="width: 25px;height:25px;"
-                                     class="user-image" alt="User Image">
+                                     class="user-image" alt="用户头像">
                                 <span class="hidden-xs">您好！{{ request.session.name }}</span>
                             </a>
                         </li>
@@ -392,11 +391,11 @@
         <section class="sidebar">
             <!-- Sidebar user panel -->
             <div class="user-panel">
-                {% if request.user.is_authenticated %}
+                {% if request.session %}
                     <div class="pull-left image">
                         {% block user_head_img %}
-                            <img src="{% static 'img/head.jpg' %}" style="width: 50px;height: 50px;"
-                                 class="img-circle" alt="User Image">
+                            <img src="{{ request.session.photo_url }}" style="width: 50px;height: 50px;"
+                                 class="img-circle" alt="用户头像">
                         {% endblock %}
                     </div>
                     <div class="pull-left info">
@@ -404,7 +403,7 @@
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 {% else %}
-                    <div>您尚未注册，点我<a href="{% url 'tradingSystem:register' %}">注册</a></div>
+                    <div>您尚未注册，点我<a style="color:yellowgreen" href="{% url 'tradingSystem:register' %}">注册</a></div>
                 {% endif %}
             </div>
             <!-- search form -->
