@@ -12,7 +12,8 @@ urlpatterns = [
     path('index', views.index, name='index'),
     path('stockdetails',views.stockDetails,name='stockdetails'),
     path('stockcomments', views.stockComments, name='stockcomments'),
-    path('stockList', views.stockList, name='stockList'),
+    path('stocklist', views.stockList, name='stocklist'),
+    
 ]
 
 

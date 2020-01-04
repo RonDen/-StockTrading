@@ -46,12 +46,12 @@ class StockInfo(models.Model):
     # 股票今日开盘价
     open_price_t = models.FloatField()
     # 股票今日收盘价
-    closing_price_n = models.FloatField()
+    # closing_price_n = models.FloatField()
     # 股票类型，上证/深证
     stock_type = models.CharField(max_length=15)
     # 股票所在版块，科创、金融。。
     block = models.CharField(max_length=45)
-    # 涨跌幅，用于筛选牛股推荐
+    # 涨跌幅，用于筛选牛股推荐s
     change_extent = models.FloatField()
 
     def __str__(self):

@@ -25,86 +25,37 @@
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">
-                            <table class="table no-margin">
+                            <table id="stock_list" class="table no-margin">
                                 <thead>
                                 <tr>
                                     <th>股票代码</th>
-                                    <th>全称</th>
-                                    <th>状态</th>
-                                    <th>热度</th>
+                                    <th>股票全称</th>
+                                    <th>发行时间</th>
+                                    <th>昨日收盘价</th>
+                                    <th>今日开盘价</th>
+                                    <th>股票类型</th>
+                                    <th>股票所在版块</th>
+                                    <th>股票涨跌幅</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                    <td>Call of Duty IV</td>
-                                    <td><span class="label label-success">Shipped</span></td>
-                                    <td>
-                                        <div class="sparkbar" data-color="#00a65a" data-height="20">
-                                            90,80,90,-70,61,-83,63
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                    <td>Samsung Smart TV</td>
-                                    <td><span class="label label-warning">Pending</span></td>
-                                    <td>
-                                        <div class="sparkbar" data-color="#f39c12" data-height="20">
-                                            90,80,-90,70,61,-83,68
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                    <td>iPhone 6 Plus</td>
-                                    <td><span class="label label-danger">Delivered</span></td>
-                                    <td>
-                                        <div class="sparkbar" data-color="#f56954" data-height="20">
-                                            90,-80,90,70,-61,83,63
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                    <td>Samsung Smart TV</td>
-                                    <td><span class="label label-info">Processing</span></td>
-                                    <td>
-                                        <div class="sparkbar" data-color="#00c0ef" data-height="20">
-                                            90,80,-90,70,-61,83,63
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                    <td>Samsung Smart TV</td>
-                                    <td><span class="label label-warning">Pending</span></td>
-                                    <td>
-                                        <div class="sparkbar" data-color="#f39c12" data-height="20">
-                                            90,80,-90,70,61,-83,68
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                    <td>iPhone 6 Plus</td>
-                                    <td><span class="label label-danger">Delivered</span></td>
-                                    <td>
-                                        <div class="sparkbar" data-color="#f56954" data-height="20">
-                                            90,-80,90,70,-61,83,63
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                    <td>Call of Duty IV</td>
-                                    <td><span class="label label-success">Shipped</span></td>
-                                    <td>
-                                        <div class="sparkbar" data-color="#00a65a" data-height="20">
-                                            90,80,90,-70,61,-83,63
-                                        </div>
-                                    </td>
-                                </tr>
+                                {% for item in stock %}
+                                    <tr>
+{#                                        <td>{{ forloop.counter }}</td>#}
+                                        <td><a href="tradingSystem:">{{ item.stock_id }}</a></td>
+                                        <td>{{ item.stock_name }}</td>
+                                        <td>{{ item.issuance_time }}</td>
+                                        <td>{{ item.closing_price_y }}</td>
+                                        <td>{{ item.open_price_t }}</td>
+                                        <td>{{ item.stock_type }}</td>
+                                        <td>{{ item.block }}</td>
+                                        <td>{{ item.change_extent }}</td>
+                                    </tr>
+                                {% endfor %}
+
+
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -168,102 +119,80 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-8">
-                <!-- Chat box -->
-                <div class="box box-success">
-                    <div class="box-header">
-                        <i class="fa fa-comments-o"></i>
 
-                        <h3 class="box-title">Chat</h3>
-
-                        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                            <div class="btn-group" data-toggle="btn-toggle">
-                                <button type="button" class="btn btn-default btn-sm active"><i
-                                        class="fa fa-square text-green"></i>
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm"><i
-                                        class="fa fa-square text-red"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body chat" id="chat-box">
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user1-128x128.jpg' %}" alt="user image" class="online">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                                    Mike Doe
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                            <div class="attachment">
-                                <h4>Attachments:</h4>
-
-                                <p class="filename">
-                                    Theme-thumbnail-image.jpg
-                                </p>
-
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-                                </div>
-                            </div>
-                            <!-- /.attachment -->
-                        </div>
-                        <!-- /.item -->
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user3-128x128.jpg' %}" alt="user image" class="offline">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                                    Alexander Pierce
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                        </div>
-                        <!-- /.item -->
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user4-128x128.jpg' %}" alt="user image" class="offline">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                    Susan Doe
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                        </div>
-                        <!-- /.item -->
-                    </div>
-                    <!-- /.chat -->
-                    <div class="box-footer">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Type message...">
-
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.box (chat box) -->
-            </div>
-            <div class="col-md-4"></div>
-        </div>
         <div class="row">
 
         </div>
 
     </section>
+{% endblock %}
+{% block script %}
+    <script>
+          $(function () {
+            $(".select2").select2();
+        });
+   $(function () {
+            var table = $('#stock_list').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: '课程信息表'
+                        },
+                        {
+                            extend: 'print',
+                            filename: "课程信息表",
+                        }
+                    ],
+                "paging": true,       <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true,    <!-- 允许内容搜索 -->
+                "ordering": true,     <!-- 允许排序 -->
+                "info": true,         <!-- 显示信息 -->
+                "autoWidth": false,    <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            $('#stock_list').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('.select2').select2();
+        });
+    </script>
 {% endblock %}
