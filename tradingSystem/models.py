@@ -18,7 +18,7 @@ class UserTable(models.Model):
     # 用户邮箱
     user_email = models.EmailField()
     # 用户头像路径
-    photo_url = models.CharField(max_length=45)
+    photo_url = models.CharField(max_length=100)
     # 银行卡号
     account_num = models.CharField(max_length=45)
     # 银行卡类型
@@ -42,17 +42,15 @@ class StockInfo(models.Model):
     # 股票发行时间
     issuance_time = models.CharField(max_length=45)
     # 股票昨日收盘价
-    closing_price_y = models.FloatField()
+    closing_price_y = models.FloatField(null=True)
     # 股票今日开盘价
-    open_price_t = models.FloatField()
-    # 股票今日收盘价
-    closing_price_n = models.FloatField()
+    open_price_t = models.FloatField(null=True)
     # 股票类型，上证/深证
-    stock_type = models.CharField(max_length=15)
+    stock_type = models.CharField(max_length=15, null=True)
     # 股票所在版块，科创、金融。。
-    block = models.CharField(max_length=45)
+    block = models.CharField(max_length=45, null=True)
     # 涨跌幅，用于筛选牛股推荐
-    change_extent = models.FloatField()
+    change_extent = models.FloatField(null=True)
 
     def __str__(self):
         return '-'.join([self.stock_id, self.stock_name])
