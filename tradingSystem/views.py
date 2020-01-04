@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest, JsonResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
+
 from .models import UserTable, StockInfo, OptionalStockTable, ForumTopic, ForumTopicBack, HistoryTradeTable
 
 
@@ -34,7 +35,9 @@ def base(request):
 
 def register(request):
     return render(request, 'register.html')
-
-def stockdetails(request):
+def stockComments(request):
+    return render(request,'stock_comments.html')
+def stockDetails(request):
     return render(request,'stock_details.html')
-
+def stockList(request):
+    return render(request,'stock_list.html')

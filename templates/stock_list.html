@@ -1,10 +1,269 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "mybase.html" %}
+{% load static %}
+{% load staticfiles %}
+{% block title %}欢迎登录股票交易管理系统{% endblock %}
 
-</body>
-</html>
+{% block content %}
+
+    <section class="content-header">
+
+    </section>
+
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"></h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th>股票代码</th>
+                                    <th>全称</th>
+                                    <th>状态</th>
+                                    <th>热度</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                    <td>Call of Duty IV</td>
+                                    <td><span class="label label-success">Shipped</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                            90,80,90,-70,61,-83,63
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="label label-warning">Pending</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f39c12" data-height="20">
+                                            90,80,-90,70,61,-83,68
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>iPhone 6 Plus</td>
+                                    <td><span class="label label-danger">Delivered</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f56954" data-height="20">
+                                            90,-80,90,70,-61,83,63
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="label label-info">Processing</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00c0ef" data-height="20">
+                                            90,80,-90,70,-61,83,63
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="label label-warning">Pending</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f39c12" data-height="20">
+                                            90,80,-90,70,61,-83,68
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>iPhone 6 Plus</td>
+                                    <td><span class="label label-danger">Delivered</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f56954" data-height="20">
+                                            90,-80,90,70,-61,83,63
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                    <td>Call of Duty IV</td>
+                                    <td><span class="label label-success">Shipped</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                            90,80,90,-70,61,-83,63
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box-footer clearfix">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">购入股票</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">查看全部</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box box-solid bg-teal-gradient">
+                    <div class="box-header">
+                        <i class="fa fa-th"></i>
+
+                        <h3 class="box-title">Sales Graph</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i
+                                    class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i
+                                    class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body border-radius-none">
+                        <div class="chart" id="line-chart" style="height: 250px;"></div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer no-border">
+                        <div class="row">
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <input type="text" class="knob" data-readonly="true" value="20" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">Mail-Orders</div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <input type="text" class="knob" data-readonly="true" value="50" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">Online</div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center">
+                                <input type="text" class="knob" data-readonly="true" value="30" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">In-Store</div>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Chat box -->
+                <div class="box box-success">
+                    <div class="box-header">
+                        <i class="fa fa-comments-o"></i>
+
+                        <h3 class="box-title">Chat</h3>
+
+                        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                            <div class="btn-group" data-toggle="btn-toggle">
+                                <button type="button" class="btn btn-default btn-sm active"><i
+                                        class="fa fa-square text-green"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm"><i
+                                        class="fa fa-square text-red"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body chat" id="chat-box">
+                        <!-- chat item -->
+                        <div class="item">
+                            <img src="{% static 'img/user1-128x128.jpg' %}" alt="user image" class="online">
+
+                            <p class="message">
+                                <a href="#" class="name">
+                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
+                                    Mike Doe
+                                </a>
+                                I would like to meet you to discuss the latest news about
+                                the arrival of the new theme. They say it is going to be one the
+                                best themes on the market
+                            </p>
+                            <div class="attachment">
+                                <h4>Attachments:</h4>
+
+                                <p class="filename">
+                                    Theme-thumbnail-image.jpg
+                                </p>
+
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
+                                </div>
+                            </div>
+                            <!-- /.attachment -->
+                        </div>
+                        <!-- /.item -->
+                        <!-- chat item -->
+                        <div class="item">
+                            <img src="{% static 'img/user3-128x128.jpg' %}" alt="user image" class="offline">
+
+                            <p class="message">
+                                <a href="#" class="name">
+                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
+                                    Alexander Pierce
+                                </a>
+                                I would like to meet you to discuss the latest news about
+                                the arrival of the new theme. They say it is going to be one the
+                                best themes on the market
+                            </p>
+                        </div>
+                        <!-- /.item -->
+                        <!-- chat item -->
+                        <div class="item">
+                            <img src="{% static 'img/user4-128x128.jpg' %}" alt="user image" class="offline">
+
+                            <p class="message">
+                                <a href="#" class="name">
+                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
+                                    Susan Doe
+                                </a>
+                                I would like to meet you to discuss the latest news about
+                                the arrival of the new theme. They say it is going to be one the
+                                best themes on the market
+                            </p>
+                        </div>
+                        <!-- /.item -->
+                    </div>
+                    <!-- /.chat -->
+                    <div class="box-footer">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Type message...">
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box (chat box) -->
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+
+        </div>
+
+    </section>
+{% endblock %}
