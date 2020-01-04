@@ -86,6 +86,7 @@
             $(this).removeClass('input-error');
         });
 
+        {% comment %}
         $("#submit_button").click(function (e) {
             var form_username = $('#form-username');
             var form_password = $('#form-password');
@@ -114,19 +115,6 @@
                         csrfmiddlewaretoken: "{{ csrf_token }}",
                     },
                     type: 'POST',
-                    success: function (data, status, xhr) {
-                        console.log(data, typeof(data));
-
-                        if (data['find'] === '1') {
-                            form_password.removeClass('input-error');
-                            form_username.removeClass('input-error');
-                        } else {
-                            e.preventDefault();
-                        }
-                    },
-                    error: function (xhr, status, errorMessage) {
-                        console.log(errorMessage);
-                    },
                     dataType: 'json',
                 };
                 console.log(option);
@@ -134,6 +122,7 @@
             }
             return true;
         });
+        {% endcomment %}
 
     });
 </script>
@@ -170,6 +159,9 @@
                     <div class="form-bottom">
                         <form role="form" method="post" action="{% url 'tradingSystem:mylogin' %}"
                               class="login-form">
+                            {% if message %}
+                                <div class="alert alert-error">{{ message }}</div>
+                            {% endif %}
                             {% csrf_token %}
                             <div class="form-group">
                                 <label class="sr-only" for="form-username">Username</label>
@@ -182,7 +174,7 @@
                                        class="form-password form-control" id="form-password">
                             </div>
 
-                            <button type="button" class="btn" id="submit_button">登录</button>
+                            <button type="submit" class="btn" id="submit_button">登录</button>
                         </form>
                     </div>
                 </div>
