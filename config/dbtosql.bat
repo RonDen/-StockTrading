@@ -1,1 +1,1 @@
-mysqldump -utrading -ptrading --databases stocktrading > strocktrading.sql
+mysqldump -utrading -ptrading --databases stocktrading > stocktrading.sql

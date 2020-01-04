@@ -124,7 +124,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,6 +133,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$120000$71A9F7A9SVRz$QGvno8CZIVWhn65a6zGWO5lJNzGWlYDgrr0lbCFNESE=',NULL,1,'superuser1','','','superuser1@qq.com',1,1,'2020-01-04 05:27:32.792760'),(2,'pbkdf2_sha256$120000$louv7UvZo0Ph$kPx4oqRdamNVjzi8XZUkSKOSdlYaPyXhuep8NzL+4hU=',NULL,1,'superuser2','','','superuser2@qq.com',1,1,'2020-01-04 05:33:51.086867');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -299,7 +300,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('7b56v2f4mpau55e3e4bwjtc91tx1dqrb','ZGE3NDIxMGI2MGFiMWM1NGNmMjY1MjVlZGUxMzZmM2ZlYmJkNTE4Mjp7InVzZXJfbmFtZSI6IiIsInBob3RvX3VybCI6IiIsInVzZXJfaWQiOiIiLCJ1c2VyX2VtYWlsIjoiIiwiYWNjb3VudF9udW0iOiIiLCJhY2NvdW50X3R5cGUiOiIiLCJhY2NvdW50X2JhbGFuY2UiOjAuMCwiaWRfbm8iOiIifQ==','2020-01-18 05:19:44.630470');
+INSERT INTO `django_session` VALUES ('7b56v2f4mpau55e3e4bwjtc91tx1dqrb','ZGE3NDIxMGI2MGFiMWM1NGNmMjY1MjVlZGUxMzZmM2ZlYmJkNTE4Mjp7InVzZXJfbmFtZSI6IiIsInBob3RvX3VybCI6IiIsInVzZXJfaWQiOiIiLCJ1c2VyX2VtYWlsIjoiIiwiYWNjb3VudF9udW0iOiIiLCJhY2NvdW50X3R5cGUiOiIiLCJhY2NvdW50X2JhbGFuY2UiOjAuMCwiaWRfbm8iOiIifQ==','2020-01-18 05:25:01.163514');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -494,4 +495,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-04 13:24:04
+-- Dump completed on 2020-01-04 14:53:07

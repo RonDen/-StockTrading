@@ -11,6 +11,10 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('index', views.index, name='index'),
     path('stockdetails',views.stockdetails,name='stockdetails'),
+    path('stock_info/<int:stock_id>/', views.stock_info, name='stock_info'),
+    path('stock_list', views.stock_list, name='stock_list'),
+    path('stock_comment', views.stock_comment, name='stock_comment'),
+    path('buy_in_stock', views.buy_in_stock, name='buy_in_stock'),
 ]
 
 
