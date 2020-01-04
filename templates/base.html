@@ -306,39 +306,26 @@
                                     <img src="{{ request.session.photo_url }}" class="img-circle"
                                          alt="用户头像">
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        {{ request.session.user_name }}
+                                        <small>{{ request.session.user_id }}</small>
                                     </p>
                                 </li>
-                                <!-- Menu Body -->
-                                <li class="user-body">
-                                    <div class="row">
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Followers</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Sales</a>
-                                        </div>
-                                        <div class="col-xs-4 text-center">
-                                            <a href="#">Friends</a>
-                                        </div>
-                                    </div>
-                                    <!-- /.row -->
-                                </li>
+
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="{% url 'tradingSystem:user_profile' %}"
+                                           class="btn btn-default btn-flat">信息设置</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="{% url 'tradingSystem:log_out' %}" class="btn btn-default btn-flat">登出系统</a>
                                     </div>
                                 </li>
                             </ul>
                         </li>
                         <!-- Control Sidebar Toggle Button -->
                         <li>
-                            <a href="{% url 'tradingSystem:log_out' %}" ><i class="fa fa-sign-out"></i></a>
+                            <a href="{% url 'tradingSystem:log_out' %}"><i class="fa fa-sign-out"></i></a>
                         </li>
                     </ul>
                     {% block custom_nav %}
@@ -395,7 +382,7 @@
                     <div class="pull-left image">
                         {% block user_head_img %}
                             <img src="{{ request.session.photo_url }}" style="width: 50px;height: 50px;"
-                                 class="img-circle" alt="用户头像">
+                                 class="img-circle" alt="用户头像" href="{% url 'tradingSystem:user_profile' %}">
                         {% endblock %}
                     </div>
                     <div class="pull-left info">
@@ -418,11 +405,43 @@
             </form>
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
-            <ul class="sidebar-menu">
-                <li class="header">导航栏</li>
-                {% block left_side_block %}
+            <ul class="sidebar-menu" data-widget="tree">
+                {% if request.session %}
+                    <li class="header">导航栏</li>
+                    <li class="active">
+                        <a href="{% url 'tradingSystem:index' %}">
+                            <i class="fa fa-dashboard"></i> <span>首页</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                    </li>
 
-                {% endblock %}
+                    <li>
+                        <a href="{% url 'tradingSystem:user_profile' %}">
+                            <i class="fa fa-th"></i> <span>用户信息</span>
+                            <span class="pull-right-container">
+                          <small class="label pull-right bg-green">开户有奖</small></span>
+                        </a>
+                    </li>
+
+                     <li>
+                        <a href="{% url 'tradingSystem:user_profile' %}">
+                            <i class="fa fa-thumbs-up"></i> <span>股票列表</span>
+                            <span class="pull-right-container">
+                          <small class="label pull-right bg-red">热</small></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'tradingSystem:user_profile' %}">
+                            <i class="fa fa-comment-o"></i> <span>通知与评论</span>
+                            <span class="pull-right-container">
+                          <small class="label pull-right bg-blue">新</small></span>
+                        </a>
+                    </li>
+
+                {% endif %}
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -509,6 +528,9 @@
 <!-- FastClick -->
 <script src="{% static 'AdminLTE/bower_components/fastclick/lib/fastclick.js' %}"></script>
 
+<!-- Echart -->
+<script src="{% static 'AdminLTE/plugins/echarts.js' %}"></script>
+
 
 <script>
     {% comment %}
@@ -522,6 +544,7 @@
     {% endcomment %}
 </script>
 {% block script %}
+
 {% endblock %}
 
 </body>
