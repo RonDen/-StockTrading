@@ -13,7 +13,7 @@ urlpatterns = [
     path('stockdetails',views.stockDetails,name='stockdetails'),
     path('stockcomments', views.stockComments, name='stockcomments'),
     path('stocklist', views.stockList, name='stocklist'),
-    
+
 ]
 
 
