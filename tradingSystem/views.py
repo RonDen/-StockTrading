@@ -35,5 +35,6 @@ def base(request):
 def register(request):
     return render(request, 'register.html')
 
-
+def stockdetails(request):
+    return render(request,'stock_details.html')
 
