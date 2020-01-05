@@ -11,7 +11,7 @@ import uuid
 import os
 
 from tradingSystem import models
-from .models import UserTable, StockInfo, OptionalStockTable, ForumTopic, ForumTopicBack, HistoryTradeTable
+from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable
 from .utils import get_top10
 from utils import getAstock
 import numpy as np
@@ -245,3 +245,4 @@ def stock_comment(request):
 def buy_in_stock(request,sid):
 
     return render(request, 'buy_in.html')
+

@@ -194,6 +194,38 @@ LOCK TABLES `auth_user_user_permissions` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `comment_reply`
+--
+
+DROP TABLE IF EXISTS `comment_reply`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `comment_reply` (
+  `reply_time` datetime(6) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comment_id` int(11) NOT NULL,
+  `reply_id` int(11) NOT NULL,
+  `user_id_id` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `comment_reply_comment_id_d5cbeffd_fk_stock_comment_comment_id` (`comment_id`),
+  KEY `comment_reply_reply_id_d4399f7d_fk_comment_reply_id` (`reply_id`),
+  KEY `comment_reply_user_id_id_029a712c_fk_user_table_phone_number` (`user_id_id`),
+  CONSTRAINT `comment_reply_comment_id_d5cbeffd_fk_stock_comment_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `stock_comment` (`comment_id`),
+  CONSTRAINT `comment_reply_reply_id_d4399f7d_fk_comment_reply_id` FOREIGN KEY (`reply_id`) REFERENCES `comment_reply` (`id`),
+  CONSTRAINT `comment_reply_user_id_id_029a712c_fk_user_table_phone_number` FOREIGN KEY (`user_id_id`) REFERENCES `user_table` (`phone_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comment_reply`
+--
+
+LOCK TABLES `comment_reply` WRITE;
+/*!40000 ALTER TABLE `comment_reply` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comment_reply` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `django_admin_log`
 --
 
@@ -305,67 +337,6 @@ INSERT INTO `django_session` VALUES ('1kcvz6dl6f6k9tav3xc8hgg1mmugvinl','MWIzZDR
 UNLOCK TABLES;
 
 --
--- Table structure for table `forum_topic`
---
-
-DROP TABLE IF EXISTS `forum_topic`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `forum_topic` (
-  `post_id` int(11) NOT NULL,
-  `post_title` varchar(45) NOT NULL,
-  `post_text` varchar(100) NOT NULL,
-  `post_time` varchar(100) NOT NULL,
-  `post_read` varchar(100) NOT NULL,
-  `stock_comment` int(11) NOT NULL,
-  `stock_id_id` varchar(6) NOT NULL,
-  `user_id_id` varchar(45) NOT NULL,
-  PRIMARY KEY (`post_text`),
-  KEY `forum_topic_stock_id_id_13475e6c_fk_stock_info_stock_id` (`stock_id_id`),
-  KEY `forum_topic_user_id_id_0851c69e_fk_user_table_phone_number` (`user_id_id`),
-  CONSTRAINT `forum_topic_stock_id_id_13475e6c_fk_stock_info_stock_id` FOREIGN KEY (`stock_id_id`) REFERENCES `stock_info` (`stock_id`),
-  CONSTRAINT `forum_topic_user_id_id_0851c69e_fk_user_table_phone_number` FOREIGN KEY (`user_id_id`) REFERENCES `user_table` (`phone_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `forum_topic`
---
-
-LOCK TABLES `forum_topic` WRITE;
-/*!40000 ALTER TABLE `forum_topic` DISABLE KEYS */;
-/*!40000 ALTER TABLE `forum_topic` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `forum_topic_back`
---
-
-DROP TABLE IF EXISTS `forum_topic_back`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `forum_topic_back` (
-  `reply_id` varchar(6) NOT NULL,
-  `user_name` varchar(20) NOT NULL,
-  `reply_time` varchar(40) NOT NULL,
-  `reply_Text` varchar(100) NOT NULL,
-  `post_id_id` varchar(100) NOT NULL,
-  PRIMARY KEY (`reply_id`),
-  KEY `forum_topic_back_post_id_id_74503f23_fk_forum_topic_post_text` (`post_id_id`),
-  CONSTRAINT `forum_topic_back_post_id_id_74503f23_fk_forum_topic_post_text` FOREIGN KEY (`post_id_id`) REFERENCES `forum_topic` (`post_text`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `forum_topic_back`
---
-
-LOCK TABLES `forum_topic_back` WRITE;
-/*!40000 ALTER TABLE `forum_topic_back` DISABLE KEYS */;
-/*!40000 ALTER TABLE `forum_topic_back` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `history_trade_table`
 --
 
@@ -396,6 +367,33 @@ LOCK TABLES `history_trade_table` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `news`
+--
+
+DROP TABLE IF EXISTS `news`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `news` (
+  `news_id` int(11) NOT NULL,
+  `news_time` date NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `url` varchar(200) NOT NULL,
+  `content` longtext NOT NULL,
+  `read` int(11) DEFAULT NULL,
+  PRIMARY KEY (`news_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `news`
+--
+
+LOCK TABLES `news` WRITE;
+/*!40000 ALTER TABLE `news` DISABLE KEYS */;
+/*!40000 ALTER TABLE `news` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `optional_stock_table`
 --
 
@@ -421,6 +419,37 @@ CREATE TABLE `optional_stock_table` (
 LOCK TABLES `optional_stock_table` WRITE;
 /*!40000 ALTER TABLE `optional_stock_table` DISABLE KEYS */;
 /*!40000 ALTER TABLE `optional_stock_table` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `stock_comment`
+--
+
+DROP TABLE IF EXISTS `stock_comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `stock_comment` (
+  `comment_id` int(11) NOT NULL,
+  `comment_time` datetime(6) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `content` longtext NOT NULL,
+  `stock_id_id` varchar(6) NOT NULL,
+  `user_id_id` varchar(45) NOT NULL,
+  PRIMARY KEY (`comment_id`),
+  KEY `stock_comment_stock_id_id_085e8f63_fk_stock_info_stock_id` (`stock_id_id`),
+  KEY `stock_comment_user_id_id_82aad8d5_fk_user_table_phone_number` (`user_id_id`),
+  CONSTRAINT `stock_comment_stock_id_id_085e8f63_fk_stock_info_stock_id` FOREIGN KEY (`stock_id_id`) REFERENCES `stock_info` (`stock_id`),
+  CONSTRAINT `stock_comment_user_id_id_82aad8d5_fk_user_table_phone_number` FOREIGN KEY (`user_id_id`) REFERENCES `user_table` (`phone_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `stock_comment`
+--
+
+LOCK TABLES `stock_comment` WRITE;
+/*!40000 ALTER TABLE `stock_comment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `stock_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -497,4 +526,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-05 21:11:38
+-- Dump completed on 2020-01-05 22:30:28
