@@ -77,43 +77,41 @@ class GenUser(object):
     def gen_account_balance(self):
         return float(randint(10000, 500000))
 
-
-def main():
-    genUser = GenUser()
-    cnt = 0
-    while cnt < 100:
-        try:
-            user = UserTable(
-                user_id=genUser.gen_user_id(),
-                id_no=genUser.gen_id_no(),
-                user_name=genUser.gen_user_name(),
-                password=genUser.gen_user_password(),
-                user_sex=genUser.gen_sex(),
-                phone_number=genUser.gen_phone(),
-                user_email=genUser.gen_email(),
-                photo_url=r'C:\Users\LuoD\Documents\codes\StockTrading\static\img\head.jpg',
-                account_num=genUser.gen_account_number(),
-                account_type=genUser.gen_account_type(),
-                account_balance=genUser.gen_account_balance(),
-            )
-            user.save()
-            cnt += 1
-            print(cnt)
-
-        except Exception:
-            print(Exception)
-
-
 def get_user_pic_path():
     pic1 = [img for img in os.listdir('static/img') if img.startswith('user') or img.startswith('ava')]
     return pic1
 
+pics = get_user_pic_path()
 
 def gen_photo_url():
     return '../static/img/' + choice(pics)
 
 
-pics = get_user_pic_path()
+def main():
+    genUser = GenUser()
+    cnt = 0
+    while cnt < 100:
+        user = UserTable(
+            user_id=genUser.gen_user_id(),
+            id_no=genUser.gen_id_no(),
+            user_name=genUser.gen_user_name(),
+            password=genUser.gen_user_password(),
+            user_sex=genUser.gen_sex(),
+            phone_number=genUser.gen_phone(),
+            user_email=genUser.gen_email(),
+            photo_url=gen_photo_url(),
+            account_num=genUser.gen_account_number(),
+            account_type=genUser.gen_account_type(),
+            account_balance=genUser.gen_account_balance(),
+            freeze=False,
+            account_opened=True
+        )
+        user.save()
+        cnt += 1
+        print(cnt)
+
+
+
 
 for u in UserTable.objects.all():
     if not u.phone_number == '15601205711':
