@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'adm_base.html' %}
 {% load static %}
 {% load staticfiles %}
 
@@ -139,7 +139,7 @@
 
                                     <div class="col-sm-10">
                                         <select name="user_sex" class="select2" id="user_sex" style="width: 100%">
-                                            {% if user.user_sex == "男" %}
+                                            {% if user.user_sex == '男' %}
                                                 <option class="active" value="男">男</option>
                                                 <option value="女">女</option>
                                             {% else %}
