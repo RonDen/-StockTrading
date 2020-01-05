@@ -13,7 +13,7 @@ import os
 from tradingSystem import models
 from .models import UserTable, StockInfo, OptionalStockTable, ForumTopic, ForumTopicBack, HistoryTradeTable
 from .utils import get_top10
-from config.createUser import gen_photo_url
+from config.createUser import gen_photo_url, banks
 
 
 def goto_login(request):
@@ -45,6 +45,7 @@ def mylogin(request):
                     request.session['account_type'] = user.account_type
                     request.session['account_balance'] = user.account_balance
                     request.session['id_no'] = user.id_no
+                    request.session['phone_number'] = user.phone_number
                     return redirect("tradingSystem:index")
                 else:
                     message = "您的密码错误"
@@ -59,15 +60,71 @@ def log_out(request):
 
 
 def index(request):
-    top10stock = get_top10()
-    context = {
-        'top10stock': top10stock
-    }
-    return render(request, 'index.html', context)
+    try:
+        if request.session['phone_number']:
+            top10stock = get_top10()
+            context = {
+                'top10stock': top10stock
+            }
+            return render(request, 'index.html', context)
+        else:
+            return redirect("tradingSystem:goto_login")
+    except Exception:
+        return redirect("tradingSystem:goto_login")
 
 
 def user_profile(request):
-    return render(request, 'tradingSystem/user_profile.html')
+    try:
+        if request.session['phone_number']:
+            context = {
+                'banks': banks
+            }
+            return render(request, 'tradingSystem/user_profile.html', context)
+        else:
+            return redirect("tradingSystem:goto_login")
+    except Exception:
+        return redirect("tradingSystem:goto_login")
+
+
+def deal_user_change(request):
+
+    message = ""
+    try:
+        if request.POST:
+            user_id = request.POST['user_id']
+            user_name = request.POST['user_name']
+            phone_number = request.POST['phone_number']
+            user_sex = request.POST['user_sex']
+            id_no = request.POST['id_no']
+            user_email = request.POST['user_email']
+            password = request.POST['password']
+            conf_password = request.POST['conf_password']
+            account_type = request.POST['account_type']
+            account_number = request.POST['account_num']
+            if conf_password != password:
+                message = "确认密码不符"
+            else:
+                try:
+                    user = UserTable.objects.get(user_id=user_id)
+                    user.phone_number = phone_number
+                    user.user_sex = user_sex
+                    user.user_name = user_name
+                    user.user_email = user_email
+                    user.password = password
+                    user.account_type = account_type
+                    user.account_num = account_number
+                    user.id_no = id_no
+                    user.save()
+                except Exception:
+                    message = "修改信息失败，请仔细检查，或稍后重试"
+    except Exception:
+        message = "您的信息有误，请仔细检查"
+    context = {
+        'message': message,
+        'banks': banks
+    }
+    return render(request, "tradingSystem/user_profile.html", context)
+
 
 
 def admin_index(request):
@@ -75,7 +132,6 @@ def admin_index(request):
 
 
 def stock_info(request, stock_id):
-
     return render(request, 'stock_details.html')
 
 
@@ -123,12 +179,12 @@ def do_register(request):
 
 
 def stockdetails(request):
-    return render(request,'stock_details.html')
+    return render(request, 'stock_details.html')
 
 
 def stock_list(request):
-      # aStockData = getAstock()
-    
+    # aStockData = getAstock()
+
     # lis=[]
     # for  index,row in aStockData.iterrows():
     #     lis.append(row)
@@ -137,15 +193,15 @@ def stock_list(request):
     # for i in lis:
     #     queryset.append(models.StockInfo(stock_id = i[1],stock_name = i[2],issuance_time=i[6],closing_price_y=0,open_price_t=0,stock_type="",block=i[5],change_extent=0))
     # models.StockInfo.objects.bulk_create(queryset)
-    
+
     stockl = models.StockInfo.objects.all()
     # all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
     # print(queryset)
     context = {
-        "stock":stockl
+        "stock": stockl
     }
     # print(type(queryset))
-    return render(request,'stock_list.html',context)
+    return render(request, 'stock_list.html', context)
 
 
 def stock_comment(request):
@@ -154,4 +210,3 @@ def stock_comment(request):
 
 def buy_in_stock(request):
     return render(request, 'buy_in.html')
-

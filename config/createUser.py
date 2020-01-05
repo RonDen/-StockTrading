@@ -3,6 +3,30 @@ from random import randint, choice
 from tradingSystem.models import UserTable
 import os
 
+banks = ['山东银行',
+         '江苏银行',
+         '上海银行',
+         '浙江银行',
+         '安徽银行',
+         '福建银行',
+         '江西银行',
+         '广东银行',
+         '广西银行',
+         '海南银行',
+         '河南银行',
+         '湖南银行',
+         '湖北银行',
+         '北京银行',
+         '天津银行',
+         '河北银行',
+         '山西银行',
+         '内蒙古银行',
+         '宁夏银行',
+         '青海银行',
+         '陕西银行',
+         '重庆银行',
+         '吉林银行']
+
 
 class GenUser(object):
     city = [
@@ -14,7 +38,7 @@ class GenUser(object):
     def gen_code(self, l: int):
         code = ""
         for i in range(l):
-            code += str(randint(0,9))
+            code += str(randint(0, 9))
         return code
 
     def gen_user_id(self):
@@ -96,7 +120,5 @@ for u in UserTable.objects.all():
         u.photo_url = '../static/img/' + choice(pics)
         u.save()
 
-
 if __name__ == '__main__':
     main()
-

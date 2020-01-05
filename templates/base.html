@@ -74,7 +74,7 @@
 
 <div class="wrapper">
     <header class="main-header">
-        <a href="#" class="logo">
+        <a href="{% url 'tradingSystem:index' %}" class="logo">
             <span class="logo-lg"><b>股票交易管理系统</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
@@ -99,7 +99,7 @@
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
                                         <li><!-- start message -->
-                                            <a href="#">
+                                            <a href="{% url 'tradingSystem:user_profile' %}">
                                                 <div class="pull-left">
                                                     <img src="{{ request.session.photo_url }}" class="img-circle"
                                                          alt="用户头像">
@@ -426,7 +426,7 @@
                     </li>
 
                      <li>
-                        <a href="{% url 'tradingSystem:user_profile' %}">
+                        <a href="{% url 'tradingSystem:stock_list' %}">
                             <i class="fa fa-thumbs-up"></i> <span>股票列表</span>
                             <span class="pull-right-container">
                           <small class="label pull-right bg-red">热</small></span>

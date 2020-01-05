@@ -7,6 +7,12 @@
     <!-- Main content -->
     <section class="content">
 
+        {% if message %}
+            <div class="callout callout-danger">
+                <h4>{{ message }}</h4>
+            </div>
+        {% endif %}
+
         <div class="row">
             <div class="col-md-3">
 
@@ -28,7 +34,8 @@
 
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
-                                <b>账号余额</b> <a class="pull-right">{{ request.session.account_balance | floatformat }}</a>
+                                <b>账号余额</b> <a
+                                    class="pull-right">{{ request.session.account_balance | floatformat }}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>买入</b> <a class="pull-right">543</a>
@@ -44,7 +51,7 @@
                 </div>
                 <!-- /.box -->
 
-            {% comment %}
+                {% comment %}
                 <!-- About Me Box -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
@@ -97,58 +104,119 @@
                     <div class="tab-content">
 
                         <div class="tab-pane" id="settings">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal" id="user_form"
+                                  action="{% url 'tradingSystem:deal_user_change' %}" method="post">
+                                {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">姓名</label>
+                                    <label for="user_id" class="col-sm-2 control-label">ID</label>
 
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" placeholder="Name">
+                                        <input type="text" class="form-control" readonly="readonly" name="user_id"
+                                               id="user_id"
+                                               value="{{ request.session.user_id }}">
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="inputEmail" class="col-sm-2 control-label">邮箱</label>
+                                    <label for="user_name" class="col-sm-2 control-label">姓名</label>
 
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                        <input type="text" class="form-control" name="user_name" id="user_name"
+                                               value="{{ request.session.user_name }}">
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                                    <label for="user_email" class="col-sm-2 control-label">邮箱</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputName" placeholder="Name">
+                                        <input type="email" class="form-control" name="user_email" id="user_email"
+                                               value="{{ request.session.user_email }}">
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
+                                    <label for="user_sex" class="col-sm-2 control-label">性别</label>
 
                                     <div class="col-sm-10">
-                                        <textarea class="form-control" id="inputExperience"
-                                                  placeholder="Experience"></textarea>
+                                        <select name="user_sex" class="select2" id="user_sex" style="width: 100%">
+                                            {% if request.session.user_sex == "男" %}
+                                                <option class="active" value="男">男</option>
+                                                <option value="女">女</option>
+                                            {% else %}
+                                                <option value="男">男</option>
+                                                <option class="active" value="女">女</option>
+                                            {% endif %}
+                                        </select>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
+                                    <label for="phone_number" class="col-sm-2 control-label">手机</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                                        <input type="text" name="phone_number" class="form-control" id="phone_number"
+                                               value="{{ request.session.phone_number }}">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="id_no" class="col-sm-2 control-label">身份证号</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" name="id_no" class="form-control" id="id_no"
+                                               value="{{ request.session.id_no }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="account_num" class="col-sm-2 control-label">银行账户</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" name="account_num" class="form-control" id="account_num"
+                                               value="{{ request.session.account_num }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="account_type" class="col-sm-2 control-label">银行类型</label>
+
+                                    <div class="col-sm-10">
+                                        <select name="account_type" class="select2" id="account_type"
+                                                style="width: 100%">
+                                            {% for bank in banks %}
+                                                {% if bank == request.session.account_type %}
+                                                    <option class="active" value="{{ bank }}">{{ bank }}</option>
+                                                {% else %}
+                                                    <option value="{{ bank }}">{{ bank }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password" class="col-sm-2 control-label">密码</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" name="password" id="password">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="conf_password" class="col-sm-2 control-label">确认密码</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" name="conf_password"
+                                               id="conf_password">
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox"> I agree to the <a href="#">terms and
-                                                conditions</a>
-                                            </label>
-                                        </div>
+                                        <button type="submit" id="conf_modify" class="btn btn-danger">确认修改</button>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-danger">Submit</button>
-                                    </div>
-                                </div>
+
                             </form>
                         </div>
                         <!-- /.tab-pane -->
@@ -165,4 +233,39 @@
     <!-- /.content -->
 {% endblock %}
 
+{% block script %}
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.select2').select2();
+        });
+
+        {% comment %}
+
+        function check_input(el) {
+            var inputData = el.parents("form").find("input");
+            $.each(inputData, function(){
+               var data = this.value();
+               console.log(data);
+               if (!data) {
+                   return false;
+               }
+            });
+
+            return false;
+        }
+
+        $('conf_modify').click(function () {
+            if (!check_input($('#conf_modify'))) {
+                return false;
+            } else{
+                var form = document.getElementById("user_form");
+                form.submit();
+            }
+        });
+        {% endcomment %}
+
+
+    </script>
+
+{% endblock %}
