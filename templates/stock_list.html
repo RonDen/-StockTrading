@@ -42,7 +42,7 @@
                                 {% for item in stock %}
                                     <tr>
 {#                                        <td>{{ forloop.counter }}</td>#}
-                                        <td><a href="tradingSystem:">{{ item.stock_id }}</a></td>
+                                        <td><a href="{% url 'tradingSystem:stock_info' item.stock_id %}">{{ item.stock_id }}</a></td>
                                         <td>{{ item.stock_name }}</td>
                                         <td>{{ item.issuance_time }}</td>
                                         <td>{{ item.closing_price_y }}</td>

@@ -83,7 +83,7 @@ class OptionalStockTable(models.Model):
     # 自选股票表
     user_id = models.ForeignKey(to=UserTable, on_delete=models.CASCADE)
     stock_id = models.ForeignKey(to=StockInfo, on_delete=models.CASCADE)
-
+    num_of_shares = models.IntegerField(null=True)
     class Meta:
         db_table = 'optional_stock_table'
         unique_together = (
