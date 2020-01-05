@@ -2,6 +2,10 @@
 {% load static %}
 {% load staticfiles %}
 
+{% block title %}
+    {{ user.user_name }}的个人信息
+{% endblock %}
+
 {% block content %}
 
     <!-- Main content -->
@@ -19,23 +23,18 @@
                 <!-- Profile Image -->
                 <div class="box box-primary">
                     <div class="box-body box-profile">
-                        {% if request.session.photo_url %}
-                            <img class="profile-user-img img-responsive img-circle"
-                                 src="{{ request.session.photo_url }}" alt="用户头像">
-                        {% else %}
-                            <img class="profile-user-img img-responsive img-circle" src="{% static 'img/head.jpg' %}"
-                                 alt="User profile picture">
+                        <img class="profile-user-img img-responsive img-circle"
+                             src="{{ user.photo_url }}" alt="用户头像">
 
-                        {% endif %}
 
-                        <h3 class="profile-username text-center">{{ request.session.user_name }}</h3>
+                        <h3 class="profile-username text-center">{{ user.user_name }}</h3>
 
-                        <p class="text-muted text-center">{{ request.session.user_id }}</p>
+                        <p class="text-muted text-center">{{ user.user_id }}</p>
 
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
                                 <b>账号余额</b> <a
-                                    class="pull-right">{{ request.session.account_balance | floatformat }}元</a>
+                                    class="pull-right">{{ user.account_balance | floatformat }}元</a>
                             </li>
                             <li class="list-group-item">
                                 <b>买入</b> <a class="pull-right">543手</a>
@@ -99,7 +98,7 @@
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li><a href="#settings" data-toggle="tab">查看和修改我的信息</a></li>
+                        <li><a href="#settings" data-toggle="tab">查看或修改用户的信息</a></li>
                     </ul>
                     <div class="tab-content">
 
@@ -113,7 +112,7 @@
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" readonly="readonly" name="user_id"
                                                id="user_id"
-                                               value="{{ request.session.user_id }}">
+                                               value="{{ user.user_id }}">
                                     </div>
                                 </div>
 
@@ -122,7 +121,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="user_name" id="user_name"
-                                               value="{{ request.session.user_name }}">
+                                               value="{{ user.user_name }}">
                                     </div>
                                 </div>
 
@@ -131,7 +130,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="email" class="form-control" name="user_email" id="user_email"
-                                               value="{{ request.session.user_email }}">
+                                               value="{{ user.user_email }}">
                                     </div>
                                 </div>
 
@@ -140,7 +139,7 @@
 
                                     <div class="col-sm-10">
                                         <select name="user_sex" class="select2" id="user_sex" style="width: 100%">
-                                            {% if request.session.user_sex == "男" %}
+                                            {% if user.user_sex == "男" %}
                                                 <option class="active" value="男">男</option>
                                                 <option value="女">女</option>
                                             {% else %}
@@ -155,8 +154,8 @@
                                     <label for="phone_number" class="col-sm-2 control-label">手机</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" name="phone_number" class="form-control" id="phone_number"
-                                               value="{{ request.session.phone_number }}">
+                                        <input type="text" name="phone_number" class="form-control" readonly="readonly" id="phone_number"
+                                               value="{{ user.phone_number }}">
                                     </div>
                                 </div>
 
@@ -164,8 +163,8 @@
                                     <label for="id_no" class="col-sm-2 control-label">身份证号</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" name="id_no" class="form-control" id="id_no"
-                                               value="{{ request.session.id_no }}">
+                                        <input type="text" name="id_no" class="form-control" id="id_no" readonly="readonly"
+                                               value="{{ user.id_no }}">
                                     </div>
                                 </div>
 
@@ -173,8 +172,8 @@
                                     <label for="account_num" class="col-sm-2 control-label">银行账户</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" name="account_num" class="form-control" id="account_num"
-                                               value="{{ request.session.account_num }}">
+                                        <input type="text" name="account_num" class="form-control" id="account_num" readonly="readonly"
+                                               value="{{ user.account_num }}">
                                     </div>
                                 </div>
 
@@ -185,29 +184,13 @@
                                         <select name="account_type" class="select2" id="account_type"
                                                 style="width: 100%">
                                             {% for bank in banks %}
-                                                {% if bank == request.session.account_type %}
+                                                {% if bank == user.account_type %}
                                                     <option class="active" value="{{ bank }}">{{ bank }}</option>
                                                 {% else %}
                                                     <option value="{{ bank }}">{{ bank }}</option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="password" class="col-sm-2 control-label">密码</label>
-
-                                    <div class="col-sm-10">
-                                        <input type="password" class="form-control" name="password" id="password">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="conf_password" class="col-sm-2 control-label">确认密码</label>
-                                    <div class="col-sm-10">
-                                        <input type="password" class="form-control" name="conf_password"
-                                               id="conf_password">
                                     </div>
                                 </div>
 
@@ -239,32 +222,6 @@
         $(document).ready(function () {
             $('.select2').select2();
         });
-
-        {% comment %}
-
-        function check_input(el) {
-            var inputData = el.parents("form").find("input");
-            $.each(inputData, function(){
-               var data = this.value();
-               console.log(data);
-               if (!data) {
-                   return false;
-               }
-            });
-
-            return false;
-        }
-
-        $('conf_modify').click(function () {
-            if (!check_input($('#conf_modify'))) {
-                return false;
-            } else{
-                var form = document.getElementById("user_form");
-                form.submit();
-            }
-        });
-        {% endcomment %}
-
 
     </script>
 

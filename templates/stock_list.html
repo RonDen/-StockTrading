@@ -41,8 +41,9 @@
                                 <tbody>
                                 {% for item in stock %}
                                     <tr>
-{#                                        <td>{{ forloop.counter }}</td>#}
-                                        <td><a href="{% url 'tradingSystem:stock_info' item.stock_id %}">{{ item.stock_id }}</a></td>
+                                        <td>
+                                            <a href="{% url 'tradingSystem:stock_info' item.stock_id %}">{{ item.stock_id }}</a>
+                                        </td>
                                         <td>{{ item.stock_name }}</td>
                                         <td>{{ item.issuance_time }}</td>
                                         <td>{{ item.closing_price_y }}</td>
@@ -52,9 +53,6 @@
                                         <td>{{ item.change_extent }}</td>
                                     </tr>
                                 {% endfor %}
-
-
-
 
                                 </tbody>
                             </table>
@@ -128,23 +126,23 @@
 {% endblock %}
 {% block script %}
     <script>
-          $(function () {
+        $(function () {
             $(".select2").select2();
         });
-   $(function () {
+        $(function () {
             var table = $('#stock_list').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-                        'copy',
-                        {
-                            extend: 'excel',
-                            filename: '课程信息表'
-                        },
-                        {
-                            extend: 'print',
-                            filename: "课程信息表",
-                        }
-                    ],
+                    'copy',
+                    {
+                        extend: 'excel',
+                        filename: '课程信息表'
+                    },
+                    {
+                        extend: 'print',
+                        filename: "课程信息表",
+                    }
+                ],
                 "paging": true,       <!-- 允许分页 -->
                 "lengthChange": true, <!-- 允许改变每页显示的行数 -->
                 "searching": true,    <!-- 允许内容搜索 -->

@@ -296,7 +296,7 @@
                         </li>
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="{% url 'tradingSystem:user_profile' %}" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{{ request.session.photo_url }}" class="user-image" alt="用户头像">
                                 <span class="hidden-xs">{{ request.session.user_name }}</span>
                             </a>
@@ -368,6 +368,7 @@
                 </ul>
             </div>
         {% endcomment %}
+
         </nav>
     </header>
 
@@ -379,7 +380,7 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 {% if request.session %}
-                    <div class="pull-left image">
+                    <div class="pull-left image" href="{% url 'tradingSystem:user_profile' %}">
                         {% block user_head_img %}
                             <img src="{{ request.session.photo_url }}" style="width: 50px;height: 50px;"
                                  class="img-circle" alt="用户头像" href="{% url 'tradingSystem:user_profile' %}">
@@ -412,7 +413,7 @@
                         <a href="{% url 'tradingSystem:index' %}">
                             <i class="fa fa-dashboard"></i> <span>首页</span>
                             <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
+                                <i class="fa fa-refresh fa-spin pull-right"></i>
                             </span>
                         </a>
                     </li>

@@ -1,0 +1,463 @@
+{% extends "adm_base.html" %}
+{% load static %}
+{% load staticfiles %}
+{% block title %}欢迎登录股票交易管理系统{% endblock %}
+
+{% block content %}
+
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">股票日K</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body" id="Kline" style="width:100%;height:400px;">
+
+                    </div>
+                    <div class="box-footer clearfix">
+
+                        <a href="{% url 'tradingSystem:buy_in_stock' sid %}"
+                           class="btn btn-sm btn-info btn-flat pull-right">增持股票</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box box-solid bg-teal-gradient">
+                    <div class="box-header">
+                        <i class="fa fa-th"></i>
+
+                        <h3 class="box-title">股权占比</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i
+                                    class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i
+                                    class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body border-radius-none">
+                        <div class="chart" id="line-chart" style="height: 250px;">
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <!-- /.box-footer -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Chat box -->
+                <div class="box box-success">
+                    <div class="box-header">
+                        <i class="fa fa-comments-o"></i>
+
+                        <h3 class="box-title">Chat</h3>
+
+                        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                            <div class="btn-group" data-toggle="btn-toggle">
+                                <button type="button" class="btn btn-default btn-sm active"><i
+                                        class="fa fa-square text-green"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm"><i
+                                        class="fa fa-square text-red"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body chat" id="chat-box">
+                        <!-- chat item -->
+                        <div class="item">
+                            <img src="{% static 'img/user1-128x128.jpg' %}" alt="user image" class="online">
+
+                            <p class="message">
+                                <a href="#" class="name">
+                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
+                                    Mike Doe
+                                </a>
+                                I would like to meet you to discuss the latest news about
+                                the arrival of the new theme. They say it is going to be one the
+                                best themes on the market
+                            </p>
+                            <div class="attachment">
+                                <h4>Attachments:</h4>
+
+                                <p class="filename">
+                                    Theme-thumbnail-image.jpg
+                                </p>
+
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
+                                </div>
+                            </div>
+                            <!-- /.attachment -->
+                        </div>
+                        <!-- /.item -->
+                        <!-- chat item -->
+                        <div class="item">
+                            <img src="{% static 'img/user3-128x128.jpg' %}" alt="user image" class="offline">
+
+                            <p class="message">
+                                <a href="#" class="name">
+                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
+                                    Alexander Pierce
+                                </a>
+                                I would like to meet you to discuss the latest news about
+                                the arrival of the new theme. They say it is going to be one the
+                                best themes on the market
+                            </p>
+                        </div>
+                        <!-- /.item -->
+                        <!-- chat item -->
+                        <div class="item">
+                            <img src="{% static 'img/user4-128x128.jpg' %}" alt="user image" class="offline">
+
+                            <p class="message">
+                                <a href="#" class="name">
+                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
+                                    Susan Doe
+                                </a>
+                                I would like to meet you to discuss the latest news about
+                                the arrival of the new theme. They say it is going to be one the
+                                best themes on the market
+                            </p>
+                        </div>
+                        <!-- /.item -->
+                    </div>
+                    <!-- /.chat -->
+                    <div class="box-footer">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Type message...">
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box (chat box) -->
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
+
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        var upColor = '#ec0000';
+        var upBorderColor = '#8A0000';
+        var downColor = '#00da3c';
+        var downBorderColor = '#008F28';
+        var KlineMap = echarts.init(document.getElementById('Kline'));
+        var s_name = '{{ sname|safe }}';
+        var hisData = {{ hisData|safe }};
+        // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+        var data0 = splitData(hisData);
+
+
+        function splitData(rawData) {
+            var categoryData = [];
+            var values = [];
+            for (var i = 0; i < rawData.length; i++) {
+                categoryData.push(rawData[i].splice(0, 1)[0]);
+                values.push(rawData[i])
+            }
+            return {
+                categoryData: categoryData,
+                values: values
+            };
+        }
+
+        function calculateMA(dayCount) {
+            var result = [];
+            for (var i = 0, len = data0.values.length; i < len; i++) {
+                if (i < dayCount) {
+                    result.push('-');
+                    continue;
+                }
+                var sum = 0;
+                for (var j = 0; j < dayCount; j++) {
+                    sum += data0.values[i - j][1];
+                }
+                result.push(sum / dayCount);
+            }
+            return result;
+        }
+
+
+        option = {
+            title: {
+                text: s_name,
+                left: 0
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+            },
+            grid: {
+                left: '10%',
+                right: '10%',
+                bottom: '15%'
+            },
+            xAxis: {
+                type: 'category',
+                data: data0.categoryData,
+                scale: true,
+                boundaryGap: false,
+                axisLine: {onZero: false},
+                splitLine: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax'
+            },
+            yAxis: {
+                scale: true,
+                splitArea: {
+                    show: true
+                }
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 50,
+                    end: 100
+                },
+                {
+                    show: true,
+                    type: 'slider',
+                    top: '90%',
+                    start: 50,
+                    end: 100
+                }
+            ],
+            series: [
+                {
+                    name: '日K',
+                    type: 'candlestick',
+                    data: data0.values,
+                    itemStyle: {
+                        color: upColor,
+                        color0: downColor,
+                        borderColor: upBorderColor,
+                        borderColor0: downBorderColor
+                    },
+                    markPoint: {
+                        label: {
+                            normal: {
+                                formatter: function (param) {
+                                    return param != null ? Math.round(param.value) : '';
+                                }
+                            }
+                        },
+                        data: [
+                            {
+                                name: 'XX标点',
+                                coord: ['2013/5/31', 2300],
+                                value: 2300,
+                                itemStyle: {
+                                    color: 'rgb(41,60,85)'
+                                }
+                            },
+                            {
+                                name: 'highest value',
+                                type: 'max',
+                                valueDim: 'highest'
+                            },
+                            {
+                                name: 'lowest value',
+                                type: 'min',
+                                valueDim: 'lowest'
+                            },
+                            {
+                                name: 'average value on close',
+                                type: 'average',
+                                valueDim: 'close'
+                            }
+                        ],
+                        tooltip: {
+                            formatter: function (param) {
+                                return param.name + '<br>' + (param.data.coord || '');
+                            }
+                        }
+                    },
+                    markLine: {
+                        symbol: ['none', 'none'],
+                        data: [
+                            [
+                                {
+                                    name: 'from lowest to highest',
+                                    type: 'min',
+                                    valueDim: 'lowest',
+                                    symbol: 'circle',
+                                    symbolSize: 10,
+                                    label: {
+                                        show: false
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: false
+                                        }
+                                    }
+                                },
+                                {
+                                    type: 'max',
+                                    valueDim: 'highest',
+                                    symbol: 'circle',
+                                    symbolSize: 10,
+                                    label: {
+                                        show: false
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: false
+                                        }
+                                    }
+                                }
+                            ],
+                            {
+                                name: 'min line on close',
+                                type: 'min',
+                                valueDim: 'close'
+                            },
+                            {
+                                name: 'max line on close',
+                                type: 'max',
+                                valueDim: 'close'
+                            }
+                        ]
+                    }
+                },
+                {
+                    name: 'MA5',
+                    type: 'line',
+                    data: calculateMA(5),
+                    smooth: true,
+                    lineStyle: {
+                        opacity: 0.5
+                    }
+                },
+                {
+                    name: 'MA10',
+                    type: 'line',
+                    data: calculateMA(10),
+                    smooth: true,
+                    lineStyle: {
+                        opacity: 0.5
+                    }
+                },
+                {
+                    name: 'MA20',
+                    type: 'line',
+                    data: calculateMA(20),
+                    smooth: true,
+                    lineStyle: {
+                        opacity: 0.5
+                    }
+                },
+                {
+                    name: 'MA30',
+                    type: 'line',
+                    data: calculateMA(30),
+                    smooth: true,
+                    lineStyle: {
+                        opacity: 0.5
+                    }
+                },
+
+            ]
+        };
+        KlineMap.setOption(option);
+        var drawdata = [];
+        var hold_vol = {{ hold_vold|safe }};
+        for (j = 0, len = hold_vol.length; j < len; j++) {
+            drawdata.push({value: hold_vol[j][1], name: hold_vol[j][0]});
+        }
+        option = {
+            backgroundColor: '#2c343c',
+
+            title: {
+                text: '股权占比',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ffffff'
+                }
+            },
+
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+
+            visualMap: {
+                show: false,
+                min: 80,
+                max: 600,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '50%'],
+                    data: drawdata.sort(function (a, b) {
+                        return a.value - b.value;
+                    }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(255, 255, 255, 1)'
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 1)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        color: '#3429c2',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(255, 255, 255, 1)'
+                    },
+
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx) {
+                        return Math.random() * 200;
+                    }
+                }
+            ]
+        };
+        var linechart = echarts.init(document.getElementById('line-chart'));
+        linechart.setOption(option);
+        window.addEventListener("resize", function () {
+            KlineMap.resize();
+            //myCharts是你的初始化echarts图表时取的名字
+        });
+        window.addEventListener("resize", function () {
+            linechart.resize();
+            //myCharts是你的初始化echarts图表时取的名字
+        });
+    </script>
+{% endblock %}
