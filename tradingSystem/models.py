@@ -18,13 +18,13 @@ class UserTable(models.Model):
     # 用户邮箱
     user_email = models.EmailField()
     # 用户头像路径
-    photo_url = models.CharField(max_length=100)
+    photo_url = models.CharField(max_length=45)
     # 银行卡号
     account_num = models.CharField(max_length=45)
     # 银行卡类型
     account_type = models.CharField(max_length=45)
     # 银行卡余额
-    account_balance = models.FloatField()
+    account_balance = models.FloatField(null=True)
 
     def __str__(self):
         return '-'.join([self.user_name, self.phone_number])

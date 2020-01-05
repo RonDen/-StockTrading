@@ -15,6 +15,11 @@ urlpatterns = [
     path('stock_list', views.stock_list, name='stock_list'),
     path('stock_comment', views.stock_comment, name='stock_comment'),
     path('buy_in_stock/<str:sid>/' , views.buy_in_stock, name='buy_in_stock'),
+    path('user_profile', views.user_profile, name='user_profile'),
+    path('log_out', views.log_out, name='log_out'),
+    path('do_register', views.do_register, name='do_register'),
+    path('deal_user_change', views.deal_user_change, name='deal_user_change'),
+
 ]
 
 

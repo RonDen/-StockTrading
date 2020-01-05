@@ -1,7 +1,31 @@
-from tradingSystem.models import UserTable
 from random import randint, choice
-from hashlib import sha256
-from django.contrib.auth.models import User
+
+from tradingSystem.models import UserTable
+import os
+
+banks = ['山东银行',
+         '江苏银行',
+         '上海银行',
+         '浙江银行',
+         '安徽银行',
+         '福建银行',
+         '江西银行',
+         '广东银行',
+         '广西银行',
+         '海南银行',
+         '河南银行',
+         '湖南银行',
+         '湖北银行',
+         '北京银行',
+         '天津银行',
+         '河北银行',
+         '山西银行',
+         '内蒙古银行',
+         '宁夏银行',
+         '青海银行',
+         '陕西银行',
+         '重庆银行',
+         '吉林银行']
 
 
 class GenUser(object):
@@ -14,7 +38,7 @@ class GenUser(object):
     def gen_code(self, l: int):
         code = ""
         for i in range(l):
-            code += str(randint(0,9))
+            code += str(randint(0, 9))
         return code
 
     def gen_user_id(self):
@@ -80,6 +104,21 @@ def main():
             print(Exception)
 
 
+def get_user_pic_path():
+    pic1 = [img for img in os.listdir('static/img') if img.startswith('user') or img.startswith('ava')]
+    return pic1
+
+
+def gen_photo_url():
+    return '../static/img/' + choice(pics)
+
+
+pics = get_user_pic_path()
+
+for u in UserTable.objects.all():
+    if not u.phone_number == '15601205711':
+        u.photo_url = '../static/img/' + choice(pics)
+        u.save()
+
 if __name__ == '__main__':
     main()
-

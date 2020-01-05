@@ -1,0 +1,203 @@
+body{
+	background-color: white;
+}
+body {
+	background-color: white;
+}
+
+.c-head {
+	padding: 12px 0px;
+	position: absolute;
+	top: 0px;
+	left: 15px;
+	font-size: 15px;
+	font-weight: bold;
+	color: white;
+}
+
+.c-head img {
+	width: 12px;
+}
+.c-title{
+	position: relative;
+	width: 100%;
+	height: 265px;
+	background-image: linear-gradient(to left,#ff8736,#ffa83e);
+	text-align: center;
+	box-sizing: border-box;
+	padding: 70px;
+	overflow: hidden;
+}
+.c-title .logo{
+	width: 100px;
+	height: 40px;
+	background-color: white;
+	margin: auto;
+	border-radius: 20px;
+}
+.c-title .logo img{margin:5px 0 0 0;}
+.c-title .name{
+	font-size: 36px;
+	color: white;
+}
+.c-title .name:before{
+	content: '';
+	display: block;
+	width: 260px;
+	height: 260px;
+	border-radius: 100%;
+	position: absolute;
+	background-color: rgba(255,255,255,0.2);
+	top:-85px;
+	right: -85px;
+}
+.c-title .name:after{
+	content: '';
+	display: block;
+	width: 180px;
+	height: 180px;
+	border-radius: 100%;
+	position: absolute;
+	background-color: rgba(255,255,255,0.2);
+	top: -100px;
+    right: -70px;
+}
+.c-title:before{
+	content: '';
+	display: block;
+	width: 150px;
+	height: 150px;
+	border-radius: 100%;
+	position: absolute;
+	background-color: rgba(255,255,255,0.2);
+	bottom: -55px;
+    left: -70px;
+}
+/* 登录 */
+.c-login{
+	width: 300px;
+	padding: 15px 0px;
+	position: relative;
+	margin: auto;
+	box-shadow: 0 0 7px #fdd8ac;
+	border-radius: 12px;
+	margin: -60px auto 0px auto;
+	background: white;
+}
+.c-login h1{
+	font-size: 17px;
+	color: rgb(255,168,62);
+	margin: 0px 0px 15px 40px;
+	font-weight: bold;
+}
+.c-login .loginForm{
+	text-align: center;
+}
+.c-login .loginForm input[type="text"],
+.c-login .loginForm input[type="password"],
+.c-login .loginForm input[type="button"]{
+	display: block;
+	border: none;
+	border-bottom: 1px solid rgb(215,215,215);
+	width: 200px;
+	margin: 0px auto 20px auto;
+	font-size: 12px;
+	-webkit-appearance:none;
+	border-radius:0;
+}
+.c-login .loginForm input[type="text"]{
+	padding: 8px 0px 8px 30px;
+	background-image:url(../img/login-phone.png);
+	background-repeat: no-repeat;
+	background-size: 15px;
+	background-position: 5px 3px;
+}
+.c-login .loginForm .userLogo{
+	background-image:url(../img/login-user.png)!important;
+	background-size: 18px!important;
+}
+.c-login .loginForm input[type="password"]{
+	padding: 8px 0px 8px 30px;
+	background-image:url(../img/login-password.png);
+	background-repeat: no-repeat;
+	background-size: 18px;
+	background-position: 5px 3px;
+}
+.c-login .loginForm .codeDiv{
+	width: 230px;
+	margin: 0px auto 20px auto;
+	border-bottom: 1px solid rgb(215,215,215);
+}
+.c-login .loginForm .codeDiv input[type="text"]{
+	margin: 0px;
+	border: none;
+}
+.c-login .loginForm input[type="button"]{
+	padding: 8px 0px 8px 0px;
+	margin-bottom: 10px;
+	border-radius: 20px;
+	width: 230px;
+	color: white;
+	background-color: #ffa83e;
+	font-size: 14px;
+}
+.c-login .otherBtn{
+	font-size: 12px;
+	text-align: center;
+}
+.c-login .otherBtn em{
+	margin-left: 80px;
+}
+.c-login .otherBtn .findPwd{
+	color: rgb(153,153,153);
+}
+.c-otherLogin{
+	width: 100%;
+	margin-top: 100px;
+	margin: 100px 0px 40px 0px;
+	text-align: center;
+}
+.c-otherLogin h1{
+	color: rgb(153,153,153);
+	font-size: 15px;
+	margin-bottom: 20px;
+}
+.c-otherLogin .otherLogin {
+	width: 35px;
+	height: 35px;
+	border: 1px solid rgb(215,215,215);
+	display: inline-block;
+	margin-right: 40px;
+	border-radius: 50%;
+	position: relative;
+}
+.c-otherLogin .otherLogin:last-child{
+	margin-right: 0px;
+}
+.c-otherLogin .otherLogin img{
+	width: 26px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -10px;
+	margin-left: -13px;
+}
+.c-login .loginForm .codeImg{
+	width: 75px;
+	height: 25x;
+	vertical-align: middle;
+}
+
+/* 以下是注册页面 */
+.c-login .loginForm .codeText{
+	display: inline!important;
+	background-image:url(../img/login-code.png)!important;
+	width: 120px !important;
+}
+.c-login .loginForm .codeBtn{
+	padding: 4px 0px 4px 0px!important;
+	width: 75px!important;
+	display: inline!important;
+	border-radius: 5px!important;
+	font-size: 12px!important;
+}

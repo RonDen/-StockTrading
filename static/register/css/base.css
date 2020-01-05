@@ -1,0 +1,121 @@
+/* 弹窗样式 */
+.checkInputSuccessTip {
+	width: 100%;
+	position: fixed;
+	display: none;
+	top: 30%;
+	text-align: center;
+}
+
+.checkInputSuccessTip span {
+	display: inline-block;
+	background-color: rgba(169, 251, 192, 0.5);
+	font-size: 15px;
+	color: green;
+	padding: 6px 15px;
+	border-radius: 10px;
+}
+
+.checkInputFallTip {
+	width: 100%;
+	position: fixed;
+	display: none;
+	top: 30%;
+	text-align: center;
+}
+
+.checkInputFallTip span {
+	display: inline-block;
+	background-color: rgb(215, 215, 215);
+	font-size: 12px;
+	color: black;
+	padding: 6px 15px;
+	border-radius: 10px;
+}
+
+.checkInputTipFallHover {
+	animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+	transform: translate3d(0, 0, 0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
+@keyframes shake {
+
+	10%,
+	90% {
+		transform: translate3d(-1px, 0, 0);
+	}
+
+	20%,
+	80% {
+		transform: translate3d(2px, 0, 0);
+	}
+
+	30%,
+	50%,
+	70% {
+		transform: translate3d(-4px, 0, 0);
+	}
+
+	40%,
+	60% {
+		transform: translate3d(4px, 0, 0);
+	}
+}
+
+/* 确定 取消弹窗
+.tac_boxShadow {
+	position: fixed;
+	z-index: 10000;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.1);
+	display: none;
+	align-items: center;
+}
+
+.alert_body {
+	background-color: #ffffff;
+	width: 85%;
+	margin: 0 auto;
+	border-radius: 6px;
+}
+
+.alert_title {
+	padding-top: 12px;
+	font-size: 12px;
+	color: #333;
+	text-align: center;
+}
+
+.alert_mesg {
+	text-align: center;
+	padding: 12px 2px 0px 2px;
+	font-size: 12px;
+	color: #888;
+	word-wrap: break-word;
+}
+
+.alert_btn {
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	margin-top: 12px;
+	display: flex;
+}
+
+.alert_btnDiv {
+	flex: 1;
+	text-align: center;
+	height: 42px;
+	font-size: 14px;
+	color: #444;
+	line-height: 42px;
+}
+
+.alert_cancle {
+	border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.alert_ok {
+	color: rgba(4, 138, 236, 0.81) !important;
+} */
