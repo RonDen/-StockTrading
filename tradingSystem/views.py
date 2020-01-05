@@ -13,6 +13,9 @@ import os
 from tradingSystem import models
 from .models import UserTable, StockInfo, OptionalStockTable, ForumTopic, ForumTopicBack, HistoryTradeTable
 from .utils import get_top10
+from utils import getAstock
+import numpy as np
+from utils import getHistoryData
 from config.createUser import gen_photo_url, banks
 
 
@@ -130,10 +133,39 @@ def deal_user_change(request):
 def admin_index(request):
     return render(request, 'adm_base.html')
 
-
 def stock_info(request, stock_id):
-    return render(request, 'stock_details.html')
+    # print(ts.get_hist_data('600848'))
+    
+    choosenStock = models.StockInfo.objects.filter(stock_id = stock_id)
+    print(choosenStock)
+    print(choosenStock[0].stock_name)
+    print(choosenStock[0].block)
+    hisData = []
+    hold_vol = ""
 
+    if(choosenStock[0].stock_type=="上证"):
+        hold_vol = getAstock.getAstock(stock_id+".SH")
+        hisData = getHistoryData.getHistoryData(stock_id+".SH")
+    else:
+        hold_vol = getAstock.getAstock(stock_id+".SZ")
+        hisData = getHistoryData.getHistoryData(stock_id+".SZ")
+    # hold_vol = lhold_vol)
+    # print(":asdad")
+    # print(hisData)
+
+    context={
+        "sid":choosenStock[0].stock_id,
+        "sname":choosenStock[0].stock_name,
+        "issuance_time":choosenStock[0].issuance_time,
+        "closing_price_y":choosenStock[0].closing_price_y,
+        "open_price_t":choosenStock[0].open_price_t,
+        "stock_type":choosenStock[0].stock_type,
+        "block":choosenStock[0].block,
+        "change_extent":choosenStock[0].change_extent,
+        "hold_vold":hold_vol,
+        "hisData":hisData
+    }
+    return render(request, 'stock_details.html',context)
 
 def base(request):
     return render(request, 'base.html')
@@ -208,5 +240,6 @@ def stock_comment(request):
     return render(request, 'stock_comments.html')
 
 
-def buy_in_stock(request):
+def buy_in_stock(request,sid):
+
     return render(request, 'buy_in.html')
