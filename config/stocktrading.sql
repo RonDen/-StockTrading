@@ -201,16 +201,17 @@ DROP TABLE IF EXISTS `comment_reply`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `comment_reply` (
-  `reply_time` datetime(6) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` longtext NOT NULL,
+  `reply_time` datetime(6) NOT NULL,
   `comment_id` int(11) NOT NULL,
-  `reply_id` int(11) NOT NULL,
+  `reply_id` int(11) DEFAULT NULL,
   `user_id_id` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `comment_reply_comment_id_d5cbeffd_fk_stock_comment_comment_id` (`comment_id`),
+  KEY `comment_reply_comment_id_d5cbeffd_fk_stock_comment_id` (`comment_id`),
   KEY `comment_reply_reply_id_d4399f7d_fk_comment_reply_id` (`reply_id`),
   KEY `comment_reply_user_id_id_029a712c_fk_user_table_phone_number` (`user_id_id`),
-  CONSTRAINT `comment_reply_comment_id_d5cbeffd_fk_stock_comment_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `stock_comment` (`comment_id`),
+  CONSTRAINT `comment_reply_comment_id_d5cbeffd_fk_stock_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `stock_comment` (`id`),
   CONSTRAINT `comment_reply_reply_id_d4399f7d_fk_comment_reply_id` FOREIGN KEY (`reply_id`) REFERENCES `comment_reply` (`id`),
   CONSTRAINT `comment_reply_user_id_id_029a712c_fk_user_table_phone_number` FOREIGN KEY (`user_id_id`) REFERENCES `user_table` (`phone_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -374,13 +375,13 @@ DROP TABLE IF EXISTS `news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `news` (
-  `news_id` int(11) NOT NULL,
-  `news_time` date NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
   `url` varchar(200) NOT NULL,
   `content` longtext NOT NULL,
   `read` int(11) DEFAULT NULL,
-  PRIMARY KEY (`news_id`)
+  `news_time` date NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -429,13 +430,13 @@ DROP TABLE IF EXISTS `stock_comment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `stock_comment` (
-  `comment_id` int(11) NOT NULL,
-  `comment_time` datetime(6) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
   `content` longtext NOT NULL,
+  `comment_time` datetime(6) NOT NULL,
   `stock_id_id` varchar(6) NOT NULL,
   `user_id_id` varchar(45) NOT NULL,
-  PRIMARY KEY (`comment_id`),
+  PRIMARY KEY (`id`),
   KEY `stock_comment_stock_id_id_085e8f63_fk_stock_info_stock_id` (`stock_id_id`),
   KEY `stock_comment_user_id_id_82aad8d5_fk_user_table_phone_number` (`user_id_id`),
   CONSTRAINT `stock_comment_stock_id_id_085e8f63_fk_stock_info_stock_id` FOREIGN KEY (`stock_id_id`) REFERENCES `stock_info` (`stock_id`),
@@ -526,4 +527,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-05 22:30:28
+-- Dump completed on 2020-01-05 22:55:39
