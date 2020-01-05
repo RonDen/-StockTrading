@@ -22,7 +22,7 @@ def goto_login(request):
 
 def mylogin(request):
     # 10030370820
-    # 50342411
+    # 222222
     if request.POST:
         phone_number = request.POST.get('phone_number')
         password = request.POST.get('password')

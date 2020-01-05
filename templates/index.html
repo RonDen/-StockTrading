@@ -60,10 +60,105 @@
             <div class="col-md-4">
                 <!-- Message box -->
                 <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">重大新闻</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th>标题</th>
+                                    <th>热度</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box (chat box) -->
+            </div>
+
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-8">
+                {#                <div class="box box-solid bg-teal-gradien">#}
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <i class="fa fa-th"></i>
+
+                        <h3 class="box-title">股票走势</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i
+                                    class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i
+                                    class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="stock-chart" style="height:500px;"></div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer no-border">
+                        {% comment %}
+                        <div class="row">
+
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <input type="text" class="knob" data-readonly="true" value="20" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">Mail-Orders</div>
+                            </div>
+
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <input type="text" class="knob" data-readonly="true" value="50" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">Online</div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center">
+                                <input type="text" class="knob" data-readonly="true" value="30" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">In-Store</div>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        {% endcomment %}
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <!-- Message box -->
+                <div class="box box-success">
                     <div class="box-header">
                         <i class="fa fa-comments-o"></i>
 
-                        <h3 class="box-title">Chat</h3>
+                        <h3 class="box-title">我的消息</h3>
 
                         <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
                             <div class="btn-group" data-toggle="btn-toggle">
@@ -149,69 +244,6 @@
                 <!-- /.box (chat box) -->
             </div>
 
-        </div>
-
-        <div class="row">
-
-            <div class="col-md-8">
-                {#                <div class="box box-solid bg-teal-gradien">#}
-                <div class="box box-solid">
-                    <div class="box-header">
-                        <i class="fa fa-th"></i>
-
-                        <h3 class="box-title">股票走势</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i
-                                    class="fa fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i
-                                    class="fa fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div id="stock-chart" style="height:500px;"></div>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer no-border">
-                        {% comment %}
-                        <div class="row">
-
-                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" value="20" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">Mail-Orders</div>
-                            </div>
-
-                            <!-- ./col -->
-                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" value="50" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">Online</div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-xs-4 text-center">
-                                <input type="text" class="knob" data-readonly="true" value="30" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">In-Store</div>
-                            </div>
-                            <!-- ./col -->
-                        </div>
-                        {% endcomment %}
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.box-footer -->
-                </div>
-            </div>
-
-            <div class="col-md-4"></div>
         </div>
         <div class="row">
 
