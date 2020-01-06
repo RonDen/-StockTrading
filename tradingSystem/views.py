@@ -5,13 +5,14 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest, JsonResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.serializers import serialize
 
 import tushare as ts
 import uuid
 import os
 
 from tradingSystem import models
-from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable
+from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply
 from .utils import get_top10
 from utils import getAstock
 import numpy as np
@@ -34,6 +35,7 @@ def mylogin(request):
             adm = User.objects.get(username=phone_number)
             user_num = len(UserTable.objects.all())
             stock_num = len(StockInfo.objects.all())
+            request.session['adm'] = serialize('json', [adm])
             request.session['user_name'] = phone_number
             request.session['username'] = adm.username
             request.session['online'] = True
@@ -45,6 +47,7 @@ def mylogin(request):
             try:
                 user = UserTable.objects.get(phone_number=phone_number)
                 if user.password == password:
+                    request.session['js_user'] = serialize('json', [user])
                     request.session['user_name'] = user.user_name
                     request.session['online'] = True
                     request.session['photo_url'] = user.photo_url
@@ -71,9 +74,14 @@ def log_out(request):
 def index(request):
     try:
         if request.session['phone_number']:
+            phone_number = request.session['phone_number']
+            user = UserTable.objects.get(phone_number=phone_number)
+            comments = StockComment.objects.filter(user_id=user)
             top10stock = get_top10()
             context = {
-                'top10stock': top10stock
+                'top10stock': top10stock,
+                'comments': comments,
+                'user': user,
             }
             return render(request, 'index.html', context)
         else:
@@ -85,8 +93,11 @@ def index(request):
 def user_profile(request):
     try:
         if request.session['phone_number']:
+            phone_number = request.session['phone_number']
+            user = UserTable.objects.get(phone_number=phone_number)
             context = {
-                'banks': banks
+                'banks': banks,
+                'user': user
             }
             return render(request, 'tradingSystem/user_profile.html', context)
         else:
@@ -245,4 +256,15 @@ def stock_comment(request):
 def buy_in_stock(request,sid):
 
     return render(request, 'buy_in.html')
+
+
+def comment_detail(request, comment_id):
+    comment = StockComment.objects.get(comment_id=comment_id)
+    replys = CommentReply.objects.filter(comment=comment)
+    context = {
+        'comment': comment,
+        'replys': replys
+    }
+    return render(request, 'comment_detail.html', context)
+
 

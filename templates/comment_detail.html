@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+查看评论详情
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <!-- Message box -->
+                <div class="box box-success">
+                    <div class="box-header">
+                        <i class="fa fa-comments-o"></i>
+
+                        <h3 class="box-title">我的评论</h3>
+
+                        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                            <div class="btn-group" data-toggle="btn-toggle">
+                                <button type="button" class="btn btn-default btn-sm active"><i
+                                        class="fa fa-square text-green"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm"><i
+                                        class="fa fa-square text-red"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-body chat" id="chat-box">
+                        <!-- chat item -->
+                        {% for comment in comments %}
+                            <div class="item">
+                            <img src="{{ user.photo_url }}" alt="用户头像" class="online">
+                            <p class="message">
+                                <a href="{% url 'tradingSystem:comment_detail' comment.id %}" class="name">
+                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ comment.comment_time }} </small>
+                                    {{ comment.title }}
+                                </a>
+                            {{ comment.content }}
+                            </p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- /.chat -->
+                    <div class="box-footer">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Type message...">
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box (chat box) -->
+            </div>
+
+        </div>
+        <div class="row">
+
+        </div>
+
+    </section>
+
+
+{% endblock %}
