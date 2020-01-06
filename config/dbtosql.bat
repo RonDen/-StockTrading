@@ -1,2 +1,2 @@
-mysqldump -utrading -ptrading --databases stocktrading > stocktrading.sql
+mysqldump -uroot -p123456 --databases stocktrading > stocktrading.sql
 

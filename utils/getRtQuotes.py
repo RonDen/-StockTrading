@@ -51,7 +51,7 @@ def getRtQuotes(t):
         resy = resy.reshape(-1)
         resx = resx.tolist()
         resy = resy.tolist()
+
         return 1,resx,resy
     else:
         return 0,resx,resy
-

@@ -572,7 +572,7 @@
                     KlineMap.setOption(option1);
                 }
                 else {
-                    alert("今天不是工作日，非开盘时间！！");
+                    alert("非开盘时间！！");
                 }
             });
         }
@@ -580,10 +580,11 @@
         function bindEdit() {
             $('#seam').click(function () {
                 fin = 1;//测试用
+
                 if (fin == 1) {
                     var timeNow = new Date().getHours();
                     alert(s_id);
-                    if (timeNow >= 9 && timeNow < 12 || timeNow >= 13 && timeNow <= 24) {//测试用
+                    if (timeNow >= 9 && timeNow < 12 || timeNow >= 13 && timeNow <=24) {//测试用24
                         $.ajax({
                             url: '/get_real_quotes',
                             type: 'GET',
@@ -621,6 +622,7 @@
                 var postData = {};
                 postData["price"] = $('#eidtModal input[name="X"]').val();
                 postData["shares"] = $('#eidtModal input[name="Y"]').val();
+                postData["s_id"] = s_id;
                 $('#eidtModal').modal('hide');
                 $.ajax({
                     url: '/buy_in_stock',
@@ -629,7 +631,12 @@
                     traditional: true,
                     dataType: 'JSON',
                     success: function (arg) {
-
+                        if(arg["flag"]==1)
+                        {
+                            $('.close').click(function(){
+                                $('.alert').alert('close');
+                            });
+                        }
                     }
                 });
             });
