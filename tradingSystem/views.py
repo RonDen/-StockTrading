@@ -1,25 +1,27 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
-from django.http import HttpRequest, JsonResponse, Http404
-from django.shortcuts import render, redirect, get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.serializers import serialize
-
-from django.http import JsonResponse
-import tushare as ts
-import uuid
-import os
-
-from tradingSystem import models
 from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpRequest, JsonResponse, Http404
+from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ObjectDoesNotExist
+from config.createUser import gen_photo_url, banks
+from django.core.serializers import serialize
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.http import JsonResponse
+from datetime import date, datetime
+from django.shortcuts import render
+from utils import getHistoryData
 from .utils import get_top10
 from utils import getAstock
-import numpy as np
-from utils import getHistoryData
-from config.createUser import gen_photo_url, banks
 from utils import getRtQuotes
+from tradingSystem import models
+import pymysql
+import tushare as ts
+import numpy as np
+import time
+import uuid
+import os
 
 
 def goto_login(request):
@@ -73,6 +75,9 @@ def mylogin(request):
 def log_out(request):
     request.session.flush()
     return redirect('tradingSystem:goto_login')
+
+
+# 19959008351 48494877
 
 
 def index(request):
@@ -151,6 +156,8 @@ def deal_user_change(request):
 
 def stock_info(request, stock_id):
     print("aasdasdasd")
+    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", database="stocktrading")
+    cursor = conn.cursor()
     # print(ts.get_hist_data('600848'))
 
     # 获取当天交易数据
@@ -159,6 +166,7 @@ def stock_info(request, stock_id):
     tick_datay = ""
     print(stock_id)
     f, tick_datax, tick_datay = getRtQuotes.getRtQuotes(stock_id)
+    print(tick_datay)
     # 获取当天交易数据
     print("seekroung")
 
@@ -176,18 +184,37 @@ def stock_info(request, stock_id):
     # tick_datay = tick_datay.tolist()
 
     choosenStock = models.StockInfo.objects.filter(stock_id=stock_id)
-    print(choosenStock)
-    print(choosenStock[0].stock_name)
-    print(choosenStock[0].block)
+    # print(choosenStock)
+    # print(choosenStock[0].stock_name)
+    # print(choosenStock[0].block)
     hisData = []
     hold_vol = ""
 
     if (choosenStock[0].stock_type == "上证"):
+        sql = "SELECT * FROM `%s`"
+
+        seaname = stock_id + "_"+"SH"
+        # print(seaname)
+        cursor.execute(sql,[seaname])
+        hisData = cursor.fetchall()
+        hisData = np.array(hisData)
+        hisData = hisData.tolist()
         hold_vol = getAstock.getAstock(stock_id + ".SH")
-        hisData = getHistoryData.getHistoryData(stock_id + ".SH")
+        # hisData = getHistoryData.getHistoryData(stock_id + ".SH")
     else:
+        sql = "SELECT * FROM `%s`"
+        seaname = stock_id + "_"+"SZ"
+        # print(seaname)
+        cursor.execute(sql,[seaname])
+        hisData = cursor.fetchall()
+        hisData = np.array(hisData)
+        hisData = hisData.tolist()
+        # print(hisData)
+
         hold_vol = getAstock.getAstock(stock_id + ".SZ")
-        hisData = getHistoryData.getHistoryData(stock_id + ".SZ")
+    cursor.close()
+    conn.close()
+        # hisData = getHistoryData.getHistoryData(stock_id + ".SZ")
     # hold_vol = lhold_vol)
     # print(":asdad")
     # print(hisData)
@@ -284,14 +311,51 @@ def stock_comment(request):
 
 
 def buy_in_stock(request):
+    print("ss")
     if request.is_ajax():
         if request.method == 'GET':
             price = float(request.GET.get("price"))
-            shares = float(request.GET.get("shares"))
+            shares = int(request.GET.get("shares"))
+            s_id = request.GET.get("s_id")
+            fare = price * shares
+            print(price)
+            print(shares)
+            print(fare)
+            print(request.session['phone_number'])
+            buyer = models.UserTable.objects.filter(phone_number=request.session['phone_number'])
+            print("asdasdads",buyer[0].phone_number,request.session['phone_number'])
+            stock_in = models.StockInfo.objects.filter(stock_id=s_id)
+            money = 0
+            if (buyer[0].account_balance >= fare and buyer[0].freeze == False and buyer[0].account_opened == True):
+                money = 1
+                models.UserTable.objects.filter(phone_number=request.session['phone_number']).update(
+                    account_balance=buyer[0].account_balance - fare)
+                option_stock  = models.OptionalStockTable.objects.filter(user_id=buyer[0],stock_id = stock_in[0])
+                if(len(option_stock)==0):
+                    models.OptionalStockTable.objects.create(
+                        user_id=buyer[0],
+                        stock_id=stock_in[0],
+                        num_of_shares = shares
+                    )
+                else:
+                    models.OptionalStockTable.objects.filter(user_id=buyer[0],stock_id = stock_in[0]).update(
+                        num_of_shares = option_stock[0].num_of_shares+shares
+                    )
+                models.HistoryTradeTable.objects.create(
+                    user_id=buyer[0],
+                    stock_id=stock_in[0],
+                    trade_price=price,
+                    trade_shares=shares,
+                    trade_time=time.strftime('%Y-%m-%d', time.localtime(time.time()))
+                )
+                return JsonResponse({"flag": 1,"money":money})
+            else:
+                if(buyer[0].account_balance >= fare):
+                    money = 1
+                else:
+                    money = 0
 
-            return JsonResponse({"price": res[0][0]})
-
-
+                return JsonResponse({"flag": 0,"money":money})
 
 
 def comment_detail(request, comment_id):
@@ -302,7 +366,6 @@ def comment_detail(request, comment_id):
         'replys': replys
     }
     return render(request, 'comment_detail.html', context)
-
 
 
 def get_real_quotes(request):
@@ -319,4 +382,3 @@ def get_real_quotes(request):
             print(res[0][0])
             print(type(res[0][0]))
             return JsonResponse({"price": res[0][0]})
-

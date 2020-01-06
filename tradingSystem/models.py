@@ -23,7 +23,7 @@ class UserTable(models.Model):
     account_num = models.CharField(max_length=45)
     # 银行卡类型
     account_type = models.CharField(max_length=45)
-    # 银行卡余额
+    # 账户余额
     account_balance = models.FloatField(null=True)
     # 是否冻结
     freeze = models.BooleanField(default=False)
@@ -66,18 +66,19 @@ class StockInfo(models.Model):
 class HistoryTradeTable(models.Model):
     # 历史交易记录表
     # 交易ID，PK
-    trade_id = models.CharField(max_length=20, primary_key=True)
-    # 交易用户ID，FK
+
     user_id = models.ForeignKey(to=UserTable, on_delete=models.CASCADE)
     # 交易股票ID，FK
     stock_id = models.ForeignKey(to=StockInfo, on_delete=models.CASCADE)
     # 交易价格
     trade_price = models.FloatField()
+    #成交股数
+    trade_shares = models.IntegerField()
     # 成交时间
     trade_time = models.CharField(max_length=40)
 
     def __str__(self):
-        return '-'.join([self.trade_id, self.user_id.phone_number, self.stock_id])
+        return '-'.join([ self.user_id.phone_number, self.stock_id])
 
     class Meta:
         db_table = 'history_trade_table'
