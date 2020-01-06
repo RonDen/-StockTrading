@@ -16,5 +16,3 @@ def getHistoryData(t):
     print("asdasda")
     print(res)
     return res
-
-# getHistoryData(t)

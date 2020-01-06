@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest, JsonResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.http import JsonResponse
 import tushare as ts
 import uuid
 import os
@@ -17,6 +17,7 @@ from utils import getAstock
 import numpy as np
 from utils import getHistoryData
 from config.createUser import gen_photo_url, banks
+from utils import getRtQuotes
 
 
 def goto_login(request):
@@ -25,10 +26,12 @@ def goto_login(request):
 
 def mylogin(request):
     # 10030370820
-    # 50342411
+    # 222222
     if request.POST:
         phone_number = request.POST.get('phone_number')
         password = request.POST.get('password')
+        print(phone_number)
+        print(password)
         message = ''
         try:
             User.objects.get(username=phone_number)
@@ -49,7 +52,7 @@ def mylogin(request):
                     request.session['account_balance'] = user.account_balance
                     request.session['id_no'] = user.id_no
                     request.session['phone_number'] = user.phone_number
-                    return redirect("tradingSystem:index")
+                    return redirect('tradingSystem:index')
                 else:
                     message = "您的密码错误"
             except ObjectDoesNotExist:
@@ -90,7 +93,6 @@ def user_profile(request):
 
 
 def deal_user_change(request):
-
     message = ""
     try:
         if request.POST:
@@ -129,43 +131,70 @@ def deal_user_change(request):
     return render(request, "tradingSystem/user_profile.html", context)
 
 
-
 def admin_index(request):
     return render(request, 'adm_base.html')
 
+
 def stock_info(request, stock_id):
+    print("aasdasdasd")
     # print(ts.get_hist_data('600848'))
-    
-    choosenStock = models.StockInfo.objects.filter(stock_id = stock_id)
+
+    # 获取当天交易数据
+    f = ""
+    tick_datax = ""
+    tick_datay = ""
+    print(stock_id)
+    f, tick_datax, tick_datay = getRtQuotes.getRtQuotes(stock_id)
+    # 获取当天交易数据
+    print("seekroung")
+
+    # 伪造数据接口
+    # f = 1
+    # tick_data = ""
+    # df = ts.get_tick_data("000001", date="2020-01-03", src='tt')
+    # print(df)
+    # tick_data  = np.array(df)
+    # tick_datax = tick_data[:, [0]]
+    # tick_datay = tick_data[:, [1]]
+    # tick_datax = tick_datax.reshape(-1)
+    # tick_datay = tick_datay.reshape(-1)
+    # tick_datax = tick_datax.tolist()
+    # tick_datay = tick_datay.tolist()
+
+    choosenStock = models.StockInfo.objects.filter(stock_id=stock_id)
     print(choosenStock)
     print(choosenStock[0].stock_name)
     print(choosenStock[0].block)
     hisData = []
     hold_vol = ""
 
-    if(choosenStock[0].stock_type=="上证"):
-        hold_vol = getAstock.getAstock(stock_id+".SH")
-        hisData = getHistoryData.getHistoryData(stock_id+".SH")
+    if (choosenStock[0].stock_type == "上证"):
+        hold_vol = getAstock.getAstock(stock_id + ".SH")
+        hisData = getHistoryData.getHistoryData(stock_id + ".SH")
     else:
-        hold_vol = getAstock.getAstock(stock_id+".SZ")
-        hisData = getHistoryData.getHistoryData(stock_id+".SZ")
+        hold_vol = getAstock.getAstock(stock_id + ".SZ")
+        hisData = getHistoryData.getHistoryData(stock_id + ".SZ")
     # hold_vol = lhold_vol)
     # print(":asdad")
     # print(hisData)
 
-    context={
-        "sid":choosenStock[0].stock_id,
-        "sname":choosenStock[0].stock_name,
-        "issuance_time":choosenStock[0].issuance_time,
-        "closing_price_y":choosenStock[0].closing_price_y,
-        "open_price_t":choosenStock[0].open_price_t,
-        "stock_type":choosenStock[0].stock_type,
-        "block":choosenStock[0].block,
-        "change_extent":choosenStock[0].change_extent,
-        "hold_vold":hold_vol,
-        "hisData":hisData
+    context = {
+        "sid": choosenStock[0].stock_id,
+        "sname": choosenStock[0].stock_name,
+        "issuance_time": choosenStock[0].issuance_time,
+        "closing_price_y": choosenStock[0].closing_price_y,
+        "open_price_t": choosenStock[0].open_price_t,
+        "stock_type": choosenStock[0].stock_type,
+        "block": choosenStock[0].block,
+        "change_extent": choosenStock[0].change_extent,
+        "hold_vold": hold_vol,
+        "hisData": hisData,
+        "f": f,
+        "tick_datax": tick_datax,
+        "tick_datay": tick_datay
     }
-    return render(request, 'stock_details.html',context)
+    return render(request, 'stock_details.html', context)
+
 
 def base(request):
     return render(request, 'base.html')
@@ -240,6 +269,27 @@ def stock_comment(request):
     return render(request, 'stock_comments.html')
 
 
-def buy_in_stock(request,sid):
+def buy_in_stock(request):
+    if request.is_ajax():
+        if request.method == 'GET':
+            price = float(request.GET.get("price"))
+            shares = float(request.GET.get("shares"))
 
-    return render(request, 'buy_in.html')
+            return JsonResponse({"price": res[0][0]})
+
+
+
+def get_real_quotes(request):
+    if request.is_ajax():
+        if request.method == 'GET':
+            print("aa")
+            sym = request.GET.get("id")
+            print(sym)
+            df = ts.get_realtime_quotes(symbols=sym)
+            print(df)
+            res = np.array(df)
+            res = res[:, [2]]
+            print(res)
+            print(res[0][0])
+            print(type(res[0][0]))
+            return JsonResponse({"price": res[0][0]})
