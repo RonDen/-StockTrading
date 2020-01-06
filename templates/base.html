@@ -59,6 +59,8 @@
         <!-- Daterange picker -->
         <link rel="stylesheet"
               href="{% static 'AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
+        <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     {% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -435,7 +437,7 @@
                     </li>
 
                     <li>
-                        <a href="{% url 'tradingSystem:user_profile' %}">
+                        <a href="{% url 'tradingSystem:comment_list' %}">
                             <i class="fa fa-comment-o"></i> <span>管理我的评论</span>
                             <span class="pull-right-container">
                           <small class="label pull-right bg-blue">新</small></span>

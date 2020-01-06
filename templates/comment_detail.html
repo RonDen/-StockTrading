@@ -45,8 +45,8 @@
                             <p class="message">
                                 <a href="{% url 'tradingSystem:view_user_profile' reply.user_id.phone_number %}" class="name">
                                     {{ reply.user_id.user_name }}</a>
-                                to<a href="{% url 'tradingSystem:view_user_profile' reply.comment.user_id.phone_number %}" class="name">
-                                    {{ reply.comment.user_id.user_name }}
+                                回复<a href="{% url 'tradingSystem:view_user_profile' reply.comment.user_id.phone_number %}" class="name">
+                                    {{ reply.comment.user_id.user_name }}：
                                 </a><small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ reply.reply_time }} </small>
                             {{ reply.content }}
                             </p>

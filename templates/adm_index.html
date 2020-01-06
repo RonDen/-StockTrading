@@ -11,6 +11,73 @@
 
     <section class="content">
 
+        <!-- Small boxes (Stat box) -->
+      <div class="row">
+          <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3>{{ user_num }}</h3>
+
+              <p>注册用户数</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a href="{% url 'tradingSystem:adm_user' %}" class="small-box-footer">更多 <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>{{ stock_num }}</h3>
+
+              <p>站内股票数</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="{% url 'tradingSystem:adm_stock' %}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <!-- <h3><sup style="font-size: 20px">%</sup></h3> -->
+              <h3>{{ comment_num }}</h3>
+
+              <p>用户评论数</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-newspaper-o"></i>
+            </div>
+            <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>{{ trading_num }}</h3>
+
+              <p>交易记录数</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+
         <div class="row">
             <div class="col-md-8">
                 <div class="box box-info">
@@ -73,18 +140,22 @@
                         <div class="table-responsive">
                             <table class="table no-margin">
                                 <thead>
-                                <tr>
-                                    <th>标题</th>
-                                    <th>热度</th>
-                                </tr>
                                 </thead>
                                 <tbody>
-
+                                {% for news in news_list %}
+                                    <tr>
+                                        <td><a href="{% url 'tradingSystem:news_detail' news.id %}">{{ news.title }}</a></td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
+                    <div class="box-footer clearfix">
+                        <a href="#"
+                           class="btn btn-sm btn-info btn-flat pull-right"><i class="fa fa-refresh fa-spin"></i>
+                            换一波瞅瞅</a>
+                    </div>
                 </div>
                 <!-- /.box (chat box) -->
             </div>

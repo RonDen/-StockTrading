@@ -11,3 +11,5 @@ wheel
 lxml
 tushare
 chinesecalendar
+my-fake-useragent
+
