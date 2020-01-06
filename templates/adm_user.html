@@ -1,0 +1,166 @@
+{% extends "adm_base.html" %}
+{% load static %}
+{% load staticfiles %}
+
+{% block title %}
+    管理用户信息
+{% endblock %}
+
+{% block content %}
+
+    <section class="content-header">
+        <h1>全部用户信息管理
+            <small>管理员</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'tradingSystem:adm_index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">管理员</li>
+            <li class="active">用户信息管理</li>
+        </ol>
+    </section>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">用户信息列表</h3>
+            <div class="box-header ">
+                {% comment %}
+
+                <label for="college" style="color: red">学院：</label><select id="college" class="select2"
+                                                                           style="width: 20%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_college %}
+                    <option value="{{ item }}">{{ item }}
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label style="color: red">专业：</label><select id="major" class="select2" style="width: 15%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_major %}
+                    <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>入学年份：</label><select id="year" class="select2" style="width: 15%">
+                <option value="ALL" selected="selected">全部</option>
+                {% for item in all_in_year %}
+                    <option value="{{ item.in_year }}">{{ item.in_year }}</option>
+                {% endfor %}
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {% endcomment %}
+            </div>
+
+            <div class="box-body">
+                <table id="user_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>邮箱</th>
+                        <th>手机号码</th>
+                        <th>账户类型</th>
+                        <th>身份证号</th>
+                        <th>账户余额</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for user in all_user %}
+                        <tr>
+                            <td>{{ user.user_id }}</td>
+                            <td>{{ user.user_name }}</td>
+                            <td>{{ user.user_sex }}</td>
+                            <td>{{ user.user_email }}</td>
+                            <td>{{ user.phone_number }}</td>
+                            <td>{{ user.account_type }}</td>
+                            <td>{{ user.id_no }}</td>
+                            <td>{{ user.account_balance }}</td>
+                            <td style="vertical-align: middle">
+                                <a href="{% url 'tradingSystem:adm_view_user' user.phone_number %}">详情</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        {% comment %}
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var college = $('#college').val();
+                var major = $('#major').val();
+                var year = $('#year').val();
+                return ((college === data[1] || college === "ALL") && (((major === data[2] || major === "ALL") && (year === data[3] || year === "ALL"))));
+            }
+        );
+        {% endcomment %}
+
+        $(document).ready(function () {
+            var table = $('#user_table').DataTable(
+                {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy',
+                        {
+                            extend: 'excel',
+                            filename: "用户信息表",
+                        },
+                        {
+                            extend: 'print',
+                            filename: "用户信息表",
+                        }
+                    ],
+                    "paging": true,       <!-- 允许分页 -->
+                    "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                    "searching": true,    <!-- 允许内容搜索 -->
+                    "ordering": true,     <!-- 允许排序 -->
+                    "info": true,         <!-- 显示信息 -->
+                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "表中数据为空",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+                    "columnDefs": [{
+                        "searchable": false,
+                        "orderable": true,
+                        "targets": 0
+                    }],
+                    "order": [[0, 'asc']]
+                }
+            );
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#major, #year, #college').change(function () {
+                table.draw();
+            });
+            $('.select2').select2();
+        });
+
+
+    </script>
+{% endblock %}
+
+

@@ -1,269 +1,571 @@
-{% extends "base.html" %}
-{% block title %}欢迎登录教务管理系统{% endblock %}
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}欢迎登录股票交易管理系统{% endblock %}</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="{% static 'img/buct-logo.ico' %}"/>
+    <link rel="bookmark" href="{% static 'img/buct-logo.ico' %}"/>
+    {% block css %}
+        <!-- Bootstrap 3.3.6 -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.css' %}">
+        <!-- Font Awesome -->
+        <link rel="stylesheet"
+              href="{% static 'AdminLTE/plugins/font-awesome.min.css' %}">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/ionicons.min.css' %}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/AdminLTE.min.css' %}">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+             folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/dist/css/skins/_all-skins.min.css' %}">
+        <!-- iCheck -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/iCheck/flat/blue.css' %}">
+        <!-- Morris chart -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/morris/morris.css' %}">
+        <!-- jvectormap -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/jvectormap/jquery-jvectormap-1.2.2.css' %}">
+        <!-- Date Picker -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datepicker/datepicker3.css' %}">
+        <!-- Daterange picker -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/daterangepicker/daterangepicker.css' %}">
+        <!-- bootstrap wysihtml5 - text editor -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css' %}">
+        <!-- datatable - table tools -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.css' %}">
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/datatables/jquery.dataTables_themeroller.css' %}">
+        <!-- Select2 下拉框工具 -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/select2/select2.min.css' %}">
+        <!-- DataTable Buttons 导出数据工具 -->
+        <link rel="stylesheet"
+              href="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.dataTables.min.css' %}">
 
-{% block custom_nav %}
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">基本信息管理<span
-                class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="{% url 'backstage:adm_view_all_stu' %}">学生信息管理</a></li>
-            <li><a href="{% url 'backstage:adm_view_all_teacher' %}">教师信息管理</a></li>
-            <li class="divider"></li>
-            <li><a href="{% url 'backstage:adm_view_all_course' %}">课程信息管理</a></li>
-            <li><a href="{% url 'backstage:adm_view_all_class_room' %}">教室信息管理</a></li>
-            <li><a href="#">临时教学活动安排</a></li>
-            <li class="divider"></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}">专业培养计划管理</a></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}">专业课程计划管理</a></li>
-        </ul>
-    </li>
+        <link rel="stylesheet" href="{% static 'AdminLTE/plugins/morris/morris.css' %}">
 
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">排课-临时教学<span
-                class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="{% url 'courseScheduling:schedule' %}">手动排课</a></li>
-            <li><a href="{% url 'courseScheduling:occupy_room' %}">临时教学活动安排</a></li>
-            <li><a href="{% url 'courseScheduling:last_html' %}">自动排课</a></li>
-        </ul>
-    </li>
+        <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/morris.js/morris.css' %}">
 
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">课业管理<span
-                class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            <li class="divider"></li>
-            <li><a href=" {% url 'courseSelection:adm_selection_manage' %}">设置选课时间</a></li>
-            <li><a href=" {% url 'courseSelection:adm_school' %}">查询全校选课情况</a></li>
-            <li><a href="{% url 'graduationManagement:admin_submit_project' %}">查看毕设选题情况</a></li>
-        </ul>
-    </li>
-    <li><a href="{% url 'scoreManagement:adm_view_teacher_evaluation' %}">查看教学评价</a></li>
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">成绩管理<span
-                class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="{% url 'scoreManagement:adm_all_course_score' %}">成绩信息管理</a></li>
-        </ul>
-    </li>
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">通知邮件管理<span
-                class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="{% url 'backstage:send_announcements' %}">发送通知</a></li>
-            <li><a href="{% url 'backstage:admin_view' %}">查看通知</a></li>
-            <li class="divider"></li>
-            <li><a href="{% url 'backstage:send_emails' %}">发送邮件</a></li>
-            <li><a href="#">查看邮件</a></li>
-        </ul>
-    </li>
+        <!-- jvectormap -->
+        <link rel="stylesheet" href="{% static 'AdminLTE/bower_components/jvectormap/jquery-jvectormap.css' %}">
 
-{% endblock %}
+        <!-- Date Picker -->
+        <link rel="stylesheet"
+              href="{% static 'AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
 
+        <!-- Daterange picker -->
+        <link rel="stylesheet"
+              href="{% static 'AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
+    {% endblock %}
 
-{% block left_side_block %}
-    <!-- 不同用户自定义的左侧的侧边栏 -->
-    <li class="treeview">
-        <a href="{% url 'scoreManagement:score_home_page' %}">
-            <i class="fa fa-dashboard"></i> <span>基本信息管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+  <script src="{% static 'AdminLTE/plugins/html5shiv.min.js' %}"></script>
+  <script src="{% static 'AdminLTE/plugins/respond.min.js' %}"></script>
+  <![endif]-->
+
+</head>
+
+<body class="hold-transition skin-yellow-light sidebar-mini">
+
+<div class="wrapper">
+    <header class="main-header">
+        <a href="{% url 'tradingSystem:adm_index' %}" class="logo">
+            <span class="logo-lg"><b>股票交易管理系统</b></span>
         </a>
-        <ul class="treeview-menu">
-            <li><a href="{% url 'backstage:adm_view_all_stu' %}"><i class="fa fa-circle-o"></i>学生信息管理</a></li>
-            <li><a href="{% url 'backstage:adm_view_all_teacher' %}"><i class="fa fa-circle-o"></i>教师信息管理</a></li>
-            <li><a href="{% url 'backstage:adm_view_all_course' %}"><i class="fa fa-circle-o"></i>课程信息管理</a></li>
-            <li><a href="{% url 'backstage:adm_view_all_class_room' %}"><i class="fa fa-circle-o"></i>教室信息管理</a></li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_plan' %}"><i class="fa fa-circle-o"></i>专业培养计划管理</a>
-            </li>
-            <li><a href="{% url 'scoreManagement:adm_view_major_course' %}"><i class="fa fa-circle-o"></i>专业课程计划管理</a>
-            </li>
-        </ul>
-    </li>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <li class="dropdown messages-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-envelope-o"></i>
+                                <span class="label label-success">4</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">你有4消息</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li><!-- start message -->
+                                            <a href="{% url 'tradingSystem:user_profile' %}">
+                                                <div class="pull-left">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
+                                                </div>
+                                                <h4>
+                                                    Support Team
+                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                        <!-- end message -->
+                                        <li>
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
+                                                </div>
+                                                <h4>
+                                                    AdminLTE Design Team
+                                                    <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
+                                                </div>
+                                                <h4>
+                                                    Developers
+                                                    <small><i class="fa fa-clock-o"></i> Today</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
+                                                </div>
+                                                <h4>
+                                                    Sales Department
+                                                    <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="pull-left">
+                                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                                         alt="用户头像">
+                                                </div>
+                                                <h4>
+                                                    Reviewers
+                                                    <small><i class="fa fa-clock-o"></i> 2 days</small>
+                                                </h4>
+                                                <p>Why not buy a new awesome theme?</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="#">See All Messages</a></li>
+                            </ul>
+                        </li>
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="label label-warning">10</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">你有10个通知</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-warning text-yellow"></i> Very long description here
+                                                that may not fit into the
+                                                page and may cause design problems
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-users text-red"></i> 5 new members joined
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-user text-red"></i> You changed your username
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="#">View all</a></li>
+                            </ul>
+                        </li>
+                        <!-- Tasks: style can be found in dropdown.less -->
+                        <li class="dropdown tasks-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-flag-o"></i>
+                                <span class="label label-danger">9</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">你有9项工作</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <h3>
+                                                    Design some buttons
+                                                    <small class="pull-right">20%</small>
+                                                </h3>
+                                                <div class="progress xs">
+                                                    <div class="progress-bar progress-bar-aqua" style="width: 20%"
+                                                         role="progressbar"
+                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">20% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <!-- end task item -->
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <h3>
+                                                    Create a nice theme
+                                                    <small class="pull-right">40%</small>
+                                                </h3>
+                                                <div class="progress xs">
+                                                    <div class="progress-bar progress-bar-green" style="width: 40%"
+                                                         role="progressbar"
+                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">40% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <!-- end task item -->
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <h3>
+                                                    Some task I need to do
+                                                    <small class="pull-right">60%</small>
+                                                </h3>
+                                                <div class="progress xs">
+                                                    <div class="progress-bar progress-bar-red" style="width: 60%"
+                                                         role="progressbar"
+                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">60% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <!-- end task item -->
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <h3>
+                                                    Make beautiful transitions
+                                                    <small class="pull-right">80%</small>
+                                                </h3>
+                                                <div class="progress xs">
+                                                    <div class="progress-bar progress-bar-yellow" style="width: 80%"
+                                                         role="progressbar"
+                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">80% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <!-- end task item -->
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a href="#">View all tasks</a>
+                                </li>
+                            </ul>
+                        </li>
 
-    <li class="treeview">
-        <a href="{% url 'courseScheduling:schedule' %}">
-            <i class="fa fa-folder"></i> <span>排课-临时教学</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li><a href="{% url 'courseScheduling:schedule' %}"><i class="fa fa-circle-o"></i>手工排课</a></li>
-            <li><a href="{% url 'courseScheduling:occupy_room' %}"><i class="fa fa-circle-o"></i>临时教学活动安排</a></li>
-            <li><a href="{% url 'courseScheduling:last_html' %}"><i class="fa fa-circle-o"></i>自动排课</a></li>
-        </ul>
-    </li>
-    <li class="treeview">
-        <a href="#">
-            <i class="fa fa-table"></i> <span>成绩管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li><a href="{% url 'scoreManagement:adm_all_course_score' %}"><i class="fa fa-circle-o"></i>成绩信息管理</a></li>
-        </ul>
-    </li>
 
-    <li class="treeview">
-        <a href="#">
-            <i class="fa fa-folder"></i> <span>课业管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li><a href="{% url 'courseSelection:adm_selection_manage' %}"><i class="fa fa-circle-o"></i>设置选课时间</a></li>
-            <li><a href=" {% url 'courseSelection:adm_school' %}"><i class="fa fa-circle-o"></i>查询全校选课情况</a></li>
-            <li><a href="{% url 'graduationManagement:admin_submit_project' %}"><i class="fa fa-circle-o"></i>查看毕设选题情况</a></li>
-        </ul>
-    </li>
-    <li class="treeview">
-        <a href="{% url 'scoreManagement:adm_view_teacher_evaluation' %}">
-            <i class="fa fa-share"></i> <span>教学评价</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-    </span>
-        </a>
-    </li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{{ request.session.photo_url }}" class="user-image" alt="管理员头像">
+                                <span class="hidden-xs">{{ request.session.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="{{ request.session.photo_url }}" class="img-circle"
+                                         alt="管理员头像">
+                                    <p>
+                                        {{ request.session.user_name }}
+                                        <small>{{ request.session.user_id }}</small>
+                                    </p>
+                                </li>
 
-    <li class="treeview">
-        <a href="#">
-            <i class="fa fa-mail-reply-all"></i> <span>通知邮件管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li><a href="{% url 'backstage:send_announcements' %}"><i class="fa fa-circle-o"></i>发送通知</a></li>
-            <li><a href="{% url 'backstage:check_announcements' %}"><i class="fa fa-circle-o"></i>查看通知</a></li>
-            <li><a href="{% url 'backstage:send_emails' %}"><i class="fa fa-circle-o"></i>发送邮件</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>查看邮件</a></li>
-        </ul>
-    </li>
-
-{% endblock %}
-
-{% block content %}
-
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            通知
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">通知</li>
-        </ol>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-        <div class="row">
-            {% block main %}
-                <div class="col-md-3">
-                    <a href="#" class="btn btn-primary btn-block margin-bottom">控制板</a>
-
-                    <!-- /. box -->
-                    <div class="box box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">分类查找</h3>
-
-                            <div class="box-tools">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="box-body no-padding">
-                            <form role="form" method="post" action="{% url 'backstage:admin_view' %}">
-                                {% csrf_token %}
-                                <ul class="nav nav-pills nav-stacked">
-
-                                    <li><a href="#"><i class="fa fa-circle-o text-red"></i>{{ adm_operator.receiver }}
-                                    </a>
-                                    </li>
-                                    <li><a href="#"><i
-                                            class="fa fa-circle-o text-light-blue"></i> {{ adm_operator.year }}
-                                    </a></li>
-                                    <div class="box-footer clearfix">
-                                        <button type="submit" class="pull-right btn btn-default" name="search">查找
-                                            <i class="fa fa-arrow-circle-right"></i></button>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="{% url 'tradingSystem:user_profile' %}"
+                                           class="btn btn-default btn-flat">信息设置</a>
                                     </div>
-
-                                </ul>
-                            </form>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-md-9">
-                    {% block details %}
-                        <div class="box box-primary">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">通知集合</h3>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body no-padding">
-                                <div class="mailbox-controls">
-                                    <!-- /.btn-group -->
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>
-                                    </button>
-                                </div>
-                                <div class="table-responsive mailbox-messages">
-
-                                    <table class="table table-hover table-striped">
-                                        <tr>
-                                            <td style="vertical-align: middle">编号</td>
-                                            <td class="mailbox-name">通知主题</td>
-                                            <td class="mailbox-messages">签发</td>
-                                            <td class="mailbox-messages">对象</td>
-                                            <td class="mailbox-messages">年级</td>
-                                            <td class="mailbox-date">时间</td>
-                                            <td class="mailbox-messages">查看</td>
-                                        </tr>
-                                        <tbody>
-                                        {% for announcement in announcements %}
-                                            <tr>
-                                                <td style="vertical-align: middle">{{ forloop.counter }}</td>
-                                                <td class="mailbox-name">
-                                                    {{ announcement.title }}
-                                                </td>
-                                                <td class="mailbox-messages">{{ announcement.author }}</td>
-                                                <td class="mailbox-messages">{{ announcement.receiver }}</td>
-                                                <td class="mailbox-messages">{{ announcement.year }}</td>
-                                                <td class="mailbox-date">{{ announcement.time }}</td>
-                                                <td>
-                                                    <form action="{% url 'backstage:admin_view' %}" method="post"
-                                                          id="form1">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn btn-instagram" name="details"
-                                                                value={{ announcement.id }}>查看
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                    <!-- /.table -->
-                                </div>
-                                <!-- /.mail-box-messages -->
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <!-- /. box -->
+                                    <div class="pull-right">
+                                        <a href="{% url 'tradingSystem:log_out' %}" class="btn btn-default btn-flat">登出系统</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="{% url 'tradingSystem:log_out' %}"><i class="fa fa-sign-out"></i></a>
+                        </li>
+                    </ul>
+                    {% block custom_nav %}
+                        <!-- 不同用户自定义的顶部的导航栏 -->
                     {% endblock %}
+                </ul>
+            </div>
+
+            {% comment %}
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- 用户信息: style can be found in dropdown.less -->
+
+                    {% if request.user.is_authenticated %}
+
+                        <li class="dropdown tasks-menu">
+                            <a href="{% url 'tradingSystem:mylogout' %}">
+                                <i class="fa fa-coffee" href="#"></i>
+                                <span>logout</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header" href="{% url 'tradingSystem:mylogout' %}">登出</li>
+                            </ul>
+                        </li>
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle pull-right image" data-toggle="dropdown">
+                                <img src="{% static 'img/head.jpg' %}" style="width: 25px;height:25px;"
+                                     class="user-image" alt="用户头像">
+                                <span class="hidden-xs">您好！{{ request.session.name }}</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="dropdown user user-menu">
+                            <a href="{% url 'tradingSystem:goto_login' %}" class="dropdown-toggle pull-right image">
+                                <span class="hidden-xs">您尚未登录，请登录！</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endcomment %}
+
+        </nav>
+    </header>
+
+
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                {% if request.session %}
+                    <div class="pull-left image" href="{% url 'tradingSystem:user_profile' %}">
+                        {% block user_head_img %}
+                            <img src="{{ request.session.photo_url }}" style="width: 50px;height: 50px;"
+                                 class="img-circle" alt="用户头像" href="{% url 'tradingSystem:user_profile' %}">
+                        {% endblock %}
+                    </div>
+                    <div class="pull-left info">
+                        <p>{{ request.user.username }}</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                {% else %}
+                    <div>您尚未注册，点我<a style="color:yellowgreen" href="{% url 'tradingSystem:register' %}">注册</a></div>
+                {% endif %}
+            </div>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
                 </div>
-                <!-- /.col -->
-            {% endblock %}
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                {% if request.session %}
+                    <li class="header">导航栏</li>
+                    <li class="active">
+                        <a href="{% url 'tradingSystem:adm_index' %}">
+                            <i class="fa fa-dashboard"></i> <span>首页</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-refresh fa-spin pull-right"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'tradingSystem:adm_user' %}">
+                            <i class="fa fa-th"></i> <span>用户信息管理</span>
+                            <span class="pull-right-container">
+                          <small class="label pull-right bg-green">{{ request.session.user_num }}</small></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'tradingSystem:adm_stock' %}">
+                            <i class="fa fa-thumbs-up"></i> <span>管理股票列表</span>
+                            <span class="pull-right-container">
+                          <small class="label pull-right bg-red">{{ request.session.stock_num }}</small></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'tradingSystem:adm_trading' %}">
+                            <i class="fa fa-thumbs-up"></i> <span>管理交易记录</span>
+                            <span class="pull-right-container">
+                          <small class="label pull-right bg-red">火爆</small></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'tradingSystem:adm_news' %}">
+                            <i class="fa fa-comment-o"></i> <span>新闻管理</span>
+                            <span class="pull-right-container">
+                          <small class="label pull-right bg-blue">新</small></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'tradingSystem:adm_comment' %}">
+                            <i class="fa fa-comment-o"></i> <span>评论管理</span>
+                            <span class="pull-right-container">
+                          <small class="label pull-right bg-blue">潮</small></span>
+                        </a>
+                    </li>
+
+                {% endif %}
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0.0
         </div>
-        <!-- /.row -->
-    </section>
-    <!-- /.content -->
+        <strong>Copyright &copy; 2019-<a href="https://www.buct.edu.cn" target="_blank">Beijing University of Chemical
+            Technology</a>.</strong> All rights
+        reserved.
+    </footer>
+</div>
+
+<!-- ./wrapper -->
+<!-- 这些是默认加载的js脚本 -->
+<!-- jQuery 2.2.3 -->
+<script src="{% static 'AdminLTE/plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'AdminLTE/plugins/jQueryUI/jquery-ui.min.js' %}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.6 -->
+<script src="{% static 'AdminLTE/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- DataTables -->
+<script src="{% static 'AdminLTE/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/echarts.js' %}"></script>
+<!-- SlimScroll -->
+<script src="{% static 'AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'AdminLTE/plugins/fastclick/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'AdminLTE/dist/js/app.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'AdminLTE/dist/js/demo.js' %}"></script>
+<!-- Select2-->
+<script src="{% static 'AdminLTE/plugins/select2/select2.full.min.js' %}"></script>
+<!-- page script -->
+<!-- CK Editor -->
+{% comment %}
+<script src="{% static 'ckeditor.js' %}"></script>
+{% endcomment %}
+<!-- Bootstrap WYSIHTML5 -->
+<script src="{% static 'AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/iCheck/icheck.min.js' %}"></script>
+
+<!-- Datatable Export Data Buttons -->
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/jszip.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/pdfmake.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/vfs_fonts.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.flash.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.html5.min.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/datatables/extensions/Buttons/buttons.print.min.js' %}"></script>
+
+<script src="{% static 'AdminLTE/plugins/knob/jquery.knob.js' %}"></script>
+<script src="{% static 'AdminLTE/plugins/morris/morris.js' %}"></script>
+
+<script src="{% static 'AdminLTE/bower_components/morris.js/morris.min.js' %}"></script>
+<!-- Sparkline -->
+<script src="{% static 'AdminLTE/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js' %}"></script>
+<!-- jvectormap -->
+<script src="{% static 'AdminLTE/bower_components/jvectormap/jquery-jvectormap.js' %}"></script>
+
+<!-- jQuery Knob Chart -->
+<script src="{% static 'AdminLTE/bower_components/jquery-knob/dist/jquery.knob.min.js' %}"></script>
+
+<script src="{% static 'AdminLTE/bower_components/moment/min/moment.min.js' %}"></script>
+<!-- daterangepicker -->
+<script src="{% static 'AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+<!-- datepicker -->
+<script src="{% static 'AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+
+<!-- Slimscroll -->
+<script src="{% static 'AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<!-- FastClick -->
+<script src="{% static 'AdminLTE/bower_components/fastclick/lib/fastclick.js' %}"></script>
+
+<!-- Echart -->
+<script src="{% static 'AdminLTE/plugins/echarts.js' %}"></script>
+
+
+<script>
+    {% comment %}
+    $(function () {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        CKEDITOR.replace('editor1', { height: '380px', width: '100%' });
+        //bootstrap WYSIHTML5 - text editor
+        $(".textarea").wysihtml5();
+    });
+    {% endcomment %}
+</script>
+{% block script %}
 
 {% endblock %}
+
+</body>
+</html>

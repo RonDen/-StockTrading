@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf.urls import include
 from . import views
+from . import admin_view
 
 app_name = 'tradingSystem'
 
@@ -20,6 +21,18 @@ urlpatterns = [
     path('do_register', views.do_register, name='do_register'),
     path('deal_user_change', views.deal_user_change, name='deal_user_change'),
     path('get_real_quotes',views.get_real_quotes,name = 'get_real_quotes')
+
+    # 管理员视图与URL
+    path('a', admin_view.adm_index, name='adm_index'),
+    path('a/base', admin_view.adm_base, name='adm_base'),
+    path('a/user', admin_view.adm_user, name='adm_user'),
+    path('a/stock', admin_view.adm_stock, name='adm_stock'),
+    path('a/trading', admin_view.adm_trading, name='adm_trading'),
+    path('a/news', admin_view.adm_news, name='adm_news'),
+    path('a/comments', admin_view.adm_comment, name='adm_comment'),
+    path('adm_view_user/<int:phone_number>', admin_view.user_detail, name='adm_view_user'),
+    path('adm_view_stock/<str:stock_id>', admin_view.adm_stock_info, name='adm_view_stock')
+
 ]
 
 

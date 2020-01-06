@@ -132,4 +132,5 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
 MEDIA_URL = '/img/'
 
-
+# 设置Session过期时间
+SESSION_COOKIE_AGE=60*30

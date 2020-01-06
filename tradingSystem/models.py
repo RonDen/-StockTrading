@@ -14,7 +14,7 @@ class UserTable(models.Model):
     # 用户性别
     user_sex = models.CharField(max_length=5)
     # 用户电话号码，用于注册，开户，联系，PK
-    phone_number = models.CharField(max_length=45,primary_key=True)
+    phone_number = models.CharField(max_length=45, primary_key=True)
     # 用户邮箱
     user_email = models.EmailField()
     # 用户头像路径
@@ -25,6 +25,10 @@ class UserTable(models.Model):
     account_type = models.CharField(max_length=45)
     # 银行卡余额
     account_balance = models.FloatField(null=True)
+    # 是否冻结
+    freeze = models.BooleanField(default=False)
+    # 是否成功开户
+    account_opened = models.BooleanField(default=True)
 
     def __str__(self):
         return '-'.join([self.user_name, self.phone_number])
@@ -84,6 +88,7 @@ class OptionalStockTable(models.Model):
     user_id = models.ForeignKey(to=UserTable, on_delete=models.CASCADE)
     stock_id = models.ForeignKey(to=StockInfo, on_delete=models.CASCADE)
     num_of_shares = models.IntegerField(null=True)
+
     class Meta:
         db_table = 'optional_stock_table'
         unique_together = (
@@ -91,50 +96,97 @@ class OptionalStockTable(models.Model):
         )
 
 
-class ForumTopic(models.Model):
-    # 股吧帖子表
-    # 帖子标题
-    post_title = models.CharField(max_length=45)
-    # 帖子ID
-    post_id = models.IntegerField(auto_created=True)
-    # 帖子内容，PK
-    post_text = models.CharField(max_length=100, primary_key=True)
-    # 帖子发表时间，前端JS获取时间，后端存储字符串
-    post_time = models.CharField(max_length=100)
-    # 帖子发起用户，FK
+# class ForumTopic(models.Model):
+#     # 股吧帖子表
+#     # 帖子标题
+#     post_title = models.CharField(max_length=45)
+#     # 帖子ID
+#     post_id = models.IntegerField(auto_created=True)
+#     # 帖子内容，PK
+#     post_text = models.CharField(max_length=100, primary_key=True)
+#     # 帖子发表时间，前端JS获取时间，后端存储字符串
+#     post_time = models.CharField(max_length=100)
+#     # 帖子发起用户，FK
+#     user_id = models.ForeignKey(to=UserTable, on_delete=models.CASCADE)
+#     # 帖子阅读数量
+#     post_read = models.CharField(max_length=100)
+#     # 帖子涉及股票
+#     stock_id = models.ForeignKey(to=StockInfo,on_delete=models.CASCADE)
+#     # 股票评论数
+#     stock_comment = models.IntegerField()
+#
+#     def __str__(self):
+#         return '-'.join([str(self.post_id), self.post_title])
+#
+#     class Meta:
+#         db_table = 'forum_topic'
+#
+#
+# class ForumTopicBack(models.Model):
+#     # 论坛帖子回复表
+#     reply_id = models.CharField(max_length=6, primary_key=True)
+#     # 帖子ID，FK
+#     post_id = models.ForeignKey(to=ForumTopic, on_delete=models.CASCADE)
+#     # 用户名，发起回复的用户的姓名，在前端获得
+#     user_name = models.CharField(max_length=20)
+#     # 用户回复时间，在前端获得
+#     reply_time = models.CharField(max_length=40)
+#     # 用户回复的内容
+#     reply_Text = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return "-".join([self.reply_id, self.reply_Text])
+#
+#     class Meta:
+#         db_table = 'forum_topic_back'
+
+
+class News(models.Model):
+    # 新闻编号
+    news_id = models.IntegerField(auto_created=True, primary_key=True)
+    # 新闻标题
+    title = models.CharField(max_length=100)
+    # 新闻所在外键
+    url = models.URLField()
+    # 新闻内容
+    content = models.TextField()
+    # 新闻阅读数
+    read = models.IntegerField(null=True)
+    # 发生时间
+    news_time = models.DateField(auto_created=True, default='2020/01/03')
+
+    class Meta:
+        db_table = 'news'
+        ordering = ['news_time']
+
+
+class StockComment(models.Model):
+    # 评论ID，PK
+    comment_id = models.IntegerField(verbose_name="评论ID", auto_created=True, primary_key=True)
+    # 股票标题
+    title = models.CharField(max_length=50)
+    # 股票内容
+    content = models.TextField("股票内容")
+    # 发表时间
+    comment_time = models.DateTimeField(auto_created=True)
+    # 发起用户
     user_id = models.ForeignKey(to=UserTable, on_delete=models.CASCADE)
-    # 帖子阅读数量
-    post_read = models.CharField(max_length=100)
-    # 帖子涉及股票
-    stock_id = models.ForeignKey(to=StockInfo,on_delete=models.CASCADE)
-    # 股票评论数
-    stock_comment = models.IntegerField()
-
-    def __str__(self):
-        return '-'.join([str(self.post_id), self.post_title])
+    # 关联股票
+    stock_id = models.ForeignKey(to=StockInfo, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'forum_topic'
+        db_table = 'stock_comment'
+        ordering = ['comment_time']
 
 
-class ForumTopicBack(models.Model):
-    # 论坛帖子回复表
-    reply_id = models.CharField(max_length=6, primary_key=True)
-    # 帖子ID，FK
-    post_id = models.ForeignKey(to=ForumTopic, on_delete=models.CASCADE)
-    # 用户名，发起回复的用户的姓名，在前端获得
-    user_name = models.CharField(max_length=20)
-    # 用户回复时间，在前端获得
-    reply_time = models.CharField(max_length=40)
-    # 用户回复的内容
-    reply_Text = models.CharField(max_length=100)
-
-    def __str__(self):
-        return "-".join([self.reply_id, self.reply_Text])
+class CommentReply(models.Model):
+    # 发起用户
+    user_id = models.ForeignKey(to=UserTable, on_delete=models.CASCADE)
+    # 所回复的股票
+    comment = models.ForeignKey(to=StockComment, on_delete=models.CASCADE)
+    reply = models.ForeignKey(to='self', on_delete=models.CASCADE)
+    reply_time = models.DateTimeField(auto_created=True)
 
     class Meta:
-        db_table = 'forum_topic_back'
-
-
-
-
+        db_table = 'comment_reply'
+        ordering = ['reply_time']

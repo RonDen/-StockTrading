@@ -11,7 +11,7 @@ import uuid
 import os
 
 from tradingSystem import models
-from .models import UserTable, StockInfo, OptionalStockTable, ForumTopic, ForumTopicBack, HistoryTradeTable
+from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable
 from .utils import get_top10
 from utils import getAstock
 import numpy as np
@@ -34,10 +34,16 @@ def mylogin(request):
         print(password)
         message = ''
         try:
-            User.objects.get(username=phone_number)
-            request.session['username'] = phone_number
+            adm = User.objects.get(username=phone_number)
+            user_num = len(UserTable.objects.all())
+            stock_num = len(StockInfo.objects.all())
+            request.session['user_name'] = phone_number
+            request.session['username'] = adm.username
             request.session['online'] = True
-            return redirect('tradingSystem:admin_index')
+            request.session['user_num'] = user_num
+            request.session['stock_num'] = stock_num
+            request.session['photo_url'] = '../static/img/head.jpg'
+            return redirect('tradingSystem:adm_index')
         except ObjectDoesNotExist:
             try:
                 user = UserTable.objects.get(phone_number=phone_number)
@@ -129,10 +135,6 @@ def deal_user_change(request):
         'banks': banks
     }
     return render(request, "tradingSystem/user_profile.html", context)
-
-
-def admin_index(request):
-    return render(request, 'adm_base.html')
 
 
 def stock_info(request, stock_id):

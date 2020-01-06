@@ -27,8 +27,3 @@ def change_value():
             print(Exception)
 
 
-
-
-
-
-
