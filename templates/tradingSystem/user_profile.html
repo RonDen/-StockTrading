@@ -19,9 +19,9 @@
                 <!-- Profile Image -->
                 <div class="box box-primary">
                     <div class="box-body box-profile">
-                        {% if request.session.photo_url %}
+                        {% if user.photo_url %}
                             <img class="profile-user-img img-responsive img-circle"
-                                 src="{{ request.session.photo_url }}" alt="用户头像">
+                                 src="{{ user.photo_url }}" alt="用户头像">
                         {% else %}
                             <img class="profile-user-img img-responsive img-circle" src="{% static 'img/head.jpg' %}"
                                  alt="User profile picture">

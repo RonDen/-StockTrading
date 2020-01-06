@@ -10,3 +10,4 @@ xlwt
 wheel
 lxml
 tushare
+

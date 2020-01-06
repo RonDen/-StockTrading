@@ -31,8 +31,10 @@ urlpatterns = [
     path('a/news', admin_view.adm_news, name='adm_news'),
     path('a/comments', admin_view.adm_comment, name='adm_comment'),
     path('adm_view_user/<int:phone_number>', admin_view.user_detail, name='adm_view_user'),
-    path('adm_view_stock/<str:stock_id>', admin_view.adm_stock_info, name='adm_view_stock')
+    path('adm_view_stock/<str:stock_id>', admin_view.adm_stock_info, name='adm_view_stock'),
 
+    # 查看评论
+    path('comment_detail/<int:comment_id>', views.comment_detail, name='comment_detail'),
 ]
 #
 #
