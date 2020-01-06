@@ -26,6 +26,7 @@ while cnt < 100:
 
 phone_number = '10071539640'
 user = UserTable.objects.get(phone_number=10071539640)
+
 comment = StockComment.objects.create(
     title='你好',
     content='今天天气真好',
@@ -46,11 +47,14 @@ for user in UserTable.objects.all():
 
 
 for comment in StockComment.objects.all():
-    usr = choice(users)
+    tao_ha = ['您说的真对', '您说的对', '您说的也对']
+    for ha in tao_ha:
+        reply = CommentReply.objects.create(
+            user_id=choice(users),
+            comment=comment,
+            content=ha
+        )
+        reply.save()
 
-    reply = CommentReply.objects.create(
-        user_id=usr,
-        comment=comment,
-        content='今天天气真好'
-    )
+
 

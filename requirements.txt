@@ -10,4 +10,4 @@ xlwt
 wheel
 lxml
 tushare
-
+chinesecalendar

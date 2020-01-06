@@ -111,12 +111,5 @@ def main():
         print(cnt)
 
 
-
-
-for u in UserTable.objects.all():
-    if not u.phone_number == '15601205711':
-        u.photo_url = '../static/img/' + choice(pics)
-        u.save()
-
 if __name__ == '__main__':
     main()

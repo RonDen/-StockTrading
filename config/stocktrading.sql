@@ -322,7 +322,7 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
-  `url` varchar(200) NOT NULL,
+  `url` varchar(200),
   `content` longtext NOT NULL,
   `read` int(11) DEFAULT NULL,
   `news_time` date NOT NULL,

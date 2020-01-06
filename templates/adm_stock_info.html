@@ -24,7 +24,7 @@
                     </div>
                     <div class="box-footer clearfix">
 
-                        <a href="{% url 'tradingSystem:buy_in_stock' sid %}"
+                        <a href="{% url 'tradingSystem:buy_in_stock' %}"
                            class="btn btn-sm btn-info btn-flat pull-right">增持股票</a>
                     </div>
                 </div>
@@ -389,66 +389,39 @@
         for (j = 0, len = hold_vol.length; j < len; j++) {
             drawdata.push({value: hold_vol[j][1], name: hold_vol[j][0]});
         }
-        option = {
-            backgroundColor: '#2c343c',
 
+         option = {
             title: {
                 text: '股权占比',
-                left: 'center',
-                top: 20,
-                textStyle: {
-                    color: '#ffffff'
-                }
+                left: 'center'
             },
-
             tooltip: {
                 trigger: 'item',
                 formatter: '{a} <br/>{b} : {c} ({d}%)'
             },
-
-            visualMap: {
-                show: false,
-                min: 80,
-                max: 600,
-                inRange: {
-                    colorLightness: [0, 1]
-                }
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: pitchname
             },
             series: [
                 {
                     name: '访问来源',
                     type: 'pie',
                     radius: '55%',
-                    center: ['50%', '50%'],
-                    data: drawdata.sort(function (a, b) {
-                        return a.value - b.value;
-                    }),
-                    roseType: 'radius',
-                    label: {
-                        color: 'rgba(255, 255, 255, 1)'
-                    },
-                    labelLine: {
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, 1)'
-                        },
-                        smooth: 0.2,
-                        length: 10,
-                        length2: 20
-                    },
-                    itemStyle: {
-                        color: '#3429c2',
-                        shadowBlur: 200,
-                        shadowColor: 'rgba(255, 255, 255, 1)'
-                    },
-
-                    animationType: 'scale',
-                    animationEasing: 'elasticOut',
-                    animationDelay: function (idx) {
-                        return Math.random() * 200;
+                    center: ['50%', '60%'],
+                    data: drawdata,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
                     }
                 }
             ]
         };
+
         var linechart = echarts.init(document.getElementById('line-chart'));
         linechart.setOption(option);
         window.addEventListener("resize", function () {

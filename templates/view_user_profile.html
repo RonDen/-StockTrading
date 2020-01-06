@@ -1,4 +1,4 @@
-{% extends 'adm_base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load staticfiles %}
 
@@ -11,12 +11,6 @@
     <!-- Main content -->
     <section class="content">
 
-        {% if message %}
-            <div class="callout callout-danger">
-                <h4>{{ message }}</h4>
-            </div>
-        {% endif %}
-
         <div class="row">
             <div class="col-md-3">
 
@@ -25,7 +19,6 @@
                     <div class="box-body box-profile">
                         <img class="profile-user-img img-responsive img-circle"
                              src="{{ user.photo_url }}" alt="用户头像">
-
 
                         <h3 class="profile-username text-center">{{ user.user_name }}</h3>
 
@@ -44,23 +37,24 @@
                             </li>
                         </ul>
 
-                        <a href="#" class="btn btn-danger btn-block"><b>冻结账户</b></a>
+                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
                     </div>
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
+
             </div>
             <!-- /.col -->
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li><a href="#settings" data-toggle="tab">查看或修改用户的信息</a></li>
+                        <li><a href="#settings" data-toggle="tab">查看用户的信息</a></li>
                     </ul>
                     <div class="tab-content">
 
                         <div class="tab-pane" id="settings">
                             <form class="form-horizontal" id="user_form"
-                                  action="{% url 'tradingSystem:deal_user_change' %}" method="post">
+                                  action="#" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="user_id" class="col-sm-2 control-label">ID</label>
@@ -77,6 +71,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="user_name" id="user_name"
+                                               readonly="readonly"
                                                value="{{ user.user_name }}">
                                     </div>
                                 </div>
@@ -86,6 +81,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="email" class="form-control" name="user_email" id="user_email"
+                                               readonly="readonly"
                                                value="{{ user.user_email }}">
                                     </div>
                                 </div>
@@ -172,13 +168,6 @@
                                         </div>
                                     {% endif %}
                                 </div>
-
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" id="conf_modify" class="btn btn-danger">确认修改</button>
-                                    </div>
-                                </div>
-
                             </form>
                         </div>
                         <!-- /.tab-pane -->

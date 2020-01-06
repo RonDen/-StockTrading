@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+查看新闻详情
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <!-- Message box -->
+                <div class="box box-success">
+                    <div class="box-header">
+                        <i class="fa fa-newspaper-o"></i>
+
+                        <h3 class="box-title">{{ news.title }}</h3>
+
+                        <middle class="text-muted"><i
+                                                class="fa fa-clock-o"></i> {{ news.news_time }} </middle>
+
+                        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                            <div class="btn-group" data-toggle="btn-toggle">
+                                <button type="button" class="btn btn-default btn-sm active"><i
+                                        class="fa fa-square text-green"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm"><i
+                                        class="fa fa-square text-red"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-body fa-newspaper-o" id="news-box">
+                        <p>
+                            {{ news.content }}
+                        </p>
+                    </div>
+                    <!-- /.chat -->
+                    <div class="box-footer">
+                        <a href="{% url 'tradingSystem:news_detail' pre_news %}" class="btn btn-sm btn-info btn-flat pull-left">上一则新闻</a>
+                        <a href="{% url 'tradingSystem:news_detail' nx_news %}"
+                           class="btn btn-sm btn-info btn-flat pull-right">下一则新闻</a>
+                    </div>
+                </div>
+                <!-- /.box (chat box) -->
+            </div>
+
+        </div>
+        <div class="row">
+
+        </div>
+
+    </section>
+
+
+{% endblock %}

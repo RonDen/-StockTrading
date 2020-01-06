@@ -16,7 +16,14 @@
                     <div class="box-header">
                         <i class="fa fa-comments-o"></i>
 
-                        <h3 class="box-title">我的评论</h3>
+                        <h3 class="box-title">{{ comment.title }}</h3>
+
+                        <p>
+                            {{ comment.content }}
+                        </p>
+                         <middle class="text-muted pull-right"><i
+                                                class="fa fa-clock-o"></i> {{ comment.comment_time }} </middle>
+
 
                         <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
                             <div class="btn-group" data-toggle="btn-toggle">
@@ -27,19 +34,21 @@
                                         class="fa fa-square text-red"></i></button>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="box-body chat" id="chat-box">
                         <!-- chat item -->
-                        {% for comment in comments %}
+                        {% for reply  in replys %}
                             <div class="item">
-                            <img src="{{ user.photo_url }}" alt="用户头像" class="online">
+                            <img src="{{ reply.user_id.photo_url }}" alt="用户头像" class="online">
                             <p class="message">
-                                <a href="{% url 'tradingSystem:comment_detail' comment.id %}" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ comment.comment_time }} </small>
-                                    {{ comment.title }}
-                                </a>
-                            {{ comment.content }}
+                                <a href="{% url 'tradingSystem:view_user_profile' reply.user_id.phone_number %}" class="name">
+                                    {{ reply.user_id.user_name }}</a>
+                                to<a href="{% url 'tradingSystem:view_user_profile' reply.comment.user_id.phone_number %}" class="name">
+                                    {{ reply.comment.user_id.user_name }}
+                                </a><small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ reply.reply_time }} </small>
+                            {{ reply.content }}
                             </p>
                             </div>
                         {% endfor %}

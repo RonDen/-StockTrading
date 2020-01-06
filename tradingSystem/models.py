@@ -29,6 +29,8 @@ class UserTable(models.Model):
     freeze = models.BooleanField(default=False)
     # 是否成功开户
     account_opened = models.BooleanField(default=True)
+    # last_login
+    last_login = models.CharField(max_length=45,null=True)
 
     def __str__(self):
         return '-'.join([self.user_name, self.phone_number])
@@ -100,8 +102,8 @@ class OptionalStockTable(models.Model):
 class News(models.Model):
     # 新闻标题
     title = models.CharField(max_length=100)
-    # 新闻所在外键
-    url = models.URLField()
+    # 新闻所在URL
+    url = models.URLField(null=True)
     # 新闻内容
     content = models.TextField()
     # 新闻阅读数
@@ -110,7 +112,7 @@ class News(models.Model):
     news_time = models.DateField(auto_now=True)
 
     def __str__(self):
-        return '-'.join([str(self.id, self.title)])
+        return '-'.join([str(self.id), self.title])
 
     class Meta:
         db_table = 'news'

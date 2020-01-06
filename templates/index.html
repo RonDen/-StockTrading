@@ -73,18 +73,22 @@
                         <div class="table-responsive">
                             <table class="table no-margin">
                                 <thead>
-                                <tr>
-                                    <th>标题</th>
-                                    <th>热度</th>
-                                </tr>
                                 </thead>
                                 <tbody>
-
+                                {% for news in news_list %}
+                                    <tr>
+                                        <td><a href="{% url 'tradingSystem:news_detail' news.id %}">{{ news.title }}</a></td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
+                    <div class="box-footer clearfix">
+                        <a href="#"
+                           class="btn btn-sm btn-info btn-flat pull-right"><i class="fa fa-refresh fa-spin"></i>
+                            换一波瞅瞅</a>
+                    </div>
                 </div>
                 <!-- /.box (chat box) -->
             </div>
@@ -175,14 +179,15 @@
                         <!-- chat item -->
                         {% for comment in comments %}
                             <div class="item">
-                            <img src="{{ user.photo_url }}" alt="用户头像" class="online">
-                            <p class="message">
-                                <a href="{% url 'tradingSystem:comment_detail' comment.id %}" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ comment.comment_time }} </small>
-                                    {{ comment.title }}
-                                </a>
-                            {{ comment.content }}
-                            </p>
+                                <img src="{{ user.photo_url }}" alt="用户头像" class="online">
+                                <p class="message">
+                                    <a href="{% url 'tradingSystem:comment_detail' comment.id %}" class="name">
+                                        <small class="text-muted pull-right"><i
+                                                class="fa fa-clock-o"></i> {{ comment.comment_time }} </small>
+                                        {{ comment.title }}
+                                    </a>
+                                    {{ comment.content }}
+                                </p>
                             </div>
                         {% endfor %}
                     </div>

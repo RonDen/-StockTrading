@@ -28,14 +28,14 @@
 
                         {% endif %}
 
-                        <h3 class="profile-username text-center">{{ request.session.user_name }}</h3>
+                        <h3 class="profile-username text-center">{{ user.user_name }}</h3>
 
-                        <p class="text-muted text-center">{{ request.session.user_id }}</p>
+                        <p class="text-muted text-center">{{ user.session.user_id }}</p>
 
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
                                 <b>账号余额</b> <a
-                                    class="pull-right">{{ request.session.account_balance | floatformat }}元</a>
+                                    class="pull-right">{{ user.account_balance | floatformat }}元</a>
                             </li>
                             <li class="list-group-item">
                                 <b>买入</b> <a class="pull-right">543手</a>
@@ -45,10 +45,40 @@
                             </li>
                         </ul>
 
-                        <a href="#" class="btn btn-primary btn-block"><b>修改头像</b></a>
+                        <button id="change_btn" type="submit" class="btn btn-primary btn-block"><b>修改头像</b></button>
                     </div>
                     <!-- /.box-body -->
                 </div>
+
+                <!-- 图片上传部分 -->
+                <div hidden="hidden" class="col-center-block col-lg-10"
+                     style="margin-top:60px; margin-bottom: 10px;text-align: right">
+                    <button id="sub_btn" type="submit" data-toggle="modal" data-target="#myModal"
+                            class="btn  btn-default btn-sm float-right">
+                        上传图片
+                    </button>
+                </div>
+
+                <!-- 上为按钮，下为弹框 -->
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content upload_div">
+                            <form id="uploadForm">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="file" name="teamFile" accept="image/*">
+                                </div>
+                                <div class="form-group" role="group" aria-label="...">
+                                    <input type="submit" class="btn  btn-default col-lg-12">
+                                </div>
+                                <div class="clear">&nbsp;</div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 图片上传部分 -->
                 <!-- /.box -->
 
                 {% comment %}
@@ -113,7 +143,7 @@
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" readonly="readonly" name="user_id"
                                                id="user_id"
-                                               value="{{ request.session.user_id }}">
+                                               value="{{ user.user_id }}">
                                     </div>
                                 </div>
 
@@ -122,7 +152,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="user_name" id="user_name"
-                                               value="{{ request.session.user_name }}">
+                                               value="{{ user.user_name }}">
                                     </div>
                                 </div>
 
@@ -131,7 +161,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="email" class="form-control" name="user_email" id="user_email"
-                                               value="{{ request.session.user_email }}">
+                                               value="{{ user.user_email }}">
                                     </div>
                                 </div>
 
@@ -140,7 +170,7 @@
 
                                     <div class="col-sm-10">
                                         <select name="user_sex" class="select2" id="user_sex" style="width: 100%">
-                                            {% if request.session.user_sex == "男" %}
+                                            {% if user.user_sex == "男" %}
                                                 <option class="active" value="男">男</option>
                                                 <option value="女">女</option>
                                             {% else %}
@@ -156,7 +186,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" name="phone_number" class="form-control" id="phone_number"
-                                               value="{{ request.session.phone_number }}">
+                                               value="{{ user.phone_number }}">
                                     </div>
                                 </div>
 
@@ -165,7 +195,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" name="id_no" class="form-control" id="id_no"
-                                               value="{{ request.session.id_no }}">
+                                               value="{{ user.id_no }}">
                                     </div>
                                 </div>
 
@@ -174,7 +204,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" name="account_num" class="form-control" id="account_num"
-                                               value="{{ request.session.account_num }}">
+                                               value="{{ user.account_num }}">
                                     </div>
                                 </div>
 
@@ -185,7 +215,7 @@
                                         <select name="account_type" class="select2" id="account_type"
                                                 style="width: 100%">
                                             {% for bank in banks %}
-                                                {% if bank == request.session.account_type %}
+                                                {% if bank == user.account_type %}
                                                     <option class="active" value="{{ bank }}">{{ bank }}</option>
                                                 {% else %}
                                                     <option value="{{ bank }}">{{ bank }}</option>
@@ -238,6 +268,35 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.select2').select2();
+
+
+            $('#change_btn').click(function () {
+                $('#sub_btn').click();
+            });
+
+
+            $(function () {
+                $('#uploadForm').submit(function () {
+                    var data = new FormData($('#uploadForm')[0]);
+                    $.ajax({
+                        url: "{% url 'tradingSystem:update_img' %}",
+                        type: 'POST',
+                        data: data,
+                        dataType: 'JSON',
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            alert("修改成功，刷新生效");
+                        },
+                        error: function () {
+                            alert("网络错误");
+                        }
+                    });
+                    return false;
+                });
+            });
+
         });
 
         {% comment %}
