@@ -1,26 +1,26 @@
-{% extends "adm_base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% load staticfiles %}
 
 {% block title %}
-管理用户评论
+    管理我的评论
 {% endblock %}
 
 {% block content %}
 
     <section class="content-header">
         <h1>评论信息管理
-            <small>管理员</small>
+            <small>我</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{% url 'tradingSystem:adm_index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">管理员</li>
+            <li><a href="{% url 'tradingSystem:index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">我</li>
             <li class="active">评论信息管理</li>
         </ol>
     </section>
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">评论信息列表</h3>
+            <h3 class="box-title">评论列表</h3>
             <div class="box-header ">
                 {% comment %}
 
@@ -47,36 +47,49 @@
             </div>
 
             <div class="box-body">
-                <table id="user_table" class="table table-bordered table-striped">
+                <table id="stock_table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>姓名</th>
-                        <th>性别</th>
-                        <th>邮箱</th>
-                        <th>手机号码</th>
-                        <th>账户类型</th>
-                        <th>身份证号</th>
-                        <th>账户余额</th>
-                        <th>操作</th>
+                        <th>评论股票</th>
+                        <th>股票名称</th>
+                        <th>评论标题</th>
+                        <th>评论内容</th>
+                        <th>评论时间</th>
+                        <th>回复次数</th>
+                        <th>删除</th>
                     </tr>
                     </thead>
                     <tbody>
-
-                    {% for user in all_user %}
-                        <tr>
-                            <td>{{ user.user_id }}</td>
-                            <td>{{ user.user_name }}</td>
-                            <td>{{ user.user_sex }}</td>
-                            <td>{{ user.user_email }}</td>
-                            <td>{{ user.phone_number }}</td>
-                            <td>{{ user.account_type }}</td>
-                            <td>{{ user.id_no }}</td>
-                            <td>{{ user.account_balance }}</td>
-                            <td style="vertical-align: middle">
-                                <a href="{% url 'tradingSystem:adm_view_user' user.phone_number %}">详情</a>
-                            </td>
-                        </tr>
+                    {% for stock in all_stock %}
+                        {% if stock.change_extent > 0 %}
+                            <tr style="color: red">
+                                <td>{{ stock.stock_id }}</td>
+                                <td>{{ stock.stock_name }}</td>
+                                <td>{{ stock.issuance_time }}</td>
+                                <td>{{ stock.closing_price_y }}</td>
+                                <td>{{ stock.open_price_t }}</td>
+                                <td>{{ stock.stock_type }}</td>
+                                <td>{{ stock.block }}</td>
+                                <td>{{ stock.change_extent }}</td>
+                                <td style="vertical-align: middle">
+                                    <a href="{% url 'tradingSystem:adm_view_stock' stock.stock_id %}">详情</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr style="color: green">
+                                <td>{{ stock.stock_id }}</td>
+                                <td>{{ stock.stock_name }}</td>
+                                <td>{{ stock.issuance_time }}</td>
+                                <td>{{ stock.closing_price_y }}</td>
+                                <td>{{ stock.open_price_t }}</td>
+                                <td>{{ stock.stock_type }}</td>
+                                <td>{{ stock.block }}</td>
+                                <td>{{ stock.change_extent }}</td>
+                                <td style="vertical-align: middle">
+                                    <a href="{% url 'tradingSystem:adm_view_stock' stock.stock_id %}">详情</a>
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                     </tbody>
                 </table>
@@ -99,18 +112,18 @@
         {% endcomment %}
 
         $(document).ready(function () {
-            var table = $('#user_table').DataTable(
+            var table = $('#stock_table').DataTable(
                 {
                     dom: 'Bfrtip',
                     buttons: [
                         'copy',
                         {
                             extend: 'excel',
-                            filename: "用户信息表",
+                            filename: "股票信息表",
                         },
                         {
                             extend: 'print',
-                            filename: "用户信息表",
+                            filename: "股票信息表",
                         }
                     ],
                     "paging": true,       <!-- 允许分页 -->
@@ -162,8 +175,5 @@
 
     </script>
 {% endblock %}
-
-
-
 
 

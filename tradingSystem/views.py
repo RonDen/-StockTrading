@@ -13,8 +13,8 @@ import uuid
 import os
 
 from tradingSystem import models
-from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply
-from .utils import get_top10
+from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply,News
+from .utils import get_top10, get_news
 from utils import getAstock
 import numpy as np
 from utils import getHistoryData
@@ -37,23 +37,23 @@ def mylogin(request):
         message = ''
         try:
             adm = User.objects.get(username=phone_number)
-            user_num = len(UserTable.objects.all())
-            stock_num = len(StockInfo.objects.all())
-            request.session['adm'] = serialize('json', [adm])
+            login(request, adm)
+            user_num = UserTable.objects.count()
+            stock_num = StockInfo.objects.count()
             request.session['user_name'] = phone_number
             request.session['username'] = adm.username
             request.session['online'] = True
             request.session['user_num'] = user_num
             request.session['stock_num'] = stock_num
             request.session['photo_url'] = '../static/img/head.jpg'
+
             return redirect('tradingSystem:adm_index')
         except ObjectDoesNotExist:
             try:
                 user = UserTable.objects.get(phone_number=phone_number)
                 if user.password == password:
-                    request.session['js_user'] = serialize('json', [user])
+                    login(request, user)
                     request.session['user_name'] = user.user_name
-                    request.session['online'] = True
                     request.session['photo_url'] = user.photo_url
                     request.session['user_id'] = user.user_id
                     request.session['user_email'] = user.user_email
@@ -71,6 +71,7 @@ def mylogin(request):
 
 
 def log_out(request):
+    logout(request)
     request.session.flush()
     return redirect('tradingSystem:goto_login')
 
@@ -81,11 +82,13 @@ def index(request):
             phone_number = request.session['phone_number']
             user = UserTable.objects.get(phone_number=phone_number)
             comments = StockComment.objects.filter(user_id=user)
+            news_list = get_news()
             top10stock = get_top10()
             context = {
                 'top10stock': top10stock,
                 'comments': comments,
                 'user': user,
+                'news_list': news_list
             }
             return render(request, 'index.html', context)
         else:
@@ -289,20 +292,19 @@ def buy_in_stock(request):
             price = float(request.GET.get("price"))
             shares = float(request.GET.get("shares"))
 
-            return JsonResponse({"price": res[0][0]})
-
-
+            return JsonResponse({"price": 0})
 
 
 def comment_detail(request, comment_id):
-    comment = StockComment.objects.get(comment_id=comment_id)
+    user = UserTable.objects.get(phone_number=request.session['phone_number'])
+    comment = StockComment.objects.get(id=comment_id)
     replys = CommentReply.objects.filter(comment=comment)
     context = {
         'comment': comment,
-        'replys': replys
+        'replys': replys,
+        'user': user
     }
     return render(request, 'comment_detail.html', context)
-
 
 
 def get_real_quotes(request):
@@ -319,4 +321,76 @@ def get_real_quotes(request):
             print(res[0][0])
             print(type(res[0][0]))
             return JsonResponse({"price": res[0][0]})
+
+
+# 点击查看其他用户的信息
+def view_user_profile(request, phone_number):
+    user = UserTable.objects.get(phone_number=phone_number)
+    context = {
+        'user': user
+    }
+    return render(request, 'view_user_profile.html', context)
+
+
+def news_detail(request, news_id):
+    user = UserTable.objects.get(phone_number=request.session['phone_number'])
+
+    news = News.objects.get(id=news_id)
+    nx_news = news_id + 1
+    pre_news = news_id - 1
+
+    while not News.objects.filter(id=nx_news).exists():
+        nx_news += 1
+    while not News.objects.filter(id=pre_news).exists():
+        pre_news -= 1
+
+    context = {
+        'user': user,
+        'news': news,
+        'nx_news': nx_news,
+        'pre_news': pre_news
+    }
+    return render(request, 'news_detail.html', context)
+
+
+def update_img(request):
+    if request.method == 'POST':
+        user = UserTable.objects.get(phone_number=request.session['phone_number'])
+        my_file = request.FILES.get('teamFile', None)
+        message = ""
+        filename = os.path.splitext(my_file._name)[1]
+        save_name = 'static/img/'+ user.phone_number+filename
+        code = 1000
+        if my_file:
+            with open(save_name, 'wb') as file:
+                file.write(my_file.read())
+            code = 0
+            user.photo_url = '../' + save_name
+            user.save()
+            print("修改成功呢")
+        else:
+            filename = ''
+            message = "修改失败，请稍后再试！"
+        context = {
+            'message': message,
+            'banks': banks,
+            "code": code, "msg": {"url": '../static/img/%s' % (filename), 'filename': my_file._name}
+        }
+        return JsonResponse(context)
+
+
+def comment_list(request):
+    try:
+        user = UserTable.objects.get(phone_number=request.session['phone_number'])
+        comments = StockComment.objects.filter(user_id=user)
+        reply_nums = []
+        for c in comments:
+            pass
+        context = {
+            'comments': comments,
+            'user': user,
+        }
+        return render(request, 'comment_list.html', context)
+    except:
+        return redirect('tradingSystem:mylogin')
 

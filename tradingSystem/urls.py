@@ -33,8 +33,13 @@ urlpatterns = [
     path('adm_view_user/<int:phone_number>', admin_view.user_detail, name='adm_view_user'),
     path('adm_view_stock/<str:stock_id>', admin_view.adm_stock_info, name='adm_view_stock'),
 
+    path('update_img', views.update_img, name='update_img'),
+
     # 查看评论
     path('comment_detail/<int:comment_id>', views.comment_detail, name='comment_detail'),
+    path('view_user_profile/<int:phone_number>', views.view_user_profile, name='view_user_profile'),
+
+    # 新闻路由
+    path('news_detail/<int:news_id>', views.news_detail, name='news_detail')
 ]
-#
-#
+
