@@ -20,7 +20,7 @@ urlpatterns = [
     path('log_out', views.log_out, name='log_out'),
     path('do_register', views.do_register, name='do_register'),
     path('deal_user_change', views.deal_user_change, name='deal_user_change'),
-    path('get_real_quotes',views.get_real_quotes,name = 'get_real_quotes')
+    path('get_real_quotes',views.get_real_quotes,name = 'get_real_quotes'),
 
     # 管理员视图与URL
     path('a', admin_view.adm_index, name='adm_index'),
@@ -34,5 +34,5 @@ urlpatterns = [
     path('adm_view_stock/<str:stock_id>', admin_view.adm_stock_info, name='adm_view_stock')
 
 ]
-
-
+#
+#
