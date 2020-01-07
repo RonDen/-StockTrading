@@ -1,0 +1,10 @@
+source 'dailyticks_000001_sz'.sql;
+source 'dailyticks_000002_sz'.sql;
+source 'dailyticks_000004_sz'.sql;
+source 'dailyticks_000005_sz'.sql;
+source 'dailyticks_000006_sz'.sql;
+source 'dailyticks_000007_sz'.sql;
+source 'dailyticks_000008_sz'.sql;
+source 'dailyticks_000009_sz'.sql;
+source 'dailyticks_000010_sz'.sql;
+source 'dailyticks_000011_sz'.sql;

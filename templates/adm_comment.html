@@ -21,60 +21,38 @@
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">评论信息列表</h3>
-            <div class="box-header ">
-                {% comment %}
 
-                <label for="college" style="color: red">学院：</label><select id="college" class="select2"
-                                                                           style="width: 20%">
-                <option value="ALL" selected="selected">全部</option>
-                {% for item in all_college %}
-                    <option value="{{ item }}">{{ item }}
-                {% endfor %}
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label style="color: red">专业：</label><select id="major" class="select2" style="width: 15%">
-                <option value="ALL" selected="selected">全部</option>
-                {% for item in all_major %}
-                    <option value="{{ item }}">{{ item }}</option>
-                {% endfor %}
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label>入学年份：</label><select id="year" class="select2" style="width: 15%">
-                <option value="ALL" selected="selected">全部</option>
-                {% for item in all_in_year %}
-                    <option value="{{ item.in_year }}">{{ item.in_year }}</option>
-                {% endfor %}
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {% endcomment %}
-            </div>
-
-            <div class="box-body">
-                <table id="user_table" class="table table-bordered table-striped">
+               <div class="box-body">
+                <table id="comment_table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>姓名</th>
-                        <th>性别</th>
-                        <th>邮箱</th>
-                        <th>手机号码</th>
-                        <th>账户类型</th>
-                        <th>身份证号</th>
-                        <th>账户余额</th>
+                        <th>评论股票</th>
+                        <th>股票名称</th>
+                        <th>评论标题</th>
+                        <th>评论内容</th>
+                        <th>评论时间</th>
+                        <th>回复次数</th>
                         <th>操作</th>
+                        <th>删除</th>
                     </tr>
                     </thead>
                     <tbody>
-
-                    {% for user in all_user %}
+                    {% for result in results %}
                         <tr>
-                            <td>{{ user.user_id }}</td>
-                            <td>{{ user.user_name }}</td>
-                            <td>{{ user.user_sex }}</td>
-                            <td>{{ user.user_email }}</td>
-                            <td>{{ user.phone_number }}</td>
-                            <td>{{ user.account_type }}</td>
-                            <td>{{ user.id_no }}</td>
-                            <td>{{ user.account_balance }}</td>
+                            <td><a href="{% url 'tradingSystem:stock_info' result.stock_id %}">{{ result.stock_id }}</a></td>
+                            <td>{{ result.stock_name }}</td>
+                            <td>{{ result.title }}</td>
+                            <td>{{ result.content }}</td>
+                            <td>{{ result.comment_time | date:'Y年m月d日 H时i分' }}</td>
+                            <td>{{ result.reply_nums }}</td>
                             <td style="vertical-align: middle">
-                                <a href="{% url 'tradingSystem:adm_view_user' user.phone_number %}">详情</a>
+                                <a href="{% url 'tradingSystem:adm_comment_detail' result.comment_id %}">详情</a>
+                            </td>
+                            <td style="vertical-align: middle">
+                                <a style="color: red" href="{% url 'tradingSystem:adm_delete_news' result.news_id %}">删除</a>
+                            </td>
+                            <td style="vertical-align: middle">
+                                <button class="btn btn-danger"><b>删除</b></button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -99,7 +77,8 @@
         {% endcomment %}
 
         $(document).ready(function () {
-            var table = $('#user_table').DataTable(
+
+            var table = $('#comment_table').DataTable(
                 {
                     dom: 'Bfrtip',
                     buttons: [
@@ -152,11 +131,6 @@
                 }
             );
 
-            // Event listener to the two range filtering inputs to redraw on input
-            $('#major, #year, #college').change(function () {
-                table.draw();
-            });
-            $('.select2').select2();
         });
 
 

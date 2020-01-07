@@ -108,7 +108,7 @@ class News(models.Model):
     # 新闻内容
     content = models.TextField()
     # 新闻阅读数
-    read = models.IntegerField(null=True)
+    read = models.IntegerField(null=True, default=0)
     # 发生时间
     news_time = models.DateField(auto_now=True)
 

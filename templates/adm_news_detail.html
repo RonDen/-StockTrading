@@ -1,12 +1,12 @@
 {% extends 'adm_base.html' %}
 
 {% block title %}
-查看新闻详情
+    查看新闻详情
 {% endblock %}
 
 {% block content %}
 
-<section class="content">
+    <section class="content">
 
         <div class="row">
 
@@ -19,7 +19,7 @@
                         <h3 class="box-title">{{ news.title }}</h3>
 
                         <middle class="text-muted"><i
-                                                class="fa fa-clock-o"></i> {{ news.news_time }} </middle>
+                                class="fa fa-clock-o"></i> {{ news.news_time }} </middle>
 
                         <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
                             <div class="btn-group" data-toggle="btn-toggle">
@@ -39,13 +39,62 @@
                     </div>
                     <!-- /.chat -->
                     <div class="box-footer">
-                        <a href="{% url 'tradingSystem:news_detail' pre_news %}" class="btn btn-sm btn-info btn-flat pull-left">上一则新闻</a>
-                        <a href="{% url 'tradingSystem:news_detail' nx_news %}"
-                           class="btn btn-sm btn-info btn-flat pull-right">下一则新闻</a>
+                        <button id="edit_btn" class="btn btn-success pull-left" type="button">
+                            <span class="glyphicon glyphicon-pencil]">编辑新闻</span>
+                        </button>
+                        <a href="{% url 'tradingSystem:adm_delete_news' news.id %}"
+                           class="btn btn-sm btn-danger btn-flat pull-right">删除新闻</a>
                     </div>
                 </div>
                 <!-- /.box (chat box) -->
             </div>
+
+               <div class="modal fade" id="changeForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{% url 'tradingSystem:adm_edit_news' %}"  method="post">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">编辑新闻</h4>
+                        </div>
+                        <div class="modal-content" id="add_news_modal">
+                            <div class="form-horizontal">
+
+                                <div class="form-group">
+                                    <label for="news_id" class="col-sm-2 control-label" style="color: red">新闻ID：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="news_id" class="form-control" readonly="readonly"
+                                               name="news_id" value="{{ news.id }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="news_title" class="col-sm-2 control-label" style="color: red">新闻标题：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="news_title" class="form-control"
+                                               name="news_title" value="{{ news.title }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="news_content" class="col-sm-2 control-label">新闻内容：</label>
+                                    <div class="col-sm-10">
+                                        <textarea name="news_content" id="news_content" class="form-control" rows="10">{{ news.content }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelAdd" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureEdit" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         </div>
         <div class="row">
@@ -54,5 +103,18 @@
 
     </section>
 
+{% endblock %}
 
+{% block script %}
+    <script>
+
+
+        $(document).ready(function () {
+
+           $('#edit_btn').click(function () {
+               $('#changeForm').modal();
+           });
+
+        });
+    </script>
 {% endblock %}

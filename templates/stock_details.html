@@ -1,16 +1,10 @@
-{% extends "mybase.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% load staticfiles %}
 {% block title %}欢迎登录股票交易管理系统{% endblock %}
 
 {% block content %}
-
-    <section class="content-header">
-
-    </section>
-
     <section class="content">
-
 
         <div class="modal fade" id="eidtModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -126,64 +120,20 @@
                         </div>
                     </div>
                     <div class="box-body chat" id="chat-box">
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user1-128x128.jpg' %}" alt="user image" class="online">
-
+                        {% for comment in comments %}
+                            <div class="item">
+                            <img src="{{ comment.user_id.photo_url }}" alt="user image" class="online">
                             <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                                    Mike Doe
+                                <a href="{% url 'tradingSystem:view_user_profile' comment.user_id.phone_number %}" class="name">
+                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ comment.comment_time }}</small>
+                                    {{ comment.user_id.user_name }}
                                 </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                            <div class="attachment">
-                                <h4>Attachments:</h4>
-
-                                <p class="filename">
-                                    Theme-thumbnail-image.jpg
-                                </p>
-
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-                                </div>
-                            </div>
-                            <!-- /.attachment -->
-                        </div>
-                        <!-- /.item -->
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user3-128x128.jpg' %}" alt="user image" class="offline">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                                    Alexander Pierce
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
+                                {{ comment.content }}
                             </p>
                         </div>
-                        <!-- /.item -->
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user4-128x128.jpg' %}" alt="user image" class="offline">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                    Susan Doe
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                        </div>
-                        <!-- /.item -->
+                        {% endfor %}
                     </div>
+                    {% comment %}
                     <!-- /.chat -->
                     <div class="box-footer">
                         <div class="input-group">
@@ -194,19 +144,65 @@
                             </div>
                         </div>
                     </div>
+                    {% endcomment %}
                 </div>
                 <!-- /.box (chat box) -->
             </div>
-            <div class="col-md-4"></div>
+
+            <div class="col-md-4">
+                <div class="box box-success">
+                    <div class="box box-header">
+                        <i class="fa fa-comments-o"></i>
+                        <h3 class="box-title">发表评论</h3>
+
+                        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+                            <div class="btn-group" data-toggle="btn-toggle">
+                                <button type="button" class="btn btn-default btn-sm active"><i
+                                        class="fa fa-square text-green"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-sm"><i
+                                        class="fa fa-square text-red"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-body">
+                        <form role="form" action="{% url 'tradingSystem:add_stock_comment' %}" id="comment_form" method="POST">
+                            <!-- text input -->
+                            {% csrf_token %}
+                            <div class="form-group" hidden="hidden">
+                                <label for="stock_id">股票ID</label>
+                                <input type="text" id="stock_id" name="stock_id" readonly="readonly" value="{{ stock_id }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="comment_title">标题</label>
+                                <input type="text" id="comment_title" name="comment_title" class="form-control"
+                                       placeholder="请输入标题 ...">
+                            </div>
+                            <!-- textarea -->
+                            <div class="form-group">
+                                <label for="comment_content">内容</label>
+                                <textarea id="comment_content" name="comment_content" class="form-control" rows="10"
+                                          placeholder="请输入内容，注意网络文明用语 ..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box box-footer">
+                        <div class="input-group-btn">
+                            <button type="button" id="commit_btn" class="btn btn-success pull-right"><i class="fa fa-plus">确认提交</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
 
         </div>
-
     </section>
 {% endblock %}
 
 {% block script %}
+
     <script>
         $(function () {
             bindEdit();
@@ -214,6 +210,10 @@
             realTimeQuotes();
             // bindEvent();
             //bindSave();
+        });
+
+        $('#commit_btn').click(function(){
+            $('#comment_form').submit();
         });
 
         var upColor = '#ec0000';
@@ -570,8 +570,7 @@
                     };
 
                     KlineMap.setOption(option1);
-                }
-                else {
+                } else {
                     alert("非开盘时间！！");
                 }
             });
@@ -584,7 +583,7 @@
                 if (fin == 1) {
                     var timeNow = new Date().getHours();
                     {#alert(s_id);#}
-                    if (timeNow >= 9 && timeNow <= 12 || timeNow >= 13 && timeNow <=24) {//测试用24
+                    if (timeNow >= 9 && timeNow <= 12 || timeNow >= 13 && timeNow <= 24) {//测试用24
                         $.ajax({
                             url: '/get_real_quotes',
                             type: 'GET',
@@ -601,14 +600,12 @@
                         $('#eidtModal').modal('show');
 
 
-                    }
-                    else {
+                    } else {
                         alert("当前非开盘时间！！");
                     }
 
 
-                }
-                else {
+                } else {
                     alert("当前非开盘时间！！");
                 }
 
@@ -631,17 +628,12 @@
                     traditional: true,
                     dataType: 'JSON',
                     success: function (arg) {
-                        if(arg["flag"]==1)
-                        {
+                        if (arg["flag"] == 1) {
                             alert("增持成功");
-                        }
-                        else {
-                            if(arg["money"]==1)
-                            {
+                        } else {
+                            if (arg["money"] == 1) {
                                 alert("请检查账户是否开启或被冻结！")
-                            }
-                            else
-                            {
+                            } else {
                                 alert("余额不足，请充值！")
                             }
                         }
@@ -661,6 +653,7 @@
         window.addEventListener("resize", function () {
             linechart.resize();
             //myCharts是你的初始化echarts图表时取的名字
+
         });
     </script>
 {% endblock %}

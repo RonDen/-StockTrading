@@ -47,7 +47,7 @@ for user in UserTable.objects.all():
 
 
 for comment in StockComment.objects.all():
-    tao_ha = ['您说的真对', '您说的对', '您说的也对']
+    tao_ha = ['您说的真对', '您说的对', '您说的也对', "哈哈哈", "赶快买", "卖了房也要买", "小心被割韭菜"]
     for ha in tao_ha:
         reply = CommentReply.objects.create(
             user_id=choice(users),
@@ -56,5 +56,15 @@ for comment in StockComment.objects.all():
         )
         reply.save()
 
-
-
+for i in range(4, 9):
+    stock_id = '00000' + str(i)
+    stock = StockInfo.objects.get(stock_id=stock_id)
+    tao_ha = ['您说的真对', '您说的对', '您说的也对', "哈哈哈", "赶快买", "卖了房也要买", "小心被割韭菜"]
+    for hua in tao_ha:
+        comment = StockComment.objects.create(
+            stock_id=stock,
+            user_id=choice(users),
+            title=hua,
+            content=','.join([choice(tao_ha), choice(tao_ha), choice(tao_ha), choice(tao_ha), choice(tao_ha)])
+        )
+        comment.save()

@@ -13,14 +13,14 @@ from datetime import date, datetime
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from utils import getHistoryData
-from .utils import get_top10
+from .utils import get_top10, get_stock_comments
 import tushare as ts
 import uuid
 import os
 
 from tradingSystem import models
 from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply, News
-from .utils import get_top10, get_news
+from .utils import get_top10, get_news, get_buy_in_out
 from utils import getAstock, cram_news
 import numpy as np
 from utils import getHistoryData
@@ -59,6 +59,7 @@ def mylogin(request):
             request.session['user_num'] = user_num
             request.session['stock_num'] = stock_num
             request.session['photo_url'] = '../static/img/head.jpg'
+            request.session['phone_num'] = adm.username
 
             return redirect('tradingSystem:adm_index')
         except ObjectDoesNotExist:
@@ -68,6 +69,8 @@ def mylogin(request):
                     login(request, user)
                     request.session['user_name'] = user.user_name
                     request.session['photo_url'] = user.photo_url
+                    print(user.photo_url)
+                    # request.session['photo_url'] = '/static/img/avatar.png'
                     request.session['user_id'] = user.user_id
                     request.session['user_email'] = user.user_email
                     request.session['account_num'] = user.account_num
@@ -132,18 +135,12 @@ def user_profile(request):
             print("asdasd")
             phone_number = request.session['phone_number']
             user = UserTable.objects.get(phone_number=phone_number)
-            print(user)
-            buy_in_res = models.HistoryTradeTable.objects.filter(user_id=user,trade_shares__gte=0).aggregate(Sum('trade_shares'))
-            print(buy_in_res)
-            sold_out_res = models.HistoryTradeTable.objects.filter(user_id=user[0],trade_shares__lte=0).aggregate(Sum('trade_shares'))
-            print("buy_in_res",buy_in_res)
-            print("sold_out_res", sold_out_res)
-            sold_out_res = 0-sold_out_res
+            buy_in, buy_out = get_buy_in_out(phone_number)
             context = {
                 'banks': banks,
                 'user': user,
-                'buy_in_res':buy_in_res,
-                'sold_out_res':sold_out_res
+                'buy_in': buy_in,
+                'buy_out': buy_out
             }
             return render(request, 'tradingSystem/user_profile.html', context)
         else:
@@ -216,6 +213,7 @@ def stock_list(request):
 
 
 def stock_info(request, stock_id):
+    comments = get_stock_comments(stock_id)
     print("aasdasdasd")
     conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
@@ -332,7 +330,9 @@ def stock_info(request, stock_id):
         "hisData": hisData,
         "f": f,
         "tick_datax": tick_datax,
-        "tick_datay": tick_datay
+        "tick_datay": tick_datay,
+        'stock_id': stock_id,
+        'comments': comments,
     }
     return render(request, 'stock_details.html', context)
 
@@ -386,7 +386,7 @@ def buy_in_stock(request):
 
 
 def sold_stock(request):
-    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", database="stocktrading")
+    conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
 
     solder = models.UserTable.objects.filter(phone_number=request.session['phone_number'])
@@ -401,17 +401,18 @@ def sold_stock(request):
         print(stocks[i])
         print(type(des[0][1]))
         pri.append(
-            {"price":des[0][1],
-             "obj":stocks[i]
+            {"price": des[0][1],
+             "obj": stocks[i]
              })
     context = {
         "stocks": pri
     }
     return render(request, 'sold_stock.html', context)
 
+
 def out(request, stock_id):
     print("aasdasdasd")
-    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", database="stocktrading")
+    conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
     # print(ts.get_hist_data('600848'))
 
@@ -573,13 +574,44 @@ def do_register(request):
         return render(request, 'register.html', locals())
     return redirect('tradingSystem:goto_login')
 
+
+def stockdetails(request):
+    return render(request, 'stock_details.html')
+
+
+def stock_list(request):
+    # aStockData = getAstock()
+
+    # lis=[]
+    # for  index,row in aStockData.iterrows():
+    #     lis.append(row)
+    # print(lis[0])
+    # queryset = []
+    # for i in lis:
+    #     queryset.append(models.StockInfo(stock_id = i[1],stock_name = i[2],issuance_time=i[6],closing_price_y=0,open_price_t=0,stock_type="",block=i[5],change_extent=0))
+    # models.StockInfo.objects.bulk_create(queryset)
+
+    stockl = models.StockInfo.objects.all()[:100]
+    # all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
+    # print(queryset)
+    context = {
+        "stock": stockl
+    }
+    # print(type(queryset))
+    return render(request, 'stock_list.html', context)
+
+
+def stock_comment(request):
+    return render(request, 'stock_comments.html')
+
+
 def sold_out_stock(request):
     print("ss")
     if request.is_ajax():
         if request.method == 'GET':
-            price = float(request.GET.get("price"))#当前股价
-            shares = int(request.GET.get("shares"))#需要减持的股票
-            holdon = int(request.GET.get("holdon"))#目前持有的股票
+            price = float(request.GET.get("price"))  # 当前股价
+            shares = int(request.GET.get("shares"))  # 需要减持的股票
+            holdon = int(request.GET.get("holdon"))  # 目前持有的股票
             s_id = request.GET.get("s_id")
             # fare = price * shares
             print(price)
@@ -590,9 +622,9 @@ def sold_out_stock(request):
             print("asdasdads", solder[0].phone_number, request.session['phone_number'])
             stock_sold = models.StockInfo.objects.filter(stock_id=s_id)
             money = 0
-            if(holdon<=shares):
+            if (holdon <= shares):
                 models.UserTable.objects.filter(phone_number=request.session['phone_number']).update(
-                    account_balance=solder[0].account_balance + holdon*price)
+                    account_balance=solder[0].account_balance + holdon * price)
                 models.HistoryTradeTable.objects.create(
                         user_id=solder[0],
                         stock_id=stock_sold[0],
@@ -601,7 +633,7 @@ def sold_out_stock(request):
                         trade_time=time.strftime('%Y-%m-%d-%H:%M', time.localtime(time.time()))
                     )
                 models.OptionalStockTable.objects.filter(user_id=solder[0], stock_id=stock_sold[0]).delete()
-                return JsonResponse({"flag": 1, "rest":0})
+                return JsonResponse({"flag": 1, "rest": 0})
             else:
                 models.UserTable.objects.filter(phone_number=request.session['phone_number']).update(
                     account_balance=solder[0].account_balance + shares * price)
@@ -618,8 +650,10 @@ def sold_out_stock(request):
                     num_of_shares=option_stock[0].num_of_shares - shares
                 )
                 return JsonResponse({"flag": 1, "rest": record})
+
+
 def get_real_holdon(request):
-    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", database="stocktrading")
+    conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
     if request.is_ajax():
         if request.method == 'GET':
@@ -636,14 +670,24 @@ def get_real_holdon(request):
             option_stock = models.OptionalStockTable.objects.filter(user_id=solder[0], stock_id=stock_sold[0])
             cursor.close()
             conn.close()
-            return JsonResponse({"holdon":option_stock[0].num_of_shares,"price":des[0][1]})
+            return JsonResponse({"holdon": option_stock[0].num_of_shares, "price": des[0][1]})
+
 
 def stockdetails(request):
     return render(request, 'stock_details.html')
 
 
-def stock_comment(request):
-    return render(request, 'stock_comments.html')
+def add_stock_comment(request):
+    user = UserTable.objects.get(phone_number=request.session.get('phone_number'))
+    if request.POST:
+        title = request.POST.get('comment_title')
+        content = request.POST.get('comment_content')
+        stock_id = request.POST.get('stock_id')
+        print(title, content, stock_id)
+        stock = StockInfo.objects.get(stock_id=stock_id)
+        comment = StockComment.objects.create(user_id=user, stock_id=stock, title=title, content=content)
+        comment.save()
+        return redirect('tradingSystem:stock_info', stock_id=stock_id)
 
 
 def comment_detail(request, comment_id):
@@ -678,8 +722,11 @@ def get_real_quotes(request):
 # 点击查看其他用户的信息
 def view_user_profile(request, phone_number):
     user = UserTable.objects.get(phone_number=phone_number)
+    buy_in, buy_out = get_buy_in_out(phone_number)
     context = {
-        'user': user
+        'user': user,
+        'buy_in': buy_in,
+        'buy_out': buy_out
     }
     return render(request, 'view_user_profile.html', context)
 
@@ -756,4 +803,6 @@ def comment_list(request):
 
 
 def comment_delete(request, comment_id):
-    pass
+    comment = StockComment.objects.get(id=comment_id)
+    comment.delete()
+    return redirect('tradingSystem:comment_list')
