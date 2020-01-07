@@ -189,8 +189,14 @@ def stock_info(request, stock_id):
     f = ""
     tick_datax = ""
     tick_datay = ""
+    tick_name = ""
+    tick_data = ""
     print(stock_id)
+    f = getRtQuotes.getworkday()
     # f, tick_datax, tick_datay = getRtQuotes.getRtQuotes(stock_id)
+
+
+
     print(tick_datay)
     # 获取当天交易数据
     print("seekroung")
@@ -209,9 +215,7 @@ def stock_info(request, stock_id):
     # tick_datay = tick_datay.tolist()
 
     choosenStock = models.StockInfo.objects.filter(stock_id=stock_id)
-    # print(choosenStock)
-    # print(choosenStock[0].stock_name)
-    # print(choosenStock[0].block)
+
     hisData = []
     hold_vol = ""
 
@@ -225,7 +229,26 @@ def stock_info(request, stock_id):
         hisData = np.array(hisData)
         hisData = hisData.tolist()
         hold_vol = getAstock.getAstock(stock_id + ".SH")
-        # hisData = getHistoryData.getHistoryData(stock_id + ".SH")
+        #抓取每日实时数据，4分钟一个时刻
+        if(f):
+            f = 1
+            tick_name = "dailyticks"+"_"+seaname
+            cursor.execute(sql,[tick_name])
+            tick_data = cursor.fetchall()
+            tick_data = np.array(tick_data)
+            print(tick_data)
+            print(type(tick_data))
+            print("suck")
+            tick_datax = tick_data[:,[0]]
+            tick_datay = tick_data[:, [1]]
+            print("fuck",tick_datax)
+            print(type(tick_datax))
+            tick_datax = tick_datax.reshape(-1)
+            tick_datay = tick_datay.reshape(-1)
+            tick_datax = tick_datax.tolist()
+            tick_datay = tick_datay.tolist()
+        else:
+            f = 0
     else:
         sql = "SELECT * FROM `%s`"
         seaname = stock_id + "_"+"SZ"
@@ -235,7 +258,25 @@ def stock_info(request, stock_id):
         hisData = np.array(hisData)
         hisData = hisData.tolist()
         # print(hisData)
-
+        if(f):
+            f = 1
+            tick_name = "dailyticks"+"_"+seaname
+            cursor.execute(sql,[tick_name])
+            tick_data = cursor.fetchall()
+            tick_data = np.array(tick_data)
+            print(tick_data)
+            print(type(tick_data))
+            print("suckdirc")
+            tick_datax = tick_data[:,[0]]
+            tick_datay = tick_data[:, [1]]
+            tick_datax = tick_datax.reshape(-1)
+            tick_datay = tick_datay.reshape(-1)
+            tick_datax = tick_datax.tolist()
+            tick_datay = tick_datay.tolist()
+            print("fuck",tick_datax)
+            print(type(tick_datax))
+        else:
+            f = 0
         hold_vol = getAstock.getAstock(stock_id + ".SZ")
     cursor.close()
     conn.close()
@@ -402,6 +443,7 @@ def get_real_quotes(request):
             sym = request.GET.get("id")
             print(sym)
             df = ts.get_realtime_quotes(symbols=sym)
+            df = df[['code', 'name', 'price', 'bid', 'ask', 'volume', 'amount', 'time']]
             print(df)
             res = np.array(df)
             res = res[:, [2]]
