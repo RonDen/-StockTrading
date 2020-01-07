@@ -806,3 +806,6 @@ def comment_delete(request, comment_id):
     comment = StockComment.objects.get(id=comment_id)
     comment.delete()
     return redirect('tradingSystem:comment_list')
+
+def uphold(request):
+    return render(request,'uphold.html')
