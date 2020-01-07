@@ -72,7 +72,7 @@ def getTscode():
     sql = "select stock_id,stock_type  from stock_info"
     cursor.execute(sql)
     stoinfo = cursor.fetchall()
-    for i in range(959, len(stoinfo)):
+    for i in range(0, 100):
         try:
             if (stoinfo[i][1] == "上证"):
                 # tmp = stoinfo[i][0] + "_" + "SH"
