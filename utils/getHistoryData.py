@@ -8,6 +8,7 @@ def getHistoryData(t):
     strt = strt.split("-")
     # print(t)
     df = pro.daily(ts_code=t, start_date='20190101', end_date=strt[0] + strt[1] + strt[2])
+    print(df)
     # print("asd")
     res = np.array(df)
     res = res[:,[1,2,5,4,3]]#日期，开盘，最高，最低,收盘
@@ -16,3 +17,4 @@ def getHistoryData(t):
     # print("asdasda")
     # print(res)
     return res
+# print(getHistoryData("000001.SZ"))
