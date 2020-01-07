@@ -1,4 +1,4 @@
-from .models import StockInfo
+from .models import StockInfo, StockComment
 from .models import News
 
 
@@ -11,3 +11,6 @@ def get_news():
     return news_list[:8]
 
 
+def get_stock_comments(stock_id):
+    stock=StockInfo.objects.get(stock_id=stock_id)
+    return StockComment.objects.filter(stock_id=stock)

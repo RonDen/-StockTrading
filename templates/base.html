@@ -60,7 +60,8 @@
         <link rel="stylesheet"
               href="{% static 'AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
         <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     {% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -298,7 +299,8 @@
                         </li>
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
-                            <a href="{% url 'tradingSystem:user_profile' %}" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="{% url 'tradingSystem:user_profile' %}" class="dropdown-toggle"
+                               data-toggle="dropdown">
                                 <img src="{{ request.session.photo_url }}" class="user-image" alt="用户头像">
                                 <span class="hidden-xs">{{ request.session.user_name }}</span>
                             </a>
@@ -435,7 +437,7 @@
                           <small class="label pull-right bg-red">热</small></span>
                         </a>
                     </li>
-                     <li>
+                    <li>
                         <a href="{% url 'tradingSystem:sold_stock' %}">
                             <i class="fa fa-thumbs-up"></i> <span>管理我的股票</span>
                             <span class="pull-right-container">

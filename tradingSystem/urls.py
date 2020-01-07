@@ -24,11 +24,12 @@ urlpatterns = [
     path('get_real_holdon', views.get_real_holdon, name='get_real_holdon'),
 
     #股票评论
-    path('stock_comment', views.stock_comment, name='stock_comment'),
+    path('add_stock_comment', views.add_stock_comment, name='add_stock_comment'),
     path('user_profile', views.user_profile, name='user_profile'),
     path('log_out', views.log_out, name='log_out'),
     path('do_register', views.do_register, name='do_register'),
     path('deal_user_change', views.deal_user_change, name='deal_user_change'),
+    path('add_stock_comment', views.add_stock_comment, name='add_stock_comment'),
 
     # 管理员视图与URL
     path('a', admin_view.adm_index, name='adm_index'),
