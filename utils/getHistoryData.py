@@ -18,3 +18,5 @@ def getHistoryData(t):
     # print(res)
     return res
 # print(getHistoryData("000001.SZ"))
+
+print(getHistoryData("000002.SH"))

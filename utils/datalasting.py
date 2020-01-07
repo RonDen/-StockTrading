@@ -67,6 +67,7 @@ def getTscode():
             tmp = stoinfo[i][0] + "." + "SH"
         else:
             tmp = stoinfo[i][0] + "." + "SZ"
+        updateEveryday(tmp)
     time.sleep(120)
     for i in range(1087, 2174):
         if (stoinfo[i][1] == "上证"):

@@ -22,6 +22,8 @@
                         <tr>
                             <th>股票代号</th>
                             <th>股票名称</th>
+                            <th>当前持有股数</th>
+                            <th>当前股价</th>
                             <th>发行时间</th>
                             <th>昨日收盘价</th>
                             <th>今日开盘价</th>
@@ -33,33 +35,40 @@
                         </thead>
                         <tbody>
 
-                        {% for item in stock %}
+                        {% for item in stocks %}
                             {% if item.change_extent > 0 %}
                                 <tr style="color: red">
-                                    <td>{{ item.stock_id }}</td>
-                                    <td>{{ item.stock_name }}</td>
-                                    <td>{{ item.issuance_time }}</td>
-                                    <td>{{ item.closing_price_y }}</td>
-                                    <td>{{ item.open_price_t }}</td>
-                                    <td>{{ item.stock_type }}</td>
-                                    <td>{{ item.block }}</td>
-                                    <td>{{ item.change_extent }}</td>
+                                    <td>{{ item.obj.stock_id.stock_id }}</td>
+
+                                    <td>{{ item.obj.stock_id.stock_name }}</td>
+
+                                    <td>{{ item.obj.num_of_shares }}</td>
+                                    <td>{{ item.price }}</td>
+                                    <td>{{ item.obj.stock_id.issuance_time }}</td>
+                                    <td>{{ item.obj.stock_id.closing_price_y }}</td>
+                                    <td>{{ item.obj.stock_id.open_price_t }}</td>
+                                    <td>{{ item.obj.stock_id.stock_type }}</td>
+                                    <td>{{ item.obj.stock_id.block }}</td>
+                                    <td>{{ item.obj.stock_id.change_extent }}</td>
                                     <td style="vertical-align: middle">
-                                        <a href="{% url 'tradingSystem:stock_info' item.stock_id %}">详情</a>
+                                        <a href="{% url 'tradingSystem:out' item.obj.stock_id.stock_id %}">详情</a>
                                     </td>
                                 </tr>
                             {% else %}
                                 <tr style="color: green">
-                                    <td>{{ item.stock_id }}</td>
-                                    <td>{{ item.stock_name }}</td>
-                                    <td>{{ item.issuance_time }}</td>
-                                    <td>{{ item.closing_price_y }}</td>
-                                    <td>{{ item.open_price_t }}</td>
-                                    <td>{{ item.stock_type }}</td>
-                                    <td>{{ item.block }}</td>
-                                    <td>{{ item.change_extent }}</td>
+                                    <td>{{ item.obj.stock_id.stock_id }}</td>
+                                    <td>{{ item.obj.stock_id.stock_name }}</td>
+
+                                    <td>{{ item.obj.num_of_shares }}</td>
+                                    <td>{{ item.price }}</td>
+                                    <td>{{ item.obj.stock_id.issuance_time }}</td>
+                                    <td>{{ item.obj.stock_id.closing_price_y }}</td>
+                                    <td>{{ item.obj.stock_id.open_price_t }}</td>
+                                    <td>{{ item.obj.stock_id.stock_type }}</td>
+                                    <td>{{ item.obj.stock_id.block }}</td>
+                                    <td>{{ item.obj.stock_id.change_extent }}</td>
                                     <td style="vertical-align: middle">
-                                        <a href="{% url 'tradingSystem:stock_info' item.stock_id %}">详情</a>
+                                        <a href="{% url 'tradingSystem:out' item.obj.stock_id.stock_id  %}">详情</a>
                                     </td>
                                 </tr>
                             {% endif %}
@@ -69,7 +78,7 @@
                 </div>
             </div>
         </div>
-               <div class="row">
+        <div class="row">
 
             <div class="col-md-8">
                 {#                <div class="box box-solid bg-teal-gradien">#}
@@ -93,37 +102,7 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer no-border">
-                        {% comment %}
-                        <div class="row">
 
-                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" value="20" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">Mail-Orders</div>
-                            </div>
-
-                            <!-- ./col -->
-                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" value="50" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">Online</div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-xs-4 text-center">
-                                <input type="text" class="knob" data-readonly="true" value="30" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">In-Store</div>
-                            </div>
-                            <!-- ./col -->
-                        </div>
-                        {% endcomment %}
-                        <!-- /.row -->
                     </div>
                     <!-- /.box-footer -->
                 </div>
@@ -132,7 +111,6 @@
             <div class="col-md-4">
                 <!-- Message box -->
                 <div class="box box-success">
-
 
 
                     <!-- /.chat -->
