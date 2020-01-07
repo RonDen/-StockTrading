@@ -33,10 +33,8 @@ def getTodayRealTimeData():
     cursor = conn.cursor()
     stoinfo = getTscode()
     sql = "INSERT INTO `%s`(DAILY_TICKS,REAL_TIME_QUOTES) VALUES(%s, %s)"
-    n_time = datetime.now()
-    end = datetime.strptime(str(datetime.now().date()) + "15:30", '%Y-%m-%d%H:%M')
     while(1):
-        if(judje("09:30","11:30") or judje("13:00","15:30")):
+        if(judje("09:30","11:30") or judje("13:00","15:00")):
 
             for i in range(0,len(stoinfo)):
                 # res =  ts.get_realtime_quotes(symbols=i[0])
@@ -56,6 +54,8 @@ def getTodayRealTimeData():
                         else:
                             cursor.execute(sql, ["dailyticks_" + stoinfo[i][0] + "_" + "SH", res[0][1], res[0][0]])
                     conn.commit()
+        n_time = datetime.now()
+        end = datetime.strptime(str(datetime.now().date()) + "15:00", '%Y-%m-%d%H:%M')
         if( n_time>end ):#超过晚上15：00自动终止获取
             break
     cursor.close()

@@ -16,3 +16,5 @@ def getHistoryData(t):
     # print("asdasda")
     # print(res)
     return res
+
+print(getHistoryData("000002.SH"))

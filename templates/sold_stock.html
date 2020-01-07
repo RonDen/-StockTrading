@@ -10,92 +10,74 @@
     </section>
 
     <section class="content">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">股票信息列表</h3>
+                <div class="box-header ">
+                </div>
 
-        <div class="row">
-            <div class="col-md-8">
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">热门牛股</h3>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-minus"></i></button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                    class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                <tr>
-                                    <th>股票代码</th>
-                                    <th>全称</th>
-                                    <th>状态</th>
-                                    <th>涨幅</th>
+                <div class="box-body">
+                    <table id="stock_table" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>股票代号</th>
+                            <th>股票名称</th>
+                            <th>当前持有股数</th>
+                            <th>当前股价</th>
+                            <th>发行时间</th>
+                            <th>昨日收盘价</th>
+                            <th>今日开盘价</th>
+                            <th>类型</th>
+                            <th>版块</th>
+                            <th>涨跌幅</th>
+                            <th>详情</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for item in stocks %}
+                            {% if item.change_extent > 0 %}
+                                <tr style="color: red">
+                                    <td>{{ item.obj.stock_id.stock_id }}</td>
+
+                                    <td>{{ item.obj.stock_id.stock_name }}</td>
+
+                                    <td>{{ item.obj.num_of_shares }}</td>
+                                    <td>{{ item.price }}</td>
+                                    <td>{{ item.obj.stock_id.issuance_time }}</td>
+                                    <td>{{ item.obj.stock_id.closing_price_y }}</td>
+                                    <td>{{ item.obj.stock_id.open_price_t }}</td>
+                                    <td>{{ item.obj.stock_id.stock_type }}</td>
+                                    <td>{{ item.obj.stock_id.block }}</td>
+                                    <td>{{ item.obj.stock_id.change_extent }}</td>
+                                    <td style="vertical-align: middle">
+                                        <a href="{% url 'tradingSystem:out' item.obj.stock_id.stock_id %}">详情</a>
+                                    </td>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                {% for stock in top10stock %}
-                                    <tr>
-                                        <td>
-                                            <a href="{% url 'tradingSystem:stock_info' stock.stock_id %}">{{ stock.stock_id }}</a>
-                                        </td>
-                                        <td>{{ stock.stock_name }}</td>
-                                        <td><span class="label label-danger">上涨</span></td>
-                                        <td>{{ stock.change_extent | floatformat }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="box-footer clearfix">
-                        <a href="{% url 'tradingSystem:stock_list' %}" class="btn btn-sm btn-info btn-flat pull-left">购入股票</a>
-                        <a href="{% url 'tradingSystem:stock_list' %}"
-                           class="btn btn-sm btn-default btn-flat pull-right">查看全部</a>
-                    </div>
+                            {% else %}
+                                <tr style="color: green">
+                                    <td>{{ item.obj.stock_id.stock_id }}</td>
+                                    <td>{{ item.obj.stock_id.stock_name }}</td>
+
+                                    <td>{{ item.obj.num_of_shares }}</td>
+                                    <td>{{ item.price }}</td>
+                                    <td>{{ item.obj.stock_id.issuance_time }}</td>
+                                    <td>{{ item.obj.stock_id.closing_price_y }}</td>
+                                    <td>{{ item.obj.stock_id.open_price_t }}</td>
+                                    <td>{{ item.obj.stock_id.stock_type }}</td>
+                                    <td>{{ item.obj.stock_id.block }}</td>
+                                    <td>{{ item.obj.stock_id.change_extent }}</td>
+                                    <td style="vertical-align: middle">
+                                        <a href="{% url 'tradingSystem:out' item.obj.stock_id.stock_id  %}">详情</a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <!-- Message box -->
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">重大新闻</h3>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-minus"></i></button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                    class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                {% for news in news_list %}
-                                    <tr>
-                                        <td><a href="{% url 'tradingSystem:news_detail' news.id %}">{{ news.title }}</a></td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="box-footer clearfix">
-                        <a href="#"
-                           class="btn btn-sm btn-info btn-flat pull-right"><i class="fa fa-refresh fa-spin"></i>
-                            换一波瞅瞅</a>
-                    </div>
-                </div>
-                <!-- /.box (chat box) -->
-            </div>
-
-
         </div>
-
         <div class="row">
 
             <div class="col-md-8">
@@ -120,37 +102,7 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer no-border">
-                        {% comment %}
-                        <div class="row">
 
-                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" value="20" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">Mail-Orders</div>
-                            </div>
-
-                            <!-- ./col -->
-                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" value="50" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">Online</div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-xs-4 text-center">
-                                <input type="text" class="knob" data-readonly="true" value="30" data-width="60"
-                                       data-height="60"
-                                       data-fgColor="#39CCCC">
-
-                                <div class="knob-label">In-Store</div>
-                            </div>
-                            <!-- ./col -->
-                        </div>
-                        {% endcomment %}
-                        <!-- /.row -->
                     </div>
                     <!-- /.box-footer -->
                 </div>
@@ -159,48 +111,10 @@
             <div class="col-md-4">
                 <!-- Message box -->
                 <div class="box box-success">
-                    <div class="box-header">
-                        <i class="fa fa-comments-o"></i>
 
-                        <h3 class="box-title">我的评论</h3>
 
-                        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                            <div class="btn-group" data-toggle="btn-toggle">
-                                <button type="button" class="btn btn-default btn-sm active"><i
-                                        class="fa fa-square text-green"></i>
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm"><i
-                                        class="fa fa-square text-red"></i></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="box-body chat" id="chat-box">
-                        <!-- chat item -->
-                        {% for comment in comments %}
-                            <div class="item">
-                                <img src="{{ user.photo_url }}" alt="用户头像" class="online">
-                                <p class="message">
-                                    <a href="{% url 'tradingSystem:comment_detail' comment.id %}" class="name">
-                                        <small class="text-muted pull-right"><i
-                                                class="fa fa-clock-o"></i> {{ comment.comment_time }} </small>
-                                        {{ comment.title }}
-                                    </a>
-                                    {{ comment.content }}
-                                </p>
-                            </div>
-                        {% endfor %}
-                    </div>
                     <!-- /.chat -->
-                    <div class="box-footer">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Type message...">
 
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.box (chat box) -->
             </div>
@@ -211,17 +125,67 @@
         </div>
 
     </section>
-
-
 {% endblock %}
-
-
 {% block script %}
-    <!-- js代码 -->
-    <!-- Echart -->
-    <script src="{% static 'AdminLTE/plugins/echarts.js' %}"></script>
+    <script>
 
-    <script type="text/javascript">
+        $(function () {
+            $(".select2").select2();
+        });
+        $(function () {
+            var table = $('#stock_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [],
+                "paging": true, <!-- 允许分页 -->
+                "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+                "searching": true, <!-- 允许内容搜索 -->
+                "ordering": true, <!-- 允许排序 -->
+                "info": true, <!-- 显示信息 -->
+                "autoWidth": false, <!-- 固定宽度 -->
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": true,
+                    "targets": 0
+                }],
+                "order": [[0, 'asc']]
+            });
+
+            $('#stock_table').on('click', 'tr', function (e) {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $('.select2').select2();
+        });
+
 
         $(document).ready(function () {
 
@@ -561,6 +525,6 @@
                 myChart.resize();
             });
         });
+
     </script>
 {% endblock %}
-

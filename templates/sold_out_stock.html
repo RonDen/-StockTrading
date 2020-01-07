@@ -32,9 +32,15 @@
                                     <input type="text" class="form-control" name="X" id="pri" readonly>
                                 </div>
                             </div>
-
+                              <div class="form-group">
+                                <label for="username" style="font-size:15px;"
+                                       class="col-sm-2 control-label">持有股数:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="hdon" id="holdon" readonly>
+                                </div>
+                            </div>
                             <div class="form-group">
-                                <label for="age" class="col-sm-2 control-label" style="font-size:15px;">增持股数:</label>
+                                <label for="age" class="col-sm-2 control-label" style="font-size:15px;">减持股数:</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" name="Y">
                                 </div>
@@ -75,7 +81,7 @@
 
                         <a href="{% url 'tradingSystem:stock_list' %}"
                            class="btn btn-sm btn-info btn-flat pull-left">返回</a>
-                        <a class="btn btn-sm btn-info btn-flat pull-right" id="seam">买入</a>
+                        <a class="btn btn-sm btn-info btn-flat pull-right" id="seam">卖出</a>
                     </div>
                 </div>
             </div>
@@ -584,9 +590,11 @@
                 if (fin == 1) {
                     var timeNow = new Date().getHours();
                     {#alert(s_id);#}
+
                     if (timeNow >= 9 && timeNow <= 12 || timeNow >= 13 && timeNow <=24) {//测试用24
+
                         $.ajax({
-                            url: '/get_real_quotes',
+                            url: '/get_real_holdon',
                             type: 'GET',
                             data: {id: s_id},
                             traditional: true,
@@ -594,6 +602,7 @@
                             success: function (arg) {
                                 var price = arg["price"];
                                 document.getElementById('pri').value = price;
+                                document.getElementById('holdon').value = arg["holdon"];
                                 {#alert(price);#}
 
                             }
@@ -621,31 +630,19 @@
 
                 var postData = {};
                 postData["price"] = $('#eidtModal input[name="X"]').val();
+                postData["holdon"] = $('#eidtModal input[name="hdon"]').val();
                 postData["shares"] = $('#eidtModal input[name="Y"]').val();
                 postData["s_id"] = s_id;
+
                 $('#eidtModal').modal('hide');
                 $.ajax({
-                    url: '/buy_in_stock',
+                    url: '/sold_out_stock',
                     type: 'GET',
                     data: postData,
                     traditional: true,
                     dataType: 'JSON',
                     success: function (arg) {
-                        if(arg["flag"]==1)
-                        {
-                            alert("增持成功");
-                        }
-                        else {
-                            if(arg["money"]==1)
-                            {
-                                alert("请检查账户是否开启或被冻结！")
-                            }
-                            else
-                            {
-                                alert("余额不足，请充值！")
-                            }
-                        }
-
+                        alert("当前剩余"+arg["rest"]+"股!!");
                         $('#eidtModal input[name="Y"]').val = "";
                     }
                 });

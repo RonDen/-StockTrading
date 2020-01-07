@@ -11,16 +11,24 @@ urlpatterns = [
     path('base', views.base, name='base'),
     path('register', views.register, name='register'),
     path('index', views.index, name='index'),
+
+    # 查看上市股票，股票交易，个人股票管理,获取实时股票信息
     path('stockdetails',views.stockdetails,name='stockdetails'),
     path('stock_info/<str:stock_id>/', views.stock_info, name='stock_info'),
     path('stock_list', views.stock_list, name='stock_list'),
-    path('stock_comment', views.stock_comment, name='stock_comment'),
     path('buy_in_stock', views.buy_in_stock, name='buy_in_stock'),
+    path('sold_stock',views.sold_stock,name= 'sold_stock'),
+    path('get_real_quotes', views.get_real_quotes, name='get_real_quotes'),
+    path('out/<str:stock_id>/', views.out, name='out'),
+    path('sold_out_stock', views.sold_out_stock, name='out'),
+    path('get_real_holdon', views.get_real_holdon, name='get_real_holdon'),
+
+    #股票评论
+    path('stock_comment', views.stock_comment, name='stock_comment'),
     path('user_profile', views.user_profile, name='user_profile'),
     path('log_out', views.log_out, name='log_out'),
     path('do_register', views.do_register, name='do_register'),
     path('deal_user_change', views.deal_user_change, name='deal_user_change'),
-    path('get_real_quotes',views.get_real_quotes,name = 'get_real_quotes'),
 
     # 管理员视图与URL
     path('a', admin_view.adm_index, name='adm_index'),
