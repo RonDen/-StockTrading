@@ -47,7 +47,7 @@
             </div>
 
             <div class="box-body">
-                <table id="stock_table" class="table table-bordered table-striped">
+                <table id="comment_table" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>评论股票</th>
@@ -56,40 +56,27 @@
                         <th>评论内容</th>
                         <th>评论时间</th>
                         <th>回复次数</th>
+                        <th>操作</th>
                         <th>删除</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for stock in all_stock %}
-                        {% if stock.change_extent > 0 %}
-                            <tr style="color: red">
-                                <td>{{ stock.stock_id }}</td>
-                                <td>{{ stock.stock_name }}</td>
-                                <td>{{ stock.issuance_time }}</td>
-                                <td>{{ stock.closing_price_y }}</td>
-                                <td>{{ stock.open_price_t }}</td>
-                                <td>{{ stock.stock_type }}</td>
-                                <td>{{ stock.block }}</td>
-                                <td>{{ stock.change_extent }}</td>
-                                <td style="vertical-align: middle">
-                                    <a href="{% url 'tradingSystem:adm_view_stock' stock.stock_id %}">详情</a>
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr style="color: green">
-                                <td>{{ stock.stock_id }}</td>
-                                <td>{{ stock.stock_name }}</td>
-                                <td>{{ stock.issuance_time }}</td>
-                                <td>{{ stock.closing_price_y }}</td>
-                                <td>{{ stock.open_price_t }}</td>
-                                <td>{{ stock.stock_type }}</td>
-                                <td>{{ stock.block }}</td>
-                                <td>{{ stock.change_extent }}</td>
-                                <td style="vertical-align: middle">
-                                    <a href="{% url 'tradingSystem:adm_view_stock' stock.stock_id %}">详情</a>
-                                </td>
-                            </tr>
-                        {% endif %}
+                    {% for result in results %}
+                        <tr>
+                            <td>{{ result.stock_id }}</td>
+                            <td>{{ result.stock_name }}</td>
+                            <td>{{ result.title }}</td>
+                            <td>{{ result.content }}</td>
+                            <td>{{ result.comment_time }}</td>
+                            <td>{{ result.reply_nums }}</td>
+                            <td style="vertical-align: middle">
+                                <a href="{% url 'tradingSystem:comment_detail' result.comment_id %}">详情</a>
+                            </td>
+                            <td style="vertical-align: middle">
+                                <button class="btn btn-danger"><b>删除</b></button>
+                            </td>
+                        </tr>
+
                     {% endfor %}
                     </tbody>
                 </table>
@@ -112,7 +99,7 @@
         {% endcomment %}
 
         $(document).ready(function () {
-            var table = $('#stock_table').DataTable(
+            var table = $('#comment_table').DataTable(
                 {
                     dom: 'Bfrtip',
                     buttons: [
@@ -170,6 +157,11 @@
                 table.draw();
             });
             $('.select2').select2();
+
+            $('.btn-danger').click(function () {
+
+            });
+
         });
 
 

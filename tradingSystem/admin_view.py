@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import UserTable, StockInfo, HistoryTradeTable
-from .utils import get_top10
+from .models import UserTable, StockInfo, HistoryTradeTable,StockComment, CommentReply
+from .utils import get_top10, get_news
 from utils import getAstock, getHistoryData
 
 
@@ -10,8 +10,18 @@ def adm_base(request):
 
 def adm_index(request):
     top10stock = get_top10
+    user_num = UserTable.objects.count()
+    stock_num = StockInfo.objects.count()
+    comment_num = StockComment.objects.count()
+    trading_num = HistoryTradeTable.objects.count()
+    news_list = get_news()
     context = {
-        'top10stock': top10stock
+        'top10stock': top10stock,
+        'user_num': user_num,
+        'stock_num': stock_num,
+        'comment_num': comment_num,
+        'trading_num': trading_num,
+        'news_list': news_list
     }
     return render(request, 'adm_index.html', context)
 

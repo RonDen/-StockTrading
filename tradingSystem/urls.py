@@ -38,8 +38,12 @@ urlpatterns = [
     # 查看评论
     path('comment_detail/<int:comment_id>', views.comment_detail, name='comment_detail'),
     path('view_user_profile/<int:phone_number>', views.view_user_profile, name='view_user_profile'),
+    # 删除评论
+    path('comment_delete/<int:comment_id>', views.comment_delete, name='comment_delete'),
+    path('comment_list', views.comment_list, name='comment_list'),
 
     # 新闻路由
-    path('news_detail/<int:news_id>', views.news_detail, name='news_detail')
+    path('news_detail/<int:news_id>', views.news_detail, name='news_detail'),
+    path('change_news', views.change_news, name='change_news'),
 ]
 

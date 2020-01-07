@@ -18,9 +18,12 @@ import uuid
 import os
 
 from tradingSystem import models
-from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply,News
+from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply, News
 from .utils import get_top10, get_news
-from utils import getAstock
+from utils import getAstock, cram_news
+import numpy as np
+from utils import getHistoryData
+from config.createUser import gen_photo_url, banks
 from utils import getRtQuotes
 from tradingSystem import models
 import pymysql
@@ -107,6 +110,11 @@ def index(request):
             return redirect("tradingSystem:goto_login")
     except Exception:
         return redirect("tradingSystem:goto_login")
+
+
+def change_news(request):
+    news_list = cram_news.gen_news()[:8]
+    return JsonResponse({"news_list": news_list})
 
 
 def user_profile(request):
@@ -474,7 +482,7 @@ def update_img(request):
         my_file = request.FILES.get('teamFile', None)
         message = ""
         filename = os.path.splitext(my_file._name)[1]
-        save_name = 'static/img/'+ user.phone_number+filename
+        save_name = 'static/img/' + user.phone_number + filename
         code = 1000
         if my_file:
             with open(save_name, 'wb') as file:
@@ -498,14 +506,25 @@ def comment_list(request):
     try:
         user = UserTable.objects.get(phone_number=request.session['phone_number'])
         comments = StockComment.objects.filter(user_id=user)
-        reply_nums = []
-        for c in comments:
-            pass
+        results = []
+        for comment in comments:
+            results.append({
+                'stock_id': comment.stock_id.stock_id,
+                'comment_id': comment.id,
+                'stock_name': comment.stock_id.stock_name,
+                'title': comment.title,
+                'content': comment.content,
+                'comment_time': comment.comment_time,
+                'reply_nums': CommentReply.objects.filter(comment=comment).count(),
+            })
         context = {
-            'comments': comments,
+            'results': results,
             'user': user,
         }
         return render(request, 'comment_list.html', context)
     except:
         return redirect('tradingSystem:mylogin')
 
+
+def comment_delete(request, comment_id):
+    pass
