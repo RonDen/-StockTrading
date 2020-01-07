@@ -86,7 +86,7 @@
                     </div>
                     <div class="box-footer clearfix">
                         <a href="#"
-                           class="btn btn-sm btn-info btn-flat pull-right"><i class="fa fa-refresh fa-spin"></i>
+                           class="btn btn-sm btn-info btn-flat pull-right" id="change_btn"><i class="fa fa-refresh fa-spin"></i>
                             换一波瞅瞅</a>
                     </div>
                 </div>
@@ -560,6 +560,24 @@
             window.addEventListener("resize", function () {
                 myChart.resize();
             });
+            var page = {{ page }};
+            $('#change_btn').click(
+                function() {
+                    page += 1;
+                    $.ajax({
+                        'url': "{% url 'tradingSystem:index' %}",
+                        'data': {"page": page},
+                        'success': function() {
+                            console.log(page);
+                            console.log("success");
+                            window.location.reload();
+                        },
+                        'error': function() {
+                            console.log("error");
+                        }
+                    });
+                }
+            );
         });
     </script>
 {% endblock %}

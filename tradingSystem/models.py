@@ -1,4 +1,5 @@
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 class UserTable(models.Model):
@@ -155,3 +156,46 @@ class CommentReply(models.Model):
     class Meta:
         db_table = 'comment_reply'
         ordering = ['reply_time']
+
+
+class Comment(MPTTModel):
+    stock_id = models.ForeignKey(
+        StockInfo,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    user_id = models.ForeignKey(
+        UserTable,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    # 新增，mptt树形结构
+    parent = TreeForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='children'
+    )
+
+    # 新增，记录二级评论回复给谁, str
+    reply_to = models.ForeignKey(
+        UserTable,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='replyers'
+    )
+
+    body = models.TextField(null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    # 替换 Meta 为 MPTTMeta
+    # class Meta:
+    #     ordering = ('created',)
+
+    def __str__(self):
+        return self.body[:20]
+
+    class MPTTMeta:
+        order_insertion_by = ['created']
+

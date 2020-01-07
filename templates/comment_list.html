@@ -63,7 +63,7 @@
                     <tbody>
                     {% for result in results %}
                         <tr>
-                            <td>{{ result.stock_id }}</td>
+                            <td><a href="{% url 'tradingSystem:stock_info' result.stock_id %}">{{ result.stock_id }}</a></td>
                             <td>{{ result.stock_name }}</td>
                             <td>{{ result.title }}</td>
                             <td>{{ result.content }}</td>
@@ -159,7 +159,10 @@
             $('.select2').select2();
 
             $('.btn-danger').click(function () {
-
+                var row = this.parentNode.parentNode;
+                var index = row.rowIndex;
+                var table = document.getElementById('comment_table');
+                table.deleteRow(index);
             });
 
         });

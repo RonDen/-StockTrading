@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from .models import UserTable, StockInfo, HistoryTradeTable,StockComment, CommentReply
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from .models import UserTable, StockInfo, HistoryTradeTable,StockComment, CommentReply, News
 from .utils import get_top10, get_news
 from utils import getAstock, getHistoryData
 
@@ -90,17 +91,91 @@ def adm_trading(request):
 
 
 def adm_news(request):
-    return render(request, "adm_news.html")
+    all_news = News.objects.all()
+    results = []
+    for news in all_news:
+        results.append({
+            'news_title': news.title[:20],
+            'content': news.content[:20],
+            'news_id': news.id,
+            'read': news.read,
+            'news_time': news.news_time
+        })
+    context = {
+        'results': results,
+    }
+    return render(request, "adm_news.html", context)
+
+
+def adm_news_detail(request, news_id):
+    user = UserTable.objects.get(phone_number=request.session['phone_number'])
+    news = News.objects.get(id=news_id)
+    nx_news = news_id + 1
+    pre_news = news_id - 1
+
+    while not News.objects.filter(id=nx_news).exists():
+        nx_news += 1
+    while not News.objects.filter(id=pre_news).exists():
+        pre_news -= 1
+    context = {
+        'user': user,
+        'news': news,
+        'nx_news': nx_news,
+        'pre_news': pre_news
+    }
+    return render(request, "adm_news_detail.html", context)
 
 
 def adm_comment(request):
     return render(request, "adm_comment.html")
 
 
+def freeze_user(request):
+    phone_number = request.GET.get('phone_number')
+
+    user = UserTable.objects.get(phone_number=phone_number)
+    user.freeze = True
+    user.save()
+    return JsonResponse({})
 
 
+def unfreeze_user(request):
+    phone_number = request.GET.get('phone_number')
+
+    user = UserTable.objects.get(phone_number=phone_number)
+    user.freeze = False
+    user.save()
+    return JsonResponse({})
 
 
+def delete_user(request):
+    phone_number = request.GET.get('phone_number')
+    user = UserTable.objects.get(phone_number=phone_number)
+    user.delete()
+    return JsonResponse({})
+
+
+def change_user(request):
+    if request.POST:
+        user_id = request.POST['user_id']
+        user_name = request.POST['user_name']
+        phone_number = request.POST['phone_number']
+        user_sex = request.POST['user_sex']
+        id_no = request.POST['id_no']
+        user_email = request.POST['user_email']
+        account_type = request.POST['account_type']
+        account_number = request.POST['account_num']
+
+        user = UserTable.objects.get(user_id=user_id)
+        user.phone_number = phone_number
+        user.user_sex = user_sex
+        user.user_name = user_name
+        user.user_email = user_email
+        user.account_type = account_type
+        user.account_num = account_number
+        user.id_no = id_no
+        user.save()
+    return redirect('tradingSystem:adm_user')
 
 
 

@@ -8,9 +8,9 @@ from config.createUser import gen_photo_url, banks
 from django.core.serializers import serialize
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.http import JsonResponse
 from datetime import date, datetime
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from utils import getHistoryData
 from .utils import get_top10
 import tushare as ts
@@ -97,13 +97,20 @@ def index(request):
             phone_number = request.session['phone_number']
             user = UserTable.objects.get(phone_number=phone_number)
             comments = StockComment.objects.filter(user_id=user)
-            news_list = get_news()
+            all_news = News.objects.all()
+            page = request.GET.get('page', 1)
+            paginator = Paginator(all_news, 8)
+            if page > paginator.num_pages:
+                page = 1
+            news_list = paginator.get_page(page)
+            # news_list = get_news()
             top10stock = get_top10()
             context = {
                 'top10stock': top10stock,
                 'comments': comments,
                 'user': user,
-                'news_list': news_list
+                'news_list': news_list,
+                'page': page
             }
             return render(request, 'index.html', context)
         else:
@@ -197,7 +204,7 @@ def stock_list(request):
 
 def stock_info(request, stock_id):
     print("aasdasdasd")
-    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", database="stocktrading")
+    conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
     # print(ts.get_hist_data('600848'))
 
