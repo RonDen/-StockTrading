@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import UserTable, StockInfo, HistoryTradeTable,StockComment, CommentReply, News
+from django.contrib.auth.models import User
+from .models import UserTable, StockInfo, HistoryTradeTable, StockComment, CommentReply, News
 from .utils import get_top10, get_news
 from utils import getAstock, getHistoryData
 
@@ -60,26 +61,26 @@ def adm_stock_info(request, stock_id):
     hisData = []
     hold_vol = ""
 
-    if(choosenStock[0].stock_type=="上证"):
-        hold_vol = getAstock.getAstock(stock_id+".SH")
-        hisData = getHistoryData.getHistoryData(stock_id+".SH")
+    if (choosenStock[0].stock_type == "上证"):
+        hold_vol = getAstock.getAstock(stock_id + ".SH")
+        hisData = getHistoryData.getHistoryData(stock_id + ".SH")
     else:
-        hold_vol = getAstock.getAstock(stock_id+".SZ")
-        hisData = getHistoryData.getHistoryData(stock_id+".SZ")
+        hold_vol = getAstock.getAstock(stock_id + ".SZ")
+        hisData = getHistoryData.getHistoryData(stock_id + ".SZ")
 
-    context={
-        "sid":choosenStock[0].stock_id,
-        "sname":choosenStock[0].stock_name,
-        "issuance_time":choosenStock[0].issuance_time,
-        "closing_price_y":choosenStock[0].closing_price_y,
-        "open_price_t":choosenStock[0].open_price_t,
-        "stock_type":choosenStock[0].stock_type,
-        "block":choosenStock[0].block,
-        "change_extent":choosenStock[0].change_extent,
-        "hold_vold":hold_vol,
-        "hisData":hisData
+    context = {
+        "sid": choosenStock[0].stock_id,
+        "sname": choosenStock[0].stock_name,
+        "issuance_time": choosenStock[0].issuance_time,
+        "closing_price_y": choosenStock[0].closing_price_y,
+        "open_price_t": choosenStock[0].open_price_t,
+        "stock_type": choosenStock[0].stock_type,
+        "block": choosenStock[0].block,
+        "change_extent": choosenStock[0].change_extent,
+        "hold_vold": hold_vol,
+        "hisData": hisData
     }
-    return render(request, 'adm_stock_info.html',context)
+    return render(request, 'adm_stock_info.html', context)
 
 
 def adm_trading(request):
@@ -95,11 +96,11 @@ def adm_news(request):
     results = []
     for news in all_news:
         results.append({
-            'news_title': news.title[:20],
-            'content': news.content[:20],
+            'news_title': news.title[:30],
+            'content': news.content[:30],
             'news_id': news.id,
             'read': news.read,
-            'news_time': news.news_time
+            'news_time': str(news.news_time)
         })
     context = {
         'results': results,
@@ -108,26 +109,79 @@ def adm_news(request):
 
 
 def adm_news_detail(request, news_id):
-    user = UserTable.objects.get(phone_number=request.session['phone_number'])
     news = News.objects.get(id=news_id)
-    nx_news = news_id + 1
-    pre_news = news_id - 1
-
-    while not News.objects.filter(id=nx_news).exists():
-        nx_news += 1
-    while not News.objects.filter(id=pre_news).exists():
-        pre_news -= 1
     context = {
-        'user': user,
         'news': news,
-        'nx_news': nx_news,
-        'pre_news': pre_news
     }
     return render(request, "adm_news_detail.html", context)
 
 
+def adm_add_news(request):
+    if request.POST:
+        title = request.POST.get('news_title')
+        content = request.POST.get('news_content')
+        news = News.objects.create(
+            title=title,
+            content=content,
+            read=0
+        )
+        news.save()
+    return redirect('tradingSystem:adm_news')
+
+
+def adm_delete_news(request, news_id):
+    news = News.objects.get(id=news_id)
+    print(news, "被删除了")
+    news.delete()
+    return redirect('tradingSystem:adm_news')
+
+
+def adm_edit_news(request):
+    if request.POST:
+        news_id = request.POST.get('news_id')
+        news_title = request.POST.get('news_title')
+        news_content = request.POST.get('news_content')
+        news = News.objects.get(id=news_id)
+        news.title = news_title
+        news.content = news_content
+        news.save()
+        return redirect('tradingSystem:adm_news_detail', news_id=int(news_id))
+    return redirect('tradingSystem:adm_news')
+
+
 def adm_comment(request):
-    return render(request, "adm_comment.html")
+    comments = StockComment.objects.all()
+    results = []
+    for comment in comments:
+        results.append({
+            'stock_id': comment.stock_id.stock_id,
+            'comment_id': comment.id,
+            'stock_name': comment.stock_id.stock_name,
+            'title': comment.title,
+            'content': comment.content[:30],
+            'comment_time': comment.comment_time,
+            'reply_nums': CommentReply.objects.filter(comment=comment).count(),
+        })
+    context = {
+        'results': results,
+    }
+    return render(request, "adm_comment.html", context)
+
+
+def adm_comment_detail(request, comment_id):
+    comment = StockComment.objects.get(id=comment_id)
+    replys = CommentReply.objects.filter(comment=comment)
+    context = {
+        'comment': comment,
+        'replys': replys,
+    }
+    return render(request, 'adm_comment_detail.html', context)
+
+
+def adm_delete_comment(request, comment_id):
+    comment = StockComment.objects.get(id=comment_id)
+    # comment.delete()
+    return redirect('tradingSystem:adm_comment')
 
 
 def freeze_user(request):
@@ -176,11 +230,3 @@ def change_user(request):
         user.id_no = id_no
         user.save()
     return redirect('tradingSystem:adm_user')
-
-
-
-
-
-
-
-

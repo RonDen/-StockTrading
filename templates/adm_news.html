@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block title %}
-管理每日重大新闻
+    管理每日重大新闻
 {% endblock %}
 
 {% block content %}
@@ -65,24 +65,73 @@
                     {% for result in results %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td><a href="{% url 'tradingSystem:adm_news_detail' result.news_id %}">{{ result.news_id }}</a></td>
+                            <td>
+                                <a href="{% url 'tradingSystem:adm_news_detail' result.news_id %}">{{ result.news_id }}</a>
+                            </td>
                             <td>{{ result.news_title }}</td>
                             <td>{{ result.content }}</td>
-                            <td>{{ result.comment_time }}</td>
-                            <td>{{ result.reply_nums }}</td>
+                            <td>{{ result.news_time }}</td>
+                            <td>{{ result.read }}</td>
                             <td style="vertical-align: middle">
-                                <a href="{% url 'tradingSystem:comment_detail' result.comment_id %}">详情</a>
+                                <a href="{% url 'tradingSystem:adm_news_detail' result.news_id %}">详情</a>
                             </td>
                             <td style="vertical-align: middle">
-                                <button class="btn btn-danger"><b>删除</b></button>
+                                <a style="color: red" href="{% url 'tradingSystem:adm_delete_news' result.news_id %}">删除</a>
                             </td>
                         </tr>
-
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+        <div class="box-footer">
+            <div class="btn-group pull-left ">
+                <button id="add_btn" class="btn btn-success" type="button">
+                    <span class="glyphicon glyphicon-plus">新建新闻信息</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{% url 'tradingSystem:adm_add_news' %}"  method="post">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">添加新闻</h4>
+                        </div>
+                        <div class="modal-content" id="add_news_modal">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    {% csrf_token %}
+                                    <label for="news_title" class="col-sm-2 control-label" style="color: red">新闻标题：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="news_title" class="form-control"
+                                               name="news_title" placeholder="输入标题">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="news_content" class="col-sm-2 control-label">新闻内容：</label>
+                                    <div class="col-sm-10">
+                                        <textarea name="news_content" id="news_content" class="form-control" rows="10" placeholder="输入您的内容"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="center-block">
+                                    <button id="cancelAdd" type="button" class="btn btn-default"
+                                            data-dismiss="modal">取消
+                                    </button>
+                                    <button id="sureToAdd" type="submit" class="btn btn-success">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 
@@ -100,18 +149,18 @@
         {% endcomment %}
 
         $(document).ready(function () {
-            var table = $('#comment_table').DataTable(
+            var table = $('#news_table').DataTable(
                 {
                     dom: 'Bfrtip',
                     buttons: [
                         'copy',
                         {
                             extend: 'excel',
-                            filename: "股票信息表",
+                            filename: "新闻信息表",
                         },
                         {
                             extend: 'print',
-                            filename: "股票信息表",
+                            filename: "新闻信息表",
                         }
                     ],
                     "paging": true,       <!-- 允许分页 -->
@@ -166,9 +215,12 @@
                 table.deleteRow(index);
             });
 
+
+           $('#add_btn').click(function () {
+               $('#addForm').modal();
+           });
+
         });
-
-
     </script>
 {% endblock %}
 

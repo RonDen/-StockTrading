@@ -41,6 +41,14 @@ urlpatterns = [
     path('change_user', admin_view.change_user, name='change_user'),
     # 管理员查看新闻详情
     path('adm_news_detail/<int:news_id>', admin_view.adm_news_detail, name='adm_news_detail'),
+    # 管理员编辑新闻内容
+    path('adm_edit_news', admin_view.adm_edit_news, name='adm_edit_news'),
+    # 管理员新建新闻
+    path('adm_add_news', admin_view.adm_add_news, name='adm_add_news'),
+    # 管理员删除新闻
+    path('adm_delete_news/<int:news_id>', admin_view.adm_delete_news, name='adm_delete_news'),
+    # 管理员查看评论详情
+    path('adm_comment_detail/<int:comment_id>', admin_view.adm_comment_detail, name='adm_comment_detail'),
 
     path('update_img', views.update_img, name='update_img'),
 

@@ -58,6 +58,7 @@ def mylogin(request):
             request.session['user_num'] = user_num
             request.session['stock_num'] = stock_num
             request.session['photo_url'] = '../static/img/head.jpg'
+            request.session['phone_num'] = adm.username
 
             return redirect('tradingSystem:adm_index')
         except ObjectDoesNotExist:
@@ -362,7 +363,7 @@ def stock_list(request):
     #     queryset.append(models.StockInfo(stock_id = i[1],stock_name = i[2],issuance_time=i[6],closing_price_y=0,open_price_t=0,stock_type="",block=i[5],change_extent=0))
     # models.StockInfo.objects.bulk_create(queryset)
 
-    stockl = models.StockInfo.objects.all()
+    stockl = models.StockInfo.objects.all()[:100]
     # all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
     # print(queryset)
     context = {
@@ -534,4 +535,7 @@ def comment_list(request):
 
 
 def comment_delete(request, comment_id):
-    pass
+    comment = StockComment.objects.get(id=comment_id)
+    # comment.delete()
+    return redirect('tradingSystem:comment_list')
+

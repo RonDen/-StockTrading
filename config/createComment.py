@@ -47,7 +47,7 @@ for user in UserTable.objects.all():
 
 
 for comment in StockComment.objects.all():
-    tao_ha = ['您说的真对', '您说的对', '您说的也对']
+    tao_ha = ['您说的真对', '您说的对', '您说的也对', "哈哈哈", "赶快买", "卖了房也要买", "小心被割韭菜"]
     for ha in tao_ha:
         reply = CommentReply.objects.create(
             user_id=choice(users),
