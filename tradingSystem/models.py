@@ -69,7 +69,6 @@ class StockInfo(models.Model):
 class HistoryTradeTable(models.Model):
     # 历史交易记录表
     # 交易ID，PK
-
     user_id = models.ForeignKey(to=UserTable, on_delete=models.CASCADE)
     # 交易股票ID，FK
     stock_id = models.ForeignKey(to=StockInfo, on_delete=models.CASCADE)

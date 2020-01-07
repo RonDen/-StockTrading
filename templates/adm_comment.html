@@ -27,6 +27,7 @@
                     <thead>
                     <tr>
                         <th>评论股票</th>
+                        <th>发表用户</th>
                         <th>股票名称</th>
                         <th>评论标题</th>
                         <th>评论内容</th>
@@ -40,6 +41,7 @@
                     {% for result in results %}
                         <tr>
                             <td><a href="{% url 'tradingSystem:stock_info' result.stock_id %}">{{ result.stock_id }}</a></td>
+                            <td><a href="{% url 'tradingSystem:adm_view_user' result.phone_number %}">{{ result.phone_number }}</a></td>
                             <td>{{ result.stock_name }}</td>
                             <td>{{ result.title }}</td>
                             <td>{{ result.content }}</td>
@@ -49,10 +51,7 @@
                                 <a href="{% url 'tradingSystem:adm_comment_detail' result.comment_id %}">详情</a>
                             </td>
                             <td style="vertical-align: middle">
-                                <a style="color: red" href="{% url 'tradingSystem:adm_delete_news' result.news_id %}">删除</a>
-                            </td>
-                            <td style="vertical-align: middle">
-                                <button class="btn btn-danger"><b>删除</b></button>
+                                <a style="color: red" href="{% url 'tradingSystem:adm_delete_comment' result.comment_id %}">删除</a>
                             </td>
                         </tr>
                     {% endfor %}

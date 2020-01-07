@@ -95,6 +95,12 @@ def adm_trading(request):
     return render(request, "adm_trading.html", context)
 
 
+def adm_delete_trading(request, trading_id):
+    trading = HistoryTradeTable.objects.get(id=trading_id)
+    trading.delete()
+    return redirect('tradingSystem:adm_trading')
+
+
 def adm_news(request):
     all_news = News.objects.all()
     results = []
@@ -160,6 +166,7 @@ def adm_comment(request):
         results.append({
             'stock_id': comment.stock_id.stock_id,
             'comment_id': comment.id,
+            'phone_number': comment.user_id.phone_number,
             'stock_name': comment.stock_id.stock_name,
             'title': comment.title,
             'content': comment.content[:30],
@@ -184,7 +191,7 @@ def adm_comment_detail(request, comment_id):
 
 def adm_delete_comment(request, comment_id):
     comment = StockComment.objects.get(id=comment_id)
-    # comment.delete()
+    comment.delete()
     return redirect('tradingSystem:adm_comment')
 
 
