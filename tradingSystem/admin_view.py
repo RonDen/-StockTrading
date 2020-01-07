@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .models import UserTable, StockInfo, HistoryTradeTable, StockComment, CommentReply, News
-from .utils import get_top10, get_news
+from .utils import get_top10, get_news, get_buy_in_out
 from utils import getAstock, getHistoryData
 
 
@@ -38,8 +38,12 @@ def adm_user(request):
 
 def user_detail(request, phone_number):
     user = UserTable.objects.get(phone_number=phone_number)
+    buy_in, buy_out = get_buy_in_out(phone_number)
+
     context = {
-        'user': user
+        'user': user,
+        'buy_in': buy_in,
+        'buy_out': buy_out
     }
     return render(request, 'adm_user_detail.html', context)
 

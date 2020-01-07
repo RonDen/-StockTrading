@@ -19,7 +19,7 @@ import os
 
 from tradingSystem import models
 from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply, News
-from .utils import get_top10, get_news
+from .utils import get_top10, get_news, get_buy_in_out
 from utils import getAstock, cram_news
 import numpy as np
 from utils import getHistoryData
@@ -132,10 +132,12 @@ def user_profile(request):
         if request.session['phone_number']:
             phone_number = request.session['phone_number']
             user = UserTable.objects.get(phone_number=phone_number)
-
+            buy_in, buy_out = get_buy_in_out(phone_number)
             context = {
                 'banks': banks,
-                'user': user
+                'user': user,
+                'buy_in': buy_in,
+                'buy_out': buy_out
             }
             return render(request, 'tradingSystem/user_profile.html', context)
         else:
@@ -715,8 +717,11 @@ def get_real_quotes(request):
 # 点击查看其他用户的信息
 def view_user_profile(request, phone_number):
     user = UserTable.objects.get(phone_number=phone_number)
+    buy_in, buy_out = get_buy_in_out(phone_number)
     context = {
-        'user': user
+        'user': user,
+        'buy_in': buy_in,
+        'buy_out': buy_out
     }
     return render(request, 'view_user_profile.html', context)
 
@@ -794,5 +799,5 @@ def comment_list(request):
 
 def comment_delete(request, comment_id):
     comment = StockComment.objects.get(id=comment_id)
-    # comment.delete()
+    comment.delete()
     return redirect('tradingSystem:comment_list')

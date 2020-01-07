@@ -55,7 +55,6 @@
                                 <button class="btn btn-danger"><b>删除</b></button>
                             </td>
                         </tr>
-
                     {% endfor %}
                     </tbody>
                 </table>
@@ -78,6 +77,7 @@
         {% endcomment %}
 
         $(document).ready(function () {
+
             var table = $('#comment_table').DataTable(
                 {
                     dom: 'Bfrtip',
