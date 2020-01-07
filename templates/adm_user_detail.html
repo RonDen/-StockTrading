@@ -26,7 +26,6 @@
                         <img class="profile-user-img img-responsive img-circle"
                              src="{{ user.photo_url }}" alt="用户头像">
 
-
                         <h3 class="profile-username text-center">{{ user.user_name }}</h3>
 
                         <p class="text-muted text-center">{{ user.user_id }}</p>
@@ -44,7 +43,11 @@
                             </li>
                         </ul>
 
-                        <a href="#" class="btn btn-danger btn-block"><b>冻结账户</b></a>
+                        {% if user.freeze %}
+                            <button href="#" id="unfreeze_btn" class="btn btn-success btn-block">取消冻结</button>
+                        {% else %}
+                        <button href="#" id="freeze_btn" class="btn btn-danger btn-block">冻结账户</button>
+                        {% endif %}
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -60,7 +63,7 @@
 
                         <div class="tab-pane" id="settings">
                             <form class="form-horizontal" id="user_form"
-                                  action="{% url 'tradingSystem:deal_user_change' %}" method="post">
+                                  action="{% url 'tradingSystem:change_user' %}" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="user_id" class="col-sm-2 control-label">ID</label>
@@ -95,7 +98,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" name="user_sex" class="form-control" id="user_sex"
-                                               readonly="readonly" value="{{ user.user_sex }}">
+                                               value="{{ user.user_sex }}">
                                     </div>
                                 </div>
 
@@ -114,7 +117,6 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" name="id_no" class="form-control" id="id_no"
-                                               readonly="readonly"
                                                value="{{ user.id_no }}">
                                     </div>
                                 </div>
@@ -139,35 +141,35 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="account_type" class="col-sm-2 control-label">是否开户</label>
+                                    <label for="account_opened" class="col-sm-2 control-label">是否开户</label>
 
                                     {% if user.account_opened %}
                                         <div class="col-sm-10">
-                                            <input type="text" name="account_type" class="form-control"
-                                                   id="account_type"
+                                            <input type="text" name="account_opened" class="form-control"
+                                                   id="account_opened"
                                                    readonly="readonly" value="已开户">
                                         </div>
                                     {% else %}
                                         <div class="col-sm-10">
-                                            <input type="text" name="account_type" class="form-control"
-                                                   id="account_type"
+                                            <input type="text" name="account_opened" class="form-control"
+                                                   id="account_opened"
                                                    readonly="readonly" value="未开户">
                                         </div>
                                     {% endif %}
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="account_type" class="col-sm-2 control-label">是否被冻结</label>
+                                    <label for="freeze" class="col-sm-2 control-label">是否被冻结</label>
                                     {% if user.freeze %}
                                         <div class="col-sm-10">
-                                            <input type="text" name="account_type" class="form-control"
-                                                   id="account_type"
+                                            <input type="text" name="freeze" class="form-control"
+                                                   id="freeze"
                                                    readonly="readonly" value="已被冻结">
                                         </div>
                                     {% else %}
                                         <div class="col-sm-10">
-                                            <input type="text" name="account_type" class="form-control"
-                                                   id="account_type"
+                                            <input type="text" name="freeze" class="form-control"
+                                                   id="freeze"
                                                    readonly="readonly" value="未冻结">
                                         </div>
                                     {% endif %}
@@ -176,6 +178,7 @@
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <button type="submit" id="conf_modify" class="btn btn-danger">确认修改</button>
+                                        <button type="button" id="user_delete" class="btn btn-danger pull-right">删除用户</button>
                                     </div>
                                 </div>
 
@@ -200,6 +203,69 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.select2').select2();
+
+            $('#freeze_btn').click(
+                function(){
+                    var phone_number = $('#phone_number')[0].value;
+                    $.ajax({
+                        'url': "{% url 'tradingSystem:freeze_user' %}",
+                        'data': {'phone_number': phone_number},
+                        'success': function() {
+                            freeze_btn = $('#freeze_btn');
+                            freeze_btn.innerHTML = "取消冻结";
+                            freeze_btn.removeClass('btn-danger');
+                            freeze_btn.addClass('btn-success');
+                            console.log("success");
+                            window.location.reload();
+                        },
+                        'error': function() {
+                            console.log("error");
+                            alert("请稍后再试！")
+                        }
+                    });
+                }
+            );
+
+            $('#unfreeze_btn').click(
+                function(){
+                    var phone_number = $('#phone_number')[0].value;
+                    $.ajax({
+                        'url': "{% url 'tradingSystem:freeze_user' %}",
+                        'data': {'phone_number': phone_number},
+                        'success': function() {
+                            unfreeze_btn = $('#unfreeze_btn');
+                            unfreeze_btn.innerHTML = "冻结账户";
+                            unfreeze_btn.removeClass('btn-success');
+                            unfreeze_btn.addClass('btn-danger');
+                            console.log("success");
+                            window.location.reload();
+                        },
+                        'error': function() {
+                            console.log("error");
+                            alert("请稍后再试！")
+                        }
+                    });
+                }
+            );
+
+            $('#user_delete').click(
+                function(){
+                    var phone_number = $('#phone_number')[0].value;
+                    console.log('user_deleted');
+                    console.log(phone_number);
+                    $.ajax({
+                        'url': "{% url 'tradingSystem:delete_user' %}",
+                        'data': {'phone_number': phone_number},
+                        'success': function() {
+                            window.history.back(-1);
+                        },
+                        'error': function() {
+                            console.log("error");
+                            alert("请稍后再试！")
+                        }
+                    });
+                }
+            );
         });
 
     </script>

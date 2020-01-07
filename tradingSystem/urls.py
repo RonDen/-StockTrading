@@ -30,8 +30,17 @@ urlpatterns = [
     path('a/trading', admin_view.adm_trading, name='adm_trading'),
     path('a/news', admin_view.adm_news, name='adm_news'),
     path('a/comments', admin_view.adm_comment, name='adm_comment'),
-    path('adm_view_user/<int:phone_number>', admin_view.user_detail, name='adm_view_user'),
+    path('adm_view_user/<str:phone_number>', admin_view.user_detail, name='adm_view_user'),
     path('adm_view_stock/<str:stock_id>', admin_view.adm_stock_info, name='adm_view_stock'),
+    # 管理员冻结用户
+    path('freeze_user', admin_view.freeze_user, name='freeze_user'),
+    path('unfreeze_user', admin_view.unfreeze_user, name='unfreeze_user'),
+    # 管理员删除用户
+    path('delete_user', admin_view.delete_user, name='delete_user'),
+    # 管理员修改用户信息
+    path('change_user', admin_view.change_user, name='change_user'),
+    # 管理员查看新闻详情
+    path('adm_news_detail/<int:news_id>', admin_view.adm_news_detail, name='adm_news_detail'),
 
     path('update_img', views.update_img, name='update_img'),
 
