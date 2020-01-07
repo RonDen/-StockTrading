@@ -4,3 +4,4 @@ mysqldump -uroot -ppassword stocktrading news > news.sql
 mysqldump -uroot -ppassword stocktrading stock_comment > stock_comment.sql
 mysqldump -uroot -ppassword stocktrading comment_reply > comment_reply.sql
 
+mysqldump -uroot -ppassword stocktrading > stocktrading.sql

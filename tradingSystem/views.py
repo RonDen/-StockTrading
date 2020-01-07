@@ -374,7 +374,7 @@ def buy_in_stock(request):
 
 
 def sold_stock(request):
-    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", database="stocktrading")
+    conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
 
     solder = models.UserTable.objects.filter(phone_number=request.session['phone_number'])
@@ -399,7 +399,7 @@ def sold_stock(request):
 
 def out(request, stock_id):
     print("aasdasdasd")
-    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", database="stocktrading")
+    conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
     # print(ts.get_hist_data('600848'))
 
@@ -638,7 +638,7 @@ def sold_out_stock(request):
                 )
                 return JsonResponse({"flag": 1, "rest": record})
 def get_real_holdon(request):
-    conn = pymysql.connect(host="127.0.0.1", user="root", password="123456", database="stocktrading")
+    conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
     if request.is_ajax():
         if request.method == 'GET':
