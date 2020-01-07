@@ -584,7 +584,7 @@
                 if (fin == 1) {
                     var timeNow = new Date().getHours();
                     alert(s_id);
-                    if (timeNow >= 9 && timeNow < 12 || timeNow >= 13 && timeNow <=24) {//测试用24
+                    if (timeNow >= 9 && timeNow <= 12 || timeNow >= 13 && timeNow <=24) {//测试用24
                         $.ajax({
                             url: '/get_real_quotes',
                             type: 'GET',

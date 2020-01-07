@@ -84,6 +84,9 @@ DATABASES = {
         'POST': 3306,
         'USER': 'trading',
         'PASSWORD': 'trading',
+        'OPTIONS': {
+            "init_command": "SET foreign_key_checks = 0;",
+        }
     }
 }
 
