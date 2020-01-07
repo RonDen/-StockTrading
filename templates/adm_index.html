@@ -143,7 +143,7 @@
                                 <tbody>
                                 {% for news in news_list %}
                                     <tr>
-                                        <td><a href="{% url 'tradingSystem:news_detail' news.id %}">{{ news.title }}</a></td>
+                                        <td><a href="{% url 'tradingSystem:adm_news_detail' news.id %}">{{ news.title }}</a></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
