@@ -58,6 +58,11 @@ urlpatterns = [
     path('adm_delete_news/<int:news_id>', admin_view.adm_delete_news, name='adm_delete_news'),
     # 管理员查看评论详情
     path('adm_comment_detail/<int:comment_id>', admin_view.adm_comment_detail, name='adm_comment_detail'),
+    # 管理员删除评论
+    path('adm_delete_comment/<int:comment_id>', admin_view.adm_delete_comment, name='adm_delete_comment'),
+
+    # 管理员删除交易记录
+    path('adm_delete_trading/<int:trading_id>', admin_view.adm_delete_trading, name='adm_delete_trading'),
 
     path('update_img', views.update_img, name='update_img'),
 

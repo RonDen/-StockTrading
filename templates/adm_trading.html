@@ -57,6 +57,7 @@
                         <th>交易价格</th>
                         <th>成交时间</th>
                         <th>详情</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,28 +66,31 @@
                         {% if trading.trade_shares > 0 %}
                             <tr style="color: red">
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ trading.user_id.phone_number }}</td>
-                                <td>{{ trading.stock_id.stock_id }}</td>
+                                <td><a href="{% url 'tradingSystem:adm_view_user' trading.user_id.phone_number %}">{{ trading.user_id.phone_number }}</a></td>
+                                <td><a href="{% url 'tradingSystem:adm_view_stock' trading.stock_id.stock_id %}">{{ trading.stock_id.stock_id }}</a></td>
                                 <td>{{ trading.stock_id.stock_name }}</td>
                                 <td>{{ trading.trade_price }}</td>
                                 <td>{{ trading.trade_time }}</td>
                                 <td style="vertical-align: middle">{{ trading.trade_shares }}</td>
+                                <td><a href="{% url 'tradingSystem:adm_delete_trading' trading.id %}" style="color: red">删除</a></td>
                             </tr>
                         {% else %}
                             <tr style="color: green">
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ trading.user_id.phone_number }}</td>
-                                <td>{{ trading.stock_id.stock_id }}</td>
+                                <td><a href="{% url 'tradingSystem:adm_view_user' trading.user_id.phone_number %}">{{ trading.user_id.phone_number }}</a></td>
+                                <td><a href="{% url 'tradingSystem:adm_view_stock' trading.stock_id.stock_id %}">{{ trading.stock_id.stock_id }}</a></td>
                                 <td>{{ trading.stock_id.stock_name }}</td>
                                 <td>{{ trading.trade_price }}</td>
                                 <td>{{ trading.trade_time }}</td>
                                 <td style="vertical-align: middle">{{ trading.trade_shares }}</td>
+                                <td><a href="{% url 'tradingSystem:adm_delete_trading' trading.id %}" style="color: red">删除</a></td>
                             </tr>
                         {% endif %}
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
+
         </div>
     </div>
 {% endblock %}
