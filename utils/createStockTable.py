@@ -64,12 +64,12 @@ def getTscode():
     stoinfo = cursor.fetchall()
     for i in range(959,len(stoinfo)):
         if(stoinfo[i][1] == "上证"):
-            # tmp=stoinfo[i][0]+"_"+"SH"
-            tmp = stoinfo[i][0] + "." + "SH"
+            tmp=stoinfo[i][0]+"_"+"SH"
+            # tmp = stoinfo[i][0] + "." + "SH"
 
         else:
-            # tmp = stoinfo[i][0] + "_" + "SZ"
-            tmp = stoinfo[i][0] + "." + "SZ"
+            tmp = stoinfo[i][0] + "_" + "SZ"
+            # tmp = stoinfo[i][0] + "." + "SZ"
         # createStockTable(tmp)
         # createEvedayTable(tmp)
         print(tmp)

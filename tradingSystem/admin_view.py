@@ -87,6 +87,8 @@ def adm_trading(request):
     context = {
         'all_trading': all_trading,
     }
+    # print(all_trading[0].)
+
     return render(request, "adm_trading.html", context)
 
 

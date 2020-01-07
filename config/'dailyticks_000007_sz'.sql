@@ -1,0 +1,50 @@
+-- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
+--
+-- Host: localhost    Database: stocktrading
+-- ------------------------------------------------------
+-- Server version	8.0.11
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8mb4 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `'dailyticks_000007_sz'`
+--
+
+DROP TABLE IF EXISTS `'dailyticks_000007_sz'`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `'dailyticks_000007_sz'` (
+  `DAILY_TICKS` varchar(64) DEFAULT NULL,
+  `REAL_TIME_QUOTES` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `'dailyticks_000007_sz'`
+--
+
+LOCK TABLES `'dailyticks_000007_sz'` WRITE;
+/*!40000 ALTER TABLE `'dailyticks_000007_sz'` DISABLE KEYS */;
+INSERT INTO `'dailyticks_000007_sz'` VALUES ('10:18:00',9.51),('11:10:42',9.47),('11:13:42',9.46),('11:16:33',9.47),('11:19:30',9.47),('11:22:36',9.48),('11:26:00',9.46),('11:28:33',9.46),('13:00:09',9.46),('13:03:15',9.47),('13:08:36',9.47),('13:12:57',9.46),('13:18:03',9.47),('13:22:57',9.47),('13:28:39',9.46),('13:34:03',9.47),('13:40:21',9.46),('13:45:03',9.47),('13:50:09',9.46),('13:53:21',9.47),('13:56:30',9.46),('13:59:45',9.47),('14:02:48',9.47),('14:05:54',9.47),('14:09:12',9.47),('14:12:39',9.47),('14:15:57',9.47),('14:19:30',9.46),('14:22:57',9.46),('14:26:24',9.48),('14:29:54',9.48),('14:32:57',9.47),('14:36:03',9.47),('14:39:06',9.47),('14:42:12',9.46),('14:44:57',9.47),('14:48:06',9.48),('14:50:48',9.48),('14:53:27',9.51),('14:56:09',9.51),('14:58:48',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51),('15:00:03',9.51);
+/*!40000 ALTER TABLE `'dailyticks_000007_sz'` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-01-07 20:06:08

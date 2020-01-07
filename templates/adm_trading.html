@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block title %}
-管理交易记录
+    管理交易记录
 {% endblock %}
 
 {% block content %}
@@ -62,17 +62,27 @@
                     <tbody>
 
                     {% for trading in all_trading %}
-                        <tr>
-                            <td>{{ trading.trade_id }}</td>
-                            <td>{{ trading.user_id.phone_number }}</td>
-                            <td>{{ trading.stock_id.stock_name }}</td>
-                            <td>{{ trading.trade_price }}</td>
-                            <td>{{ trading.trade_time }}</td>
-
-                            <td style="vertical-align: middle">
-                                <button type="button" class="btn btn-info">详情</button>
-                            </td>
-                        </tr>
+                        {% if trading.trade_shares > 0 %}
+                            <tr style="color: red">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ trading.user_id.phone_number }}</td>
+                                <td>{{ trading.stock_id.stock_id }}</td>
+                                <td>{{ trading.stock_id.stock_name }}</td>
+                                <td>{{ trading.trade_price }}</td>
+                                <td>{{ trading.trade_time }}</td>
+                                <td style="vertical-align: middle">{{ trading.trade_shares }}</td>
+                            </tr>
+                        {% else %}
+                            <tr style="color: green">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ trading.user_id.phone_number }}</td>
+                                <td>{{ trading.stock_id.stock_id }}</td>
+                                <td>{{ trading.stock_id.stock_name }}</td>
+                                <td>{{ trading.trade_price }}</td>
+                                <td>{{ trading.trade_time }}</td>
+                                <td style="vertical-align: middle">{{ trading.trade_shares }}</td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                     </tbody>
                 </table>
@@ -109,12 +119,12 @@
                             filename: "交易信息表",
                         }
                     ],
-                    "paging": true,       <!-- 允许分页 -->
+                    "paging": true, <!-- 允许分页 -->
                     "lengthChange": true, <!-- 允许改变每页显示的行数 -->
-                    "searching": true,    <!-- 允许内容搜索 -->
-                    "ordering": true,     <!-- 允许排序 -->
-                    "info": true,         <!-- 显示信息 -->
-                    "autoWidth": false,    <!-- 固定宽度 -->
+                    "searching": true, <!-- 允许内容搜索 -->
+                    "ordering": true, <!-- 允许排序 -->
+                    "info": true, <!-- 显示信息 -->
+                    "autoWidth": false, <!-- 固定宽度 -->
                     "language": {
                         "sProcessing": "处理中...",
                         "sLengthMenu": "显示 _MENU_ 项结果",
