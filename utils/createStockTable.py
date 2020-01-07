@@ -72,24 +72,18 @@ def getTscode():
     sql = "select stock_id,stock_type  from stock_info"
     cursor.execute(sql)
     stoinfo = cursor.fetchall()
-    for i in range(0, 100):
-        try:
-            if (stoinfo[i][1] == "上证"):
-                # tmp = stoinfo[i][0] + "_" + "SH"
-                tmp = stoinfo[i][0] + "." + "SH"
+    for i in range(959,len(stoinfo)):
+        if(stoinfo[i][1] == "上证"):
+            tmp=stoinfo[i][0]+"_"+"SH"
+            # tmp = stoinfo[i][0] + "." + "SH"
 
-
-            else:
-                # tmp = stoinfo[i][0] + "_" + "SZ"
-                tmp = stoinfo[i][0] + "." + "SZ"
-            # createStockTable(tmp)
-            # createEvedayTable(tmp)
-            InsertOldDay(tmp)
-            print(tmp)
-        except Exception:
-            print(Exception)
-
-
+        else:
+            tmp = stoinfo[i][0] + "_" + "SZ"
+            # tmp = stoinfo[i][0] + "." + "SZ"
+        # createStockTable(tmp)
+        # createEvedayTable(tmp)
+        print(tmp)
+        InsertOldDay(tmp)
         # time.sleep(1)
     cursor.close()
     conn.close()

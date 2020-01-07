@@ -1,5 +1,6 @@
 from .models import UserTable, StockInfo, OptionalStockTable, HistoryTradeTable, StockComment, CommentReply
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Avg, Sum, Max, Min, Count
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpRequest, JsonResponse, Http404
 from django.contrib.auth.hashers import make_password
@@ -129,7 +130,9 @@ def change_news(request):
 
 def user_profile(request):
     try:
+        print("asdasdas")
         if request.session['phone_number']:
+            print("asdasd")
             phone_number = request.session['phone_number']
             user = UserTable.objects.get(phone_number=phone_number)
             buy_in, buy_out = get_buy_in_out(phone_number)
@@ -141,8 +144,10 @@ def user_profile(request):
             }
             return render(request, 'tradingSystem/user_profile.html', context)
         else:
+            print("nononon")
             return redirect("tradingSystem:goto_login")
     except Exception:
+        print("mpmpmpmp")
         return redirect("tradingSystem:goto_login")
 
 
@@ -368,7 +373,7 @@ def buy_in_stock(request):
                     stock_id=stock_in[0],
                     trade_price=price,
                     trade_shares=shares,
-                    trade_time=time.strftime('%Y-%m-%d', time.localtime(time.time()))
+                    trade_time=time.strftime('%Y-%m-%d-%H:%M', time.localtime(time.time()))
                 )
                 return JsonResponse({"flag": 1, "money": money})
             else:
@@ -621,12 +626,12 @@ def sold_out_stock(request):
                 models.UserTable.objects.filter(phone_number=request.session['phone_number']).update(
                     account_balance=solder[0].account_balance + holdon * price)
                 models.HistoryTradeTable.objects.create(
-                    user_id=solder[0],
-                    stock_id=stock_sold[0],
-                    trade_price=price,
-                    trade_shares=0 - holdon,
-                    trade_time=time.strftime('%Y-%m-%d%H:%M', time.localtime(time.time()))
-                )
+                        user_id=solder[0],
+                        stock_id=stock_sold[0],
+                        trade_price=price,
+                        trade_shares=0-holdon,
+                        trade_time=time.strftime('%Y-%m-%d-%H:%M', time.localtime(time.time()))
+                    )
                 models.OptionalStockTable.objects.filter(user_id=solder[0], stock_id=stock_sold[0]).delete()
                 return JsonResponse({"flag": 1, "rest": 0})
             else:
@@ -636,8 +641,8 @@ def sold_out_stock(request):
                     user_id=solder[0],
                     stock_id=stock_sold[0],
                     trade_price=price,
-                    trade_shares=0 - shares,
-                    trade_time=time.strftime('%Y-%m-%d%H:%M', time.localtime(time.time()))
+                    trade_shares=0-shares,
+                    trade_time=time.strftime('%Y-%m-%d-%H:%M', time.localtime(time.time()))
                 )
                 option_stock = models.OptionalStockTable.objects.filter(user_id=solder[0], stock_id=stock_sold[0])
                 record = option_stock[0].num_of_shares - shares
