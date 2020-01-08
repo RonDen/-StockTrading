@@ -82,5 +82,9 @@ urlpatterns = [
     # 新闻路由
     path('news_detail/<int:news_id>', views.news_detail, name='news_detail'),
     path('change_news', views.change_news, name='change_news'),
+
+    #维护每日股票信息
+    path('uphold', views.uphold, name='uphold'),
+
 ]
 

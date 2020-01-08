@@ -1,0 +1,31 @@
+{% extends "adm_base.html" %}
+{% load static %}
+{% load staticfiles %}
+
+{% block title %}
+    管理股票信息
+{% endblock %}
+
+{% block content %}
+
+    <section class="content-header">
+        <h1>股票信息管理
+            <small>管理员</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'tradingSystem:adm_index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">管理员</li>
+            <li class="active">股票信息管理</li>
+        </ol>
+    </section>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+
+    </script>
+{% endblock %}
+
+
