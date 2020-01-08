@@ -71,7 +71,8 @@ def adm_stock_info(request, stock_id):
     else:
         hold_vol = getAstock.getAstock(stock_id + ".SZ")
         hisData = getHistoryData.getHistoryData(stock_id + ".SZ")
-
+    stock = StockInfo.objects.get(stock_id=stock_id)
+    comments = StockComment.objects.filter(stock_id=stock)
     context = {
         "sid": choosenStock[0].stock_id,
         "sname": choosenStock[0].stock_name,
@@ -82,7 +83,8 @@ def adm_stock_info(request, stock_id):
         "block": choosenStock[0].block,
         "change_extent": choosenStock[0].change_extent,
         "hold_vold": hold_vol,
-        "hisData": hisData
+        "hisData": hisData,
+        "comments": comments
     }
     return render(request, 'adm_stock_info.html', context)
 

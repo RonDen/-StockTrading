@@ -390,13 +390,7 @@ def out(request, stock_id):
 
     f = getRtQuotes.getworkday()
     # f, tick_datax, tick_datay = getRtQuotes.getRtQuotes(stock_id)
-
-
     # 获取当天交易数据
-
-
-
-
     choosenStock = models.StockInfo.objects.filter(stock_id=stock_id)
 
     hisData = []
@@ -455,15 +449,13 @@ def out(request, stock_id):
             tick_datay = tick_datay.reshape(-1)
             tick_datax = tick_datax.tolist()
             tick_datay = tick_datay.tolist()
-
-
         else:
             f = 0
         hold_vol = getAstock.getAstock(stock_id + ".SZ")
     cursor.close()
     conn.close()
-
-
+    stock = StockInfo.objects.get(stock_id=stock_id)
+    comments = StockComment.objects.filter(stock_id=stock)
     context = {
         "sid": choosenStock[0].stock_id,
         "sname": choosenStock[0].stock_name,
@@ -477,7 +469,8 @@ def out(request, stock_id):
         "hisData": hisData,
         "f": f,
         "tick_datax": tick_datax,
-        "tick_datay": tick_datay
+        "tick_datay": tick_datay,
+        "comments": comments
     }
     return render(request, 'sold_out_stock.html', context)
 

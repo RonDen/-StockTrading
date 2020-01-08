@@ -63,7 +63,7 @@
                     <div class="box-header">
                         <i class="fa fa-comments-o"></i>
 
-                        <h3 class="box-title">Chat</h3>
+                        <h3 class="box-title">股票评论</h3>
 
                         <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
                             <div class="btn-group" data-toggle="btn-toggle">
@@ -76,78 +76,29 @@
                         </div>
                     </div>
                     <div class="box-body chat" id="chat-box">
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user1-128x128.jpg' %}" alt="user image" class="online">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                                    Mike Doe
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                            <div class="attachment">
-                                <h4>Attachments:</h4>
-
-                                <p class="filename">
-                                    Theme-thumbnail-image.jpg
+                        {% for comment in comments %}
+                            <div class="item">
+                                <img src="{{ comment.user_id.photo_url }}" alt="user image" class="online">
+                                <p class="message">
+                                    <a href="{% url 'tradingSystem:adm_view_user' comment.user_id.phone_number %}"
+                                       class="name">
+                                        <small class="text-muted pull-right"><i
+                                                class="fa fa-clock-o"></i> {{ comment.comment_time }}</small>
+                                        {{ comment.user_id.user_name }}
+                                    </a>
+                                    {{ comment.content }}
                                 </p>
-
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-                                </div>
                             </div>
-                            <!-- /.attachment -->
-                        </div>
-                        <!-- /.item -->
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user3-128x128.jpg' %}" alt="user image" class="offline">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                                    Alexander Pierce
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                        </div>
-                        <!-- /.item -->
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="{% static 'img/user4-128x128.jpg' %}" alt="user image" class="offline">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                    Susan Doe
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                        </div>
-                        <!-- /.item -->
+                        {% endfor %}
                     </div>
-                    <!-- /.chat -->
-                    <div class="box-footer">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Type message...">
-
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
+                    <div class="box-footer chat">
+                        <a href="{% url 'tradingSystem:adm_comment' %}">
+                            <button class="btn btn-info pull-right">管理全部评论</button>
+                        </a>
                     </div>
                 </div>
                 <!-- /.box (chat box) -->
             </div>
-            <div class="col-md-4"></div>
         </div>
 
 
@@ -390,7 +341,7 @@
             drawdata.push({value: hold_vol[j][1], name: hold_vol[j][0]});
         }
 
-         option = {
+        option = {
             title: {
                 text: '股权占比',
                 left: 'center'
