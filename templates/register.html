@@ -29,7 +29,8 @@
     {% if message %}
         <div style="color: firebrick">{{ message }}</div>
     {% endif %}
-    <form class="loginForm" id="registerForm" action="{% url 'tradingSystem:do_register' %}" method="get">
+    <form class="loginForm" id="registerForm" action="{% url 'tradingSystem:do_register' %}" method="post">
+        {% csrf_token %}
         <input name="user_name" type="text" class="userLogo" placeholder="请您的姓名*" lay-verify="required|userName"/>
         <input name="phone_number" type="text" placeholder="请输入手机号码*" lay-verify="phone|required"/>
         <input name="user_sex" class="userLogo" type="text" placeholder="性别" lay-verify="required"/>

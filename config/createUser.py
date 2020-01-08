@@ -84,7 +84,7 @@ def get_user_pic_path():
 pics = get_user_pic_path()
 
 def gen_photo_url():
-    return '../static/img/' + choice(pics)
+    return '/static/img/' + choice(pics)
 
 
 def main():

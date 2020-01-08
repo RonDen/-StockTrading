@@ -484,14 +484,14 @@ def register(request):
 
 
 def do_register(request):
-    user_name = request.GET['user_name']
-    phone_number = request.GET['phone_number']
-    user_sex = request.GET['user_sex']
-    id_no = request.GET['id_no']
-    user_email = request.GET['user_email']
-    password = request.GET['password']
-    account_type = request.GET['account_type']
-    account_number = request.GET['account_number']
+    user_name = request.POST['user_name']
+    phone_number = request.POST['phone_number']
+    user_sex = request.POST['user_sex']
+    id_no = request.POST['id_no']
+    user_email = request.POST['user_email']
+    password = request.POST['password']
+    account_type = request.POST['account_type']
+    account_number = request.POST['account_number']
     photo_url = gen_photo_url()
     message = ""
     try:

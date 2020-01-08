@@ -123,7 +123,16 @@ def adm_news(request):
 
 
 def spy_news(request):
-    # news_list = cram_news.gen_news()
+    news_list = cram_news.gen_news()
+    for news in news_list:
+        title = news['title']
+        content = news['content']
+        n = News.objects.create(
+            title=title,
+            content=content,
+            read=0
+        )
+        n.save()
     return redirect('tradingSystem:adm_news')
 
 
