@@ -1,6 +1,7 @@
 from .models import StockInfo, StockComment, UserTable, HistoryTradeTable
 from .models import News
 from django.db.models import Sum
+from random import choices
 
 
 def get_top10():
@@ -9,7 +10,7 @@ def get_top10():
 
 def get_news():
     news_list = News.objects.all().order_by('-news_time')
-    return news_list[:8]
+    return choices(news_list, k=8)
 
 
 def get_stock_comments(stock_id):

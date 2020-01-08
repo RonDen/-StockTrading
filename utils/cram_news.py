@@ -3,19 +3,20 @@ import re
 from urllib import request
 from tradingSystem.models import News
 
+
 def gen_news():
     ua = UserAgent()
     user_agent = ua.random()
 
     referer = 'https://tushare.pro/login?next=%2Fnews%2Fnews_sina'
-    #
-    # headers = {
-    #     'User-Agent': user_agent,
-    #     'Host': 'tushare.pro',
-    #     'Origin': 'https://tushare.pro',
-    #     'Referer': referer
-    # }
-    #
+
+    headers = {
+        'User-Agent': user_agent,
+        'Host': 'tushare.pro',
+        'Origin': 'https://tushare.pro',
+        'Referer': referer
+    }
+
     # stockPageRequest = request.urlopen('http://finance.eastmoney.com/news/cdfsd.html')
     # htmlTitleContent = str(stockPageRequest.read(), 'utf-8')
     # # 正则匹配标题

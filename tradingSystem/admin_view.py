@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .models import UserTable, StockInfo, HistoryTradeTable, StockComment, CommentReply, News
 from .utils import get_top10, get_news, get_buy_in_out
-from utils import getAstock, getHistoryData
+from utils import getAstock, getHistoryData, cram_news
 
 
 def adm_base(request):
@@ -118,6 +118,11 @@ def adm_news(request):
         'results': results,
     }
     return render(request, "adm_news.html", context)
+
+
+def spy_news(request):
+    # news_list = cram_news.gen_news()
+    return redirect('tradingSystem:adm_news')
 
 
 def adm_news_detail(request, news_id):

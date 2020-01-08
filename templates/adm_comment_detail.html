@@ -22,7 +22,7 @@
                             {{ comment.content }}
                         </p>
                          <middle class="text-muted pull-right"><i
-                                                class="fa fa-clock-o"></i> {{ comment.comment_time }} </middle>
+                                                class="fa fa-clock-o"></i> {{ comment.comment_time | date:'Y年m月d日 H时m分' }} </middle>
 
 
                         <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
@@ -43,11 +43,11 @@
                             <div class="item">
                             <img src="{{ reply.user_id.photo_url }}" alt="用户头像" class="online">
                             <p class="message">
-                                <a href="{% url 'tradingSystem:view_user_profile' reply.user_id.phone_number %}" class="name">
+                                <b><a href="{% url 'tradingSystem:view_user_profile' reply.user_id.phone_number %}" class="name">
                                     {{ reply.user_id.user_name }}</a>
                                 回复<a href="{% url 'tradingSystem:view_user_profile' reply.comment.user_id.phone_number %}" class="name">
                                     {{ reply.comment.user_id.user_name }}：
-                                </a><small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ reply.reply_time }} </small>
+                                </a><small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ reply.reply_time | date:'Y年m月d日 H时m分'}} </small></b>
                             {{ reply.content }}
                             </p>
                             </div>
@@ -55,13 +55,7 @@
                     </div>
                     <!-- /.chat -->
                     <div class="box-footer">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Type message...">
-
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
+                        <a href="{% url 'tradingSystem:adm_delete_comment' comment.id %}"><button type="button" id="user_delete" class="btn btn-danger pull-right">删除该评论</button></a>
                     </div>
                 </div>
                 <!-- /.box (chat box) -->

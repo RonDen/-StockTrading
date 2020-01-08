@@ -142,7 +142,7 @@ class StockComment(models.Model):
 class CommentReply(models.Model):
     # 发起用户
     user_id = models.ForeignKey(to=UserTable, on_delete=models.CASCADE)
-    # 所回复的股票
+    # 所回复的评论
     comment = models.ForeignKey(to=StockComment, on_delete=models.CASCADE)
     reply = models.ForeignKey(to='self', null=True, blank=True, on_delete=models.CASCADE)
     # 回复内容

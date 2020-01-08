@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <div class="box-footer clearfix">
-                        <a href="#"
+                        <a href="{% url 'tradingSystem:index' %}"
                            class="btn btn-sm btn-info btn-flat pull-right" id="change_btn"><i class="fa fa-refresh fa-spin"></i>
                             换一波瞅瞅</a>
                     </div>
@@ -232,6 +232,7 @@
             var myChart = echarts.init(document.getElementById('stock-chart'));
 
             // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+
             var data0 = splitData([
                 ['2019/1/24', 2320.26, 2320.26, 2287.3, 2362.94],
                 ['2019/1/25', 2300, 2291.3, 2288.26, 2308.38],

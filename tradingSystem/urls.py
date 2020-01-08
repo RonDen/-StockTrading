@@ -59,6 +59,8 @@ urlpatterns = [
     path('adm_edit_news', admin_view.adm_edit_news, name='adm_edit_news'),
     # 管理员新建新闻
     path('adm_add_news', admin_view.adm_add_news, name='adm_add_news'),
+    # 管理员调用爬虫接口获取每天新闻
+    path('spy_news', admin_view.spy_news, name='spy_news'),
     # 管理员删除新闻
     path('adm_delete_news/<int:news_id>', admin_view.adm_delete_news, name='adm_delete_news'),
     # 管理员查看评论详情
@@ -73,6 +75,10 @@ urlpatterns = [
 
     # 查看评论
     path('comment_detail/<int:comment_id>', views.comment_detail, name='comment_detail'),
+
+    # 为评论添加回复
+    path('add_reply', views.add_reply, name='add_reply'),
+
     path('view_user_profile/<int:phone_number>', views.view_user_profile, name='view_user_profile'),
     # 删除评论
     path('comment_delete/<int:comment_id>', views.comment_delete, name='comment_delete'),
