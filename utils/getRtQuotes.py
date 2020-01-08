@@ -7,9 +7,7 @@ from chinese_calendar import is_workday,is_holiday
 
 # data = pro.stock_basic(exchange='SSE', list_status='L', fields='ts_code,symbol,name,area,industry,list_date')
 
-# print(ts.get_realtime_quotes('000581')) #Single stock symbol
-# df = ts.get_tick_data('000581',date='2020-01-03',src='tt')
-# print(df)
+
 def getworkday():
     strt = time.strftime('%Y-%m-%d', time.localtime(time.time()))
 
@@ -39,6 +37,8 @@ def getRtQuotes(t):
 
     if(f):
         print(f)
+
+
         strt = time.strftime('%Y-%m-%d', time.localtime(time.time()))
         print(strt)
 

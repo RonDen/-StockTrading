@@ -61,7 +61,8 @@
               href="{% static 'AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
 
         <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     {% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -338,42 +339,6 @@
                     {% endblock %}
                 </ul>
             </div>
-
-            {% comment %}
-
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- 用户信息: style can be found in dropdown.less -->
-
-                    {% if request.user.is_authenticated %}
-
-                        <li class="dropdown tasks-menu">
-                            <a href="{% url 'tradingSystem:mylogout' %}">
-                                <i class="fa fa-coffee" href="#"></i>
-                                <span>logout</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header" href="{% url 'tradingSystem:mylogout' %}">登出</li>
-                            </ul>
-                        </li>
-                        <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle pull-right image" data-toggle="dropdown">
-                                <img src="{% static 'img/head.jpg' %}" style="width: 25px;height:25px;"
-                                     class="user-image" alt="用户头像">
-                                <span class="hidden-xs">您好！{{ request.session.name }}</span>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="dropdown user user-menu">
-                            <a href="{% url 'tradingSystem:goto_login' %}" class="dropdown-toggle pull-right image">
-                                <span class="hidden-xs">您尚未登录，请登录！</span>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        {% endcomment %}
-
         </nav>
     </header>
 
@@ -446,7 +411,7 @@
                           <small class="label pull-right bg-red">火爆</small></span>
                         </a>
                     </li>
-                 <li>
+                    <li>
                         <a href="{% url 'tradingSystem:uphold' %}">
                             <i class="fa fa-thumbs-up"></i> <span>维护每日股票信息</span>
                             <span class="pull-right-container">
@@ -474,9 +439,15 @@
         </section>
         <!-- /.sidebar -->
     </aside>
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        {% block content %}{% endblock %}
+        {% block content %}
+
+
+
+        {% endblock %}
+
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
@@ -559,7 +530,6 @@
 
 <!-- Echart -->
 <script src="{% static 'AdminLTE/plugins/echarts.js' %}"></script>
-
 
 <script>
     {% comment %}

@@ -12,7 +12,7 @@ def getTodayData(t):
     strt = strt.split("-")
     print(t)
     df = pro.daily(ts_code=t, start_date=strt[0] + strt[1] + strt[2], end_date=strt[0] + strt[1] + strt[2])
-    print("asd")
+
     res = np.array(df)
     res = res[:, [1, 2, 5, 4, 3]]  # 日期，开盘，最高，最低,收盘
     res = res.tolist()
@@ -26,12 +26,14 @@ def InsertTodayDay(t):
 
     sql = "INSERT INTO `%s`(TRADING_DAY,OPEN_PRICE,HIGHEST,LOWEST,CLOSE_PRICE) VALUES(%s, %s, %s, %s,%s)"
     t = t.split(".")
+    print(t)
 
     for i in res:
         i.insert(0, t[0] + "_" + t[1])
-        # print(i)
+        print(i)
         cursor.execute(sql, i)
-    conn.commit()
+
+        conn.commit()
     cursor.close()
     conn.close()
 
@@ -53,6 +55,6 @@ def upHold():
     conn.close()
 
 # 接口供收盘时维护每日数据
-upHold()
+# upHold()
 
 

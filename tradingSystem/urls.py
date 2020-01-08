@@ -22,6 +22,11 @@ urlpatterns = [
     path('out/<str:stock_id>/', views.out, name='out'),
     path('sold_out_stock', views.sold_out_stock, name='out'),
     path('get_real_holdon', views.get_real_holdon, name='get_real_holdon'),
+    #股票信息维护
+    path('updateEveDayOC', views.updateEveDayOC, name='updateEveDayOC'),
+    path('updateDayData', views.updateDayData, name='updateDayData'),
+    path('updateTickData', views.updateTickData, name='updateTickData'),
+    
 
     #股票评论
     path('add_stock_comment', views.add_stock_comment, name='add_stock_comment'),

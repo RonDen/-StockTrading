@@ -2,7 +2,7 @@ import pymysql
 import tushare as ts
 import numpy as np
 import time
-import getHistoryData
+from utils import getHistoryData
 
 
 def createStockTable(t):  # 建表 eg:表名为000001.SZ，字段是日期，开盘，最高，最低,收盘
@@ -89,5 +89,5 @@ def getTscode():
     conn.close()
 
 
-getTscode()
+# getTscode()
 # InsertOldDay("000001.SZ")

@@ -3,17 +3,15 @@ import numpy as np
 import time
 from datetime import date, datetime
 from chinese_calendar import is_workday, is_holiday
-import getRtQuotes
+from utils import getRtQuotes
 import pymysql
 
 
 def judje(stock_start, stock_end):
     n_time = datetime.now()  # 获取当前时间
-    # print(n_time)
     start = datetime.strptime(str(datetime.now().date()) + stock_start, '%Y-%m-%d%H:%M')
-    # print(start)
     end = datetime.strptime(str(datetime.now().date()) + stock_end, '%Y-%m-%d%H:%M')
-    # print(end)
+
     if n_time > start and n_time < end:
         return True
     else:
@@ -39,12 +37,9 @@ def getTodayRealTimeData():
         if(judje("09:30","11:30") or judje("13:00","15:00")):
 
             for i in range(0, len(stoinfo)):
-                # res =  ts.get_realtime_quotes(symbols=i[0])
-                # print(stoinfo[i])
                 if (i != 2190):
                     df = ts.get_realtime_quotes(symbols=stoinfo[i][0])
                     df = df[['code', 'name', 'price', 'bid', 'ask', 'volume', 'amount', 'time']]
-                    # print(df)
                     print(df)
                     res = np.array(df)
                     res = res[:, [2, 7]]
@@ -78,5 +73,5 @@ def getTscode():
     return stoinfo
 
 
-getTodayRealTimeData()
+# getTodayRealTimeData()
 # judje("09:30","11:30")

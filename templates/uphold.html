@@ -9,21 +9,564 @@
 {% block content %}
 
     <section class="content-header">
-        <h1>股票信息管理
+        <h1>股票信息维护
+
             <small>管理员</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'tradingSystem:adm_index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li class="active">管理员</li>
-            <li class="active">股票信息管理</li>
+            <li class="active">股票信息维护</li>
+
         </ol>
     </section>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body" id="Kline" style="width:100%;height:400px;">
+
+                    <!-- 提供额外的视觉效果，标识一组按钮中的原始动作 -->
+                    <div class="clearfix" style="margin-bottom: 50px;">
+                        <div class="col-md-16">
+                            <h4>更新每日股票开收盘价</h4>
+                        </div>
+                        <div class="col-md-16">
+
+                            <button type="button" class="btn btn-primary" id="A">更新开盘价</button>
+                        </div>
+                    </div>
+                    <!-- 表示一个成功的或积极的动作 -->
+                    <div class="col-md-16">
+                        <h4>更新股票实时数据</h4>
+                    </div>
+                    <div class="clearfix" style="margin-bottom: 50px;">
+                        <button type="button" class="btn btn-success" id="B">更新实时数据</button>
+                    </div>
+                    <!-- 信息警告消息的上下文按钮 -->
+                    <div class="col-md-16">
+                        <h4>追加当日实时分笔数据</h4>
+                    </div>
+                    <div class="clearfix" style="margin-bottom: 50px;">
+                        <button type="button" class="btn btn-success" id="C">追加当日实时分笔数据</button>
+                    </div>
+                    <!-- 表示应谨慎采取的动作 -->
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div class="col-md-4">
+            <!-- Message box -->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">重大新闻</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table no-margin">
+                            <thead>
+                            </thead>
+                            <tbody>
+                            {% for news in news_list %}
+                                <tr>
+                                    <td><a href="{% url 'tradingSystem:adm_news_detail' news.id %}">{{ news.title }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="box-footer clearfix">
+                    <a href="#"
+                       class="btn btn-sm btn-info btn-flat pull-right"><i class="fa fa-refresh fa-spin"></i>
+                        换一波瞅瞅</a>
+                </div>
+            </div>
+            <!-- /.box (chat box) -->
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+            {#                <div class="box box-solid bg-teal-gradien">#}
+            <div class="box box-solid">
+                <div class="box-header">
+                    <i class="fa fa-th"></i>
+
+                    <h3 class="box-title">看大盘</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i
+                                class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div id="stock-chart" style="height:500px;"></div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer no-border">
+                    {% comment %}
+                        <div class="row">
+
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <input type="text" class="knob" data-readonly="true" value="20" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">Mail-Orders</div>
+                            </div>
+
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <input type="text" class="knob" data-readonly="true" value="50" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">Online</div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center">
+                                <input type="text" class="knob" data-readonly="true" value="30" data-width="60"
+                                       data-height="60"
+                                       data-fgColor="#39CCCC">
+
+                                <div class="knob-label">In-Store</div>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        {% endcomment %}
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-footer -->
+            </div>
+        </div>
+
+
+    </div>
+
 
 {% endblock %}
 
 {% block script %}
     <script>
+        $(function () {
+            BB();
+            AA();
+            CC();
+            // bindEvent();
+            //bindSave();
+        });
 
+        function AA() {
+            $('#A').click(function () {
+                alert("维护成功！");
+                $.ajax({
+                    url: '/updateEveDayOC',
+                    type: 'GET',
+                    data: "",
+                    traditional: true,
+                    dataType: 'JSON',
+                    success: function (arg) {
+                        alert("维护完毕！");
+                    }
+                });
+            });
+        }
+
+        function BB() {
+            $('#B').click(function () {
+
+ alert("维护成功！");
+                $.ajax({
+                    url: '/updateDayData',
+                    type: 'GET',
+                    data: "",
+                    traditional: true,
+                    dataType: 'JSON',
+                    success: function (arg) {
+                        alert("维护完毕！");
+                    }
+                });
+            });
+        }
+
+        function CC() {
+            $('#C').click(function () {
+
+    alert("监测开启！");
+                $.ajax({
+                    url: '/updateTickData',
+                    type: 'GET',
+                    data: "",
+                    traditional: true,
+                    dataType: 'JSON',
+                    success: function (arg) {
+                        alert("监测完成！");
+                    }
+                });
+            });
+        }
+
+
+        $(document).ready(function () {
+
+
+            /*基于准备好的dom，初始化echarts实例*/
+            var myChart = echarts.init(document.getElementById('stock-chart'));
+
+            // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+            var data0 = splitData([
+                ['2019/1/24', 2320.26, 2320.26, 2287.3, 2362.94],
+                ['2019/1/25', 2300, 2291.3, 2288.26, 2308.38],
+                ['2019/1/28', 2295.35, 2346.5, 2295.35, 2346.92],
+                ['2019/1/29', 2347.22, 2358.98, 2337.35, 2363.8],
+                ['2019/1/30', 2360.75, 2382.48, 2347.89, 2383.76],
+                ['2019/1/31', 2383.43, 2385.42, 2371.23, 2391.82],
+                ['2019/2/1', 2377.41, 2419.02, 2369.57, 2421.15],
+                ['2019/2/4', 2425.92, 2428.15, 2417.58, 2440.38],
+                ['2019/2/5', 2411, 2433.13, 2403.3, 2437.42],
+                ['2019/2/6', 2432.68, 2434.48, 2427.7, 2441.73],
+                ['2019/2/7', 2430.69, 2418.53, 2394.22, 2433.89],
+                ['2019/2/8', 2416.62, 2432.4, 2414.4, 2443.03],
+                ['2019/2/18', 2441.91, 2421.56, 2415.43, 2444.8],
+                ['2019/2/19', 2420.26, 2382.91, 2373.53, 2427.07],
+                ['2019/2/20', 2383.49, 2397.18, 2370.61, 2397.94],
+                ['2019/2/21', 2378.82, 2325.95, 2309.17, 2378.82],
+                ['2019/2/22', 2322.94, 2314.16, 2308.76, 2330.88],
+                ['2019/2/25', 2320.62, 2325.82, 2315.01, 2338.78],
+                ['2019/2/26', 2313.74, 2293.34, 2289.89, 2340.71],
+                ['2019/2/27', 2297.77, 2313.22, 2292.03, 2324.63],
+                ['2019/2/28', 2322.32, 2365.59, 2308.92, 2366.16],
+                ['2019/3/1', 2364.54, 2359.51, 2330.86, 2369.65],
+                ['2019/3/4', 2332.08, 2273.4, 2259.25, 2333.54],
+                ['2019/3/5', 2274.81, 2326.31, 2270.1, 2328.14],
+                ['2019/3/6', 2333.61, 2347.18, 2321.6, 2351.44],
+                ['2019/3/7', 2340.44, 2324.29, 2304.27, 2352.02],
+                ['2019/3/8', 2326.42, 2318.61, 2314.59, 2333.67],
+                ['2019/3/11', 2314.68, 2310.59, 2296.58, 2320.96],
+                ['2019/3/12', 2309.16, 2286.6, 2264.83, 2333.29],
+                ['2019/3/13', 2282.17, 2263.97, 2253.25, 2286.33],
+                ['2019/3/14', 2255.77, 2270.28, 2253.31, 2276.22],
+                ['2019/3/15', 2269.31, 2278.4, 2250, 2312.08],
+                ['2019/3/18', 2267.29, 2240.02, 2239.21, 2276.05],
+                ['2019/3/19', 2244.26, 2257.43, 2232.02, 2261.31],
+                ['2019/3/20', 2257.74, 2317.37, 2257.42, 2317.86],
+                ['2019/3/21', 2318.21, 2324.24, 2311.6, 2330.81],
+                ['2019/3/22', 2321.4, 2328.28, 2314.97, 2332],
+                ['2019/3/25', 2334.74, 2326.72, 2319.91, 2344.89],
+                ['2019/3/26', 2318.58, 2297.67, 2281.12, 2319.99],
+                ['2019/3/27', 2299.38, 2301.26, 2289, 2323.48],
+                ['2019/3/28', 2273.55, 2236.3, 2232.91, 2273.55],
+                ['2019/3/29', 2238.49, 2236.62, 2228.81, 2246.87],
+                ['2019/4/1', 2229.46, 2234.4, 2227.31, 2243.95],
+                ['2019/4/2', 2234.9, 2227.74, 2220.44, 2253.42],
+                ['2019/4/3', 2232.69, 2225.29, 2217.25, 2241.34],
+                ['2019/4/8', 2196.24, 2211.59, 2180.67, 2212.59],
+                ['2019/4/9', 2215.47, 2225.77, 2215.47, 2234.73],
+                ['2019/4/10', 2224.93, 2226.13, 2212.56, 2233.04],
+                ['2019/4/11', 2236.98, 2219.55, 2217.26, 2242.48],
+                ['2019/4/12', 2218.09, 2206.78, 2204.44, 2226.26],
+                ['2019/4/15', 2199.91, 2181.94, 2177.39, 2204.99],
+                ['2019/4/16', 2169.63, 2194.85, 2165.78, 2196.43],
+                ['2019/4/17', 2195.03, 2193.8, 2178.47, 2197.51],
+                ['2019/4/18', 2181.82, 2197.6, 2175.44, 2206.03],
+                ['2019/4/19', 2201.12, 2244.64, 2200.58, 2250.11],
+                ['2019/4/22', 2236.4, 2242.17, 2232.26, 2245.12],
+                ['2019/4/23', 2242.62, 2184.54, 2182.81, 2242.62],
+                ['2019/4/24', 2187.35, 2218.32, 2184.11, 2226.12],
+                ['2019/4/25', 2213.19, 2199.31, 2191.85, 2224.63],
+                ['2019/4/26', 2203.89, 2177.91, 2173.86, 2210.58],
+                ['2019/5/2', 2170.78, 2174.12, 2161.14, 2179.65],
+                ['2019/5/3', 2179.05, 2205.5, 2179.05, 2222.81],
+                ['2019/5/6', 2212.5, 2231.17, 2212.5, 2236.07],
+                ['2019/5/7', 2227.86, 2235.57, 2219.44, 2240.26],
+                ['2019/5/8', 2242.39, 2246.3, 2235.42, 2255.21],
+                ['2019/5/9', 2246.96, 2232.97, 2221.38, 2247.86],
+                ['2019/5/10', 2228.82, 2246.83, 2225.81, 2247.67],
+                ['2019/5/13', 2247.68, 2241.92, 2231.36, 2250.85],
+                ['2019/5/14', 2238.9, 2217.01, 2205.87, 2239.93],
+                ['2019/5/15', 2217.09, 2224.8, 2213.58, 2225.19],
+                ['2019/5/16', 2221.34, 2251.81, 2210.77, 2252.87],
+                ['2019/5/17', 2249.81, 2282.87, 2248.41, 2288.09],
+                ['2019/5/20', 2286.33, 2299.99, 2281.9, 2309.39],
+                ['2019/5/21', 2297.11, 2305.11, 2290.12, 2305.3],
+                ['2019/5/22', 2303.75, 2302.4, 2292.43, 2314.18],
+                ['2019/5/23', 2293.81, 2275.67, 2274.1, 2304.95],
+                ['2019/5/24', 2281.45, 2288.53, 2270.25, 2292.59],
+                ['2019/5/27', 2286.66, 2293.08, 2283.94, 2301.7],
+                ['2019/5/28', 2293.4, 2321.32, 2281.47, 2322.1],
+                ['2019/5/29', 2323.54, 2324.02, 2321.17, 2334.33],
+                ['2019/5/30', 2316.25, 2317.75, 2310.49, 2325.72],
+                ['2019/5/31', 2320.74, 2300.59, 2299.37, 2325.53],
+                ['2019/6/3', 2300.21, 2299.25, 2294.11, 2313.43],
+                ['2019/6/4', 2297.1, 2272.42, 2264.76, 2297.1],
+                ['2019/6/5', 2270.71, 2270.93, 2260.87, 2276.86],
+                ['2019/6/6', 2264.43, 2242.11, 2240.07, 2266.69],
+                ['2019/6/7', 2242.26, 2210.9, 2205.07, 2250.63],
+                ['2019/6/13', 2190.1, 2148.35, 2126.22, 2190.1]
+            ]);
+
+            //切割数组，把数组中的日期和数据分离，返回数组中的日期和数据
+            function splitData(rawData) {
+                var categoryData = [];
+                var values = [];
+
+                for (var i = 0; i < rawData.length; i++) {
+                    //splice 返回每组数组中被删除的第一项，即返回数组中被删除的日期
+                    //alert(rawData[i].splice(0, 1)[0]);
+                    //categoryData  日期  把返回的日期放到categoryData[]数组中
+                    categoryData.push(rawData[i].splice(0, 1)[0]);
+                    //alert(categoryData);
+
+                    //数据数组，即数组中除日期外的数据
+                    // alert(rawData[i]);
+                    values.push(rawData[i])
+                }
+                return {
+                    categoryData: categoryData, //数组中的日期 x轴对应的日期
+                    values: values              //数组中的数据 y轴对应的数据
+                };
+            }
+
+            //计算MA平均线，N日移动平均线=N日收盘价之和/N  dayCount要计算的天数(5,10,20,30)
+            function calculateMA(dayCount) {
+                var result = [];
+                for (var i = 0, len = data0.values.length; i < len; i++) {
+                    if (i < dayCount) {
+                        result.push('-');
+                        //alert(result);
+                        continue;   //结束单次循环，即不输出本次结果
+                    }
+                    var sum = 0;
+                    for (var j = 0; j < dayCount; j++) {
+                        //收盘价总和
+                        sum += data0.values[i - j][1];
+                        //alert(sum);
+                    }
+                    result.push(sum / dayCount);
+                    // alert(result);
+                }
+                return result;
+            }
+
+
+            option = {
+                title: {    //标题
+                    text: '上证指数',
+                    left: 0
+                },
+                tooltip: {  //提示框
+                    trigger: 'axis',    //触发类型：坐标轴触发
+                    axisPointer: {  //坐标轴指示器配置项
+                        type: 'cross'   //指示器类型，十字准星
+                    }
+                },
+                legend: {   //图例控件，点击图例控制哪些系列不现实
+                    data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
+                },
+                grid: {     //直角坐标系
+                    show: true,
+                    left: '5%',    //grid组件离容器左侧的距离
+                    right: '10%',
+                    bottom: '5%',
+                    //backgroundColor:'#ccc'
+                },
+                xAxis: {
+                    type: 'category',   //坐标轴类型，类目轴
+                    data: data0.categoryData,
+                    //scale: true,  //只在数字轴中有效
+                    boundaryGap: false,    //刻度作为分割线，标签和数据点会在两个刻度上
+                    axisLine: {onZero: false},
+                    splitLine: {show: false},   //是否显示坐标轴轴线
+                    //splitNumber: 20,    //坐标轴的分割段数，预估值，在类目轴中无效
+                    min: 'dataMin', //特殊值，数轴上的最小值作为最小刻度
+                    max: 'dataMax'  //特殊值，数轴上的最大值作为最大刻度
+                },
+                yAxis: {
+                    scale: true,    //坐标刻度不强制包含零刻度
+                    splitArea: {
+                        show: true  //显示分割区域
+                    }
+                },
+                dataZoom: [     //用于区域缩放
+                    {
+                        filterMode: 'filter',    //当前数据窗口外的数据被过滤掉来达到数据窗口缩放的效果  默认值filter
+                        type: 'inside', //内置型数据区域缩放组件
+                        start: 50,      //数据窗口范围的起始百分比
+                        end: 100        //数据窗口范围的结束百分比
+                    },
+                    {
+                        show: true,
+                        type: 'slider', //滑动条型数据区域缩放组件
+                        y: '90%',
+                        start: 50,
+                        end: 100
+                    }
+                ],
+                series: [   //图表类型
+                    {
+                        name: '日K',
+                        type: 'candlestick',    //K线图
+                        data: data0.values,     //y轴对应的数据
+
+                        ////////////////////////图标标注/////////////////////////////
+
+                        markPoint: {    //图表标注
+                            label: {    //标注的文本
+                                normal: {   //默认不显示标注
+                                    show: true,
+                                    //position:['20%','30%'],
+                                    formatter: function (param) {   //标签内容控制器
+                                        return param != null ? Math.round(param.value) : '';
+                                    }
+                                }
+                            },
+                            data: [     //标注的数据数组
+                                {
+                                    name: 'XX标点',
+                                    coord: ['2013/5/31', 2300], //指定数据的坐标位置
+                                    value: 2300,
+                                    itemStyle: {    //图形样式
+                                        normal: {color: 'rgb(41,60,85)'}
+                                    }
+                                },
+                                {
+                                    name: 'highest value',
+                                    type: 'max',    //最大值
+                                    valueDim: 'highest'     //在highest维度上的最大值 最高价
+                                },
+                                {
+                                    name: 'lowest value',
+                                    type: 'min',
+                                    valueDim: 'lowest'  //最低价
+                                },
+                                {
+                                    name: 'average value on close',
+                                    type: 'average',
+                                    valueDim: 'close'   //收盘价
+                                }
+                            ],
+                            tooltip: {      //提示框
+                                formatter: function (param) {
+                                    return param.name + '<br>' + (param.data.coord || '');
+                                }
+                            }
+                        },
+
+/////////////////////////////////图标标线///////////////////////////
+
+                        markLine: {
+                            symbol: ['none', 'none'],   //标线两端的标记类型
+                            data: [
+                                [
+                                    {
+                                        name: 'from lowest to highest',
+                                        type: 'min',    //设置该标线为最小值的线
+                                        valueDim: 'lowest', //指定在哪个维度上的最小值
+                                        symbol: 'circle',
+                                        symbolSize: 10, //起点标记的大小
+                                        label: {    //normal默认，emphasis高亮
+                                            normal: {show: false},  //不显示标签
+                                            emphasis: {show: false} //不显示标签
+                                        }
+                                    },
+                                    {
+                                        type: 'max',
+                                        valueDim: 'highest',
+                                        symbol: 'circle',
+                                        symbolSize: 10,
+                                        label: {
+                                            normal: {show: false},
+                                            emphasis: {show: false}
+                                        }
+                                    }
+                                ],
+
+                                {
+                                    name: 'min line on close',
+                                    type: 'min',
+                                    valueDim: 'close'
+                                },
+                                {
+                                    name: 'max line on close',
+                                    type: 'max',
+                                    valueDim: 'close'
+                                }
+                            ]
+
+                        }
+
+                    },
+
+                    {   //MA5 5天内的收盘价之和/5
+                        name: 'MA5',
+                        type: 'line',
+                        data: calculateMA(5),
+                        smooth: true,
+                        lineStyle: {
+                            normal: {opacity: 0.5}
+                        }
+                    },
+                    {
+                        name: 'MA10',
+                        type: 'line',
+                        data: calculateMA(10),
+                        smooth: true,
+                        lineStyle: {    //标线的样式
+                            normal: {opacity: 0.5}
+                        }
+                    },
+                    {
+                        name: 'MA20',
+                        type: 'line',
+                        data: calculateMA(20),
+                        smooth: true,
+                        lineStyle: {
+                            normal: {opacity: 0.5}
+                        }
+                    },
+                    {
+                        name: 'MA30',
+                        type: 'line',
+                        data: calculateMA(30),
+                        smooth: true,
+                        lineStyle: {
+                            normal: {opacity: 0.5}
+                        }
+                    },
+
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表
+            myChart.setOption(option);
+            // 设置改变大小重绘窗口
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+        });
 
     </script>
 {% endblock %}

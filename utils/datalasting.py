@@ -44,7 +44,6 @@ def updateEveryday(t):
     if (len(df) != 0):
         df = df[0]
         print(df)
-        print(type(df))
         conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
         cursor = conn.cursor()
         sql = "update stock_info set closing_price_y='%s' ,open_price_t='%s',change_extent='%s' where stock_id=%s"
@@ -62,41 +61,81 @@ def getTscode():
     sql = "select stock_id,stock_type  from stock_info"
     cursor.execute(sql)
     stoinfo = cursor.fetchall()
-    for i in range(0, 1087):
+    for i in range(0, 500):
         if (stoinfo[i][1] == "上证"):
             tmp = stoinfo[i][0] + "." + "SH"
         else:
             tmp = stoinfo[i][0] + "." + "SZ"
         updateEveryday(tmp)
     time.sleep(120)
-    for i in range(1087, 2174):
+    for i in range(500, 1000):
         if (stoinfo[i][1] == "上证"):
             tmp = stoinfo[i][0] + "." + "SH"
         else:
             tmp = stoinfo[i][0] + "." + "SZ"
         updateEveryday(tmp)
     time.sleep(120)
-    for i in range(2174, 3261):
+    for i in range(1000, 1500):
         if (stoinfo[i][1] == "上证"):
             tmp = stoinfo[i][0] + "." + "SH"
         else:
             tmp = stoinfo[i][0] + "." + "SZ"
         updateEveryday(tmp)
     time.sleep(120)
-    for i in range(3261, 3754):
+    for i in range(1500, 2000):
         if (stoinfo[i][1] == "上证"):
             tmp = stoinfo[i][0] + "." + "SH"
         else:
             tmp = stoinfo[i][0] + "." + "SZ"
         updateEveryday(tmp)
+    time.sleep(120)
+    for i in range(1500, 2000):
+        if (stoinfo[i][1] == "上证"):
+            tmp = stoinfo[i][0] + "." + "SH"
+        else:
+            tmp = stoinfo[i][0] + "." + "SZ"
+        updateEveryday(tmp)
+
+    time.sleep(120)
+    for i in range(2000, 2500):
+        if (stoinfo[i][1] == "上证"):
+            tmp = stoinfo[i][0] + "." + "SH"
+        else:
+            tmp = stoinfo[i][0] + "." + "SZ"
+        updateEveryday(tmp)
+
+    time.sleep(120)
+    for i in range(2500, 3000):
+        if (stoinfo[i][1] == "上证"):
+            tmp = stoinfo[i][0] + "." + "SH"
+        else:
+            tmp = stoinfo[i][0] + "." + "SZ"
+        updateEveryday(tmp)
+
+    time.sleep(120)
+    for i in range(3000, 3500):
+        if (stoinfo[i][1] == "上证"):
+            tmp = stoinfo[i][0] + "." + "SH"
+        else:
+            tmp = stoinfo[i][0] + "." + "SZ"
+        updateEveryday(tmp)
+
+    time.sleep(120)
+    for i in range(3500, 3754):
+        if (stoinfo[i][1] == "上证"):
+            tmp = stoinfo[i][0] + "." + "SH"
+        else:
+            tmp = stoinfo[i][0] + "." + "SZ"
+        updateEveryday(tmp)
+
     cursor.close()
     conn.close()
 
 
-if __name__ == '__main__':
-    # portinStockInfo('SSE')
-    # getEveDayPrice('SSE')
-    getTscode()
+# if __name__ == '__main__':
+#     # portinStockInfo('SSE')
+#     # getEveDayPrice('SSE')
+#     getTscode()
 
 # conn = pymysql.connect(host="127.0.0.1", user="root",password="123456",database="stocktrading")
 # cursor = conn.cursor()

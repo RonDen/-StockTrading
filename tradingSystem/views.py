@@ -34,6 +34,7 @@ import time
 import uuid
 import os
 
+from utils import createStockTable,insertDayData,insertEverydayTicksData,datalasting
 
 def goto_login(request):
     return render(request, 'login.html')
@@ -130,9 +131,9 @@ def change_news(request):
 
 def user_profile(request):
     try:
-        print("asdasdas")
+
         if request.session['phone_number']:
-            print("asdasd")
+
             phone_number = request.session['phone_number']
             user = UserTable.objects.get(phone_number=phone_number)
             buy_in, buy_out = get_buy_in_out(phone_number)
@@ -144,10 +145,10 @@ def user_profile(request):
             }
             return render(request, 'tradingSystem/user_profile.html', context)
         else:
-            print("nononon")
+
             return redirect("tradingSystem:goto_login")
     except Exception:
-        print("mpmpmpmp")
+
         return redirect("tradingSystem:goto_login")
 
 
@@ -191,35 +192,23 @@ def deal_user_change(request):
 
 
 def stock_list(request):
-    # aStockData = getAstock()
 
-    # lis=[]
-    # for  index,row in aStockData.iterrows():
-    #     lis.append(row)
-    # print(lis[0])
-    # queryset = []
-    # for i in lis:
-    #     queryset.append(models.StockInfo(stock_id = i[1],stock_name = i[2],issuance_time=i[6],closing_price_y=0,open_price_t=0,stock_type="",block=i[5],change_extent=0))
-    # models.StockInfo.objects.bulk_create(queryset)
     stockl = models.StockInfo.objects.all()
-    # all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
     stockt = stockl[0:100]
-    # print(queryset)
+
     context = {
         "stock": stockt
     }
-    # print(type(queryset))
+
     return render(request, 'stock_list.html', context)
 
 
 def stock_info(request, stock_id):
     comments = get_stock_comments(stock_id)
-    print("aasdasdasd")
+
     conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
-    # print(ts.get_hist_data('600848'))
 
-    # 获取当天交易数据
     f = ""
     tick_datax = ""
     tick_datay = ""
@@ -227,24 +216,12 @@ def stock_info(request, stock_id):
     tick_data = ""
     print(stock_id)
     f = getRtQuotes.getworkday()
-    # f, tick_datax, tick_datay = getRtQuotes.getRtQuotes(stock_id)
 
-    print(tick_datay)
+
     # 获取当天交易数据
     print("seekroung")
 
-    # 伪造数据接口
-    # f = 1
-    # tick_data = ""
-    # df = ts.get_tick_data("000001", date="2020-01-03", src='tt')
-    # print(df)
-    # tick_data  = np.array(df)
-    # tick_datax = tick_data[:, [0]]
-    # tick_datay = tick_data[:, [1]]
-    # tick_datax = tick_datax.reshape(-1)
-    # tick_datay = tick_datay.reshape(-1)
-    # tick_datax = tick_datax.tolist()
-    # tick_datay = tick_datay.tolist()
+
 
     choosenStock = models.StockInfo.objects.filter(stock_id=stock_id)
 
@@ -255,7 +232,7 @@ def stock_info(request, stock_id):
         sql = "SELECT * FROM `%s`"
 
         seaname = stock_id + "_" + "SH"
-        # print(seaname)
+
         cursor.execute(sql, [seaname])
         hisData = cursor.fetchall()
         hisData = np.array(hisData)
@@ -270,11 +247,11 @@ def stock_info(request, stock_id):
             tick_data = np.array(tick_data)
             print(tick_data)
             print(type(tick_data))
-            print("suck")
+
             tick_datax = tick_data[:, [0]]
             tick_datay = tick_data[:, [1]]
-            print("fuck", tick_datax)
-            print(type(tick_datax))
+
+
             tick_datax = tick_datax.reshape(-1)
             tick_datay = tick_datay.reshape(-1)
             tick_datax = tick_datax.tolist()
@@ -284,38 +261,32 @@ def stock_info(request, stock_id):
     else:
         sql = "SELECT * FROM `%s`"
         seaname = stock_id + "_" + "SZ"
-        # print(seaname)
+
         cursor.execute(sql, [seaname])
         hisData = cursor.fetchall()
         hisData = np.array(hisData)
         hisData = hisData.tolist()
-        # print(hisData)
+
         if (f):
             f = 1
             tick_name = "dailyticks" + "_" + seaname
             cursor.execute(sql, [tick_name])
             tick_data = cursor.fetchall()
             tick_data = np.array(tick_data)
-            print(tick_data)
-            print(type(tick_data))
-            print("suckdirc")
+
             tick_datax = tick_data[:, [0]]
             tick_datay = tick_data[:, [1]]
             tick_datax = tick_datax.reshape(-1)
             tick_datay = tick_datay.reshape(-1)
             tick_datax = tick_datax.tolist()
             tick_datay = tick_datay.tolist()
-            print("fuck", tick_datax)
-            print(type(tick_datax))
+
         else:
             f = 0
         hold_vol = getAstock.getAstock(stock_id + ".SZ")
     cursor.close()
     conn.close()
-    # hisData = getHistoryData.getHistoryData(stock_id + ".SZ")
-    # hold_vol = lhold_vol)
-    # print(":asdad")
-    # print(hisData)
+
 
     context = {
         "sid": choosenStock[0].stock_id,
@@ -338,19 +309,16 @@ def stock_info(request, stock_id):
 
 
 def buy_in_stock(request):
-    print("ss")
+
     if request.is_ajax():
         if request.method == 'GET':
             price = float(request.GET.get("price"))
             shares = int(request.GET.get("shares"))
             s_id = request.GET.get("s_id")
             fare = price * shares
-            print(price)
-            print(shares)
-            print(fare)
-            print(request.session['phone_number'])
+
             buyer = models.UserTable.objects.filter(phone_number=request.session['phone_number'])
-            print("asdasdads", buyer[0].phone_number, request.session['phone_number'])
+
             stock_in = models.StockInfo.objects.filter(stock_id=s_id)
             money = 0
             if (buyer[0].account_balance >= fare and buyer[0].freeze == False and buyer[0].account_opened == True):
@@ -391,15 +359,14 @@ def sold_stock(request):
 
     solder = models.UserTable.objects.filter(phone_number=request.session['phone_number'])
     stocks = models.OptionalStockTable.objects.filter(user_id=solder[0])  # 用户选股表
-    print("fuc", stocks)
+
     sql = "SELECT * FROM `%s` ORDER BY DAILY_TICKS DESC LIMIT 1;"
     pri = []
     for i in range(0, len(stocks)):
         seaname = "dailyticks" + "_" + stocks[i].stock_id.stock_id + "_" + "SZ"
         cursor.execute(sql, [seaname])
         des = cursor.fetchall()  # 元组
-        print(stocks[i])
-        print(type(des[0][1]))
+
         pri.append(
             {"price": des[0][1],
              "obj": stocks[i]
@@ -411,37 +378,24 @@ def sold_stock(request):
 
 
 def out(request, stock_id):
-    print("aasdasdasd")
+
     conn = pymysql.connect(host="127.0.0.1", user="trading", password="trading", database="stocktrading")
     cursor = conn.cursor()
-    # print(ts.get_hist_data('600848'))
 
-    # 获取当天交易数据
     f = ""
     tick_datax = ""
     tick_datay = ""
     tick_name = ""
     tick_data = ""
-    print(stock_id)
+
     f = getRtQuotes.getworkday()
     # f, tick_datax, tick_datay = getRtQuotes.getRtQuotes(stock_id)
 
-    print(tick_datay)
-    # 获取当天交易数据
-    print("seekroung")
 
-    # 伪造数据接口
-    # f = 1
-    # tick_data = ""
-    # df = ts.get_tick_data("000001", date="2020-01-03", src='tt')
-    # print(df)
-    # tick_data  = np.array(df)
-    # tick_datax = tick_data[:, [0]]
-    # tick_datay = tick_data[:, [1]]
-    # tick_datax = tick_datax.reshape(-1)
-    # tick_datay = tick_datay.reshape(-1)
-    # tick_datax = tick_datax.tolist()
-    # tick_datay = tick_datay.tolist()
+    # 获取当天交易数据
+
+
+
 
     choosenStock = models.StockInfo.objects.filter(stock_id=stock_id)
 
@@ -452,7 +406,7 @@ def out(request, stock_id):
         sql = "SELECT * FROM `%s`"
 
         seaname = stock_id + "_" + "SH"
-        # print(seaname)
+
         cursor.execute(sql, [seaname])
         hisData = cursor.fetchall()
         hisData = np.array(hisData)
@@ -467,11 +421,10 @@ def out(request, stock_id):
             tick_data = np.array(tick_data)
             print(tick_data)
             print(type(tick_data))
-            print("suck")
+
             tick_datax = tick_data[:, [0]]
             tick_datay = tick_data[:, [1]]
-            print("fuck", tick_datax)
-            print(type(tick_datax))
+
             tick_datax = tick_datax.reshape(-1)
             tick_datay = tick_datay.reshape(-1)
             tick_datax = tick_datax.tolist()
@@ -481,12 +434,12 @@ def out(request, stock_id):
     else:
         sql = "SELECT * FROM `%s`"
         seaname = stock_id + "_" + "SZ"
-        # print(seaname)
+
         cursor.execute(sql, [seaname])
         hisData = cursor.fetchall()
         hisData = np.array(hisData)
         hisData = hisData.tolist()
-        # print(hisData)
+
         if (f):
             f = 1
             tick_name = "dailyticks" + "_" + seaname
@@ -495,24 +448,21 @@ def out(request, stock_id):
             tick_data = np.array(tick_data)
             print(tick_data)
             print(type(tick_data))
-            print("suckdirc")
+
             tick_datax = tick_data[:, [0]]
             tick_datay = tick_data[:, [1]]
             tick_datax = tick_datax.reshape(-1)
             tick_datay = tick_datay.reshape(-1)
             tick_datax = tick_datax.tolist()
             tick_datay = tick_datay.tolist()
-            print("fuck", tick_datax)
-            print(type(tick_datax))
+
+
         else:
             f = 0
         hold_vol = getAstock.getAstock(stock_id + ".SZ")
     cursor.close()
     conn.close()
-    # hisData = getHistoryData.getHistoryData(stock_id + ".SZ")
-    # hold_vol = lhold_vol)
-    # print(":asdad")
-    # print(hisData)
+
 
     context = {
         "sid": choosenStock[0].stock_id,
@@ -580,24 +530,14 @@ def stockdetails(request):
 
 
 def stock_list(request):
-    # aStockData = getAstock()
 
-    # lis=[]
-    # for  index,row in aStockData.iterrows():
-    #     lis.append(row)
-    # print(lis[0])
-    # queryset = []
-    # for i in lis:
-    #     queryset.append(models.StockInfo(stock_id = i[1],stock_name = i[2],issuance_time=i[6],closing_price_y=0,open_price_t=0,stock_type="",block=i[5],change_extent=0))
-    # models.StockInfo.objects.bulk_create(queryset)
 
     stockl = models.StockInfo.objects.all()[:100]
-    # all_years = [y['teaching__mcno__year'] for y in CourseScore.objects.values("teaching__mcno__year").distinct()]
-    # print(queryset)
+
     context = {
         "stock": stockl
     }
-    # print(type(queryset))
+
     return render(request, 'stock_list.html', context)
 
 
@@ -606,20 +546,17 @@ def stock_comment(request):
 
 
 def sold_out_stock(request):
-    print("ss")
+
     if request.is_ajax():
         if request.method == 'GET':
             price = float(request.GET.get("price"))  # 当前股价
             shares = int(request.GET.get("shares"))  # 需要减持的股票
             holdon = int(request.GET.get("holdon"))  # 目前持有的股票
             s_id = request.GET.get("s_id")
-            # fare = price * shares
-            print(price)
-            print(shares)
-            # print(fare)
-            print(request.session['phone_number'])
+
+
             solder = models.UserTable.objects.filter(phone_number=request.session['phone_number'])
-            print("asdasdads", solder[0].phone_number, request.session['phone_number'])
+
             stock_sold = models.StockInfo.objects.filter(stock_id=s_id)
             money = 0
             if (holdon <= shares):
@@ -657,9 +594,9 @@ def get_real_holdon(request):
     cursor = conn.cursor()
     if request.is_ajax():
         if request.method == 'GET':
-            print("aa")
+
             sym = request.GET.get("id")
-            print(sym)
+
             sql = "SELECT * FROM `%s` ORDER BY DAILY_TICKS DESC LIMIT 1;"
             seaname = sym + "_" + "SZ"
             tick_name = "dailyticks" + "_" + seaname
@@ -705,17 +642,15 @@ def comment_detail(request, comment_id):
 def get_real_quotes(request):
     if request.is_ajax():
         if request.method == 'GET':
-            print("aa")
+
             sym = request.GET.get("id")
-            print(sym)
+
             df = ts.get_realtime_quotes(symbols=sym)
             df = df[['code', 'name', 'price', 'bid', 'ask', 'volume', 'amount', 'time']]
-            print(df)
+
             res = np.array(df)
             res = res[:, [2]]
-            print(res)
-            print(res[0][0])
-            print(type(res[0][0]))
+
             return JsonResponse({"price": res[0][0]})
 
 
@@ -808,4 +743,35 @@ def comment_delete(request, comment_id):
     return redirect('tradingSystem:comment_list')
 
 def uphold(request):
-    return render(request,'uphold.html')
+    top10stock = get_top10
+    user_num = UserTable.objects.count()
+    stock_num = StockInfo.objects.count()
+    comment_num = StockComment.objects.count()
+    trading_num = HistoryTradeTable.objects.count()
+    news_list = get_news()
+    context = {
+        'top10stock': top10stock,
+        'user_num': user_num,
+        'stock_num': stock_num,
+        'comment_num': comment_num,
+        'trading_num': trading_num,
+        'news_list': news_list
+    }
+    return render(request,'uphold.html',context)
+
+def updateEveDayOC(request):#对stockinfo更新每支股票最新收盘价开盘价
+    if request.is_ajax():
+        if request.method == 'GET':
+            datalasting.getTscode()
+            return JsonResponse({"flag":1})
+def updateDayData(request):#对每张股票表加上当天的数据
+    if request.is_ajax():
+        if request.method == 'GET':
+            insertDayData.upHold()
+            return JsonResponse({"flag":1})
+def updateTickData(request):#每天开盘时开启线程检测3754支股票的实时数据，并且添加进表中
+    if request.is_ajax():
+        if request.method == 'GET':
+            insertEverydayTicksData.getTodayRealTimeData()
+            return JsonResponse({"flag":1})
+
