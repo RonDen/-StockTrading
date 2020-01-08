@@ -106,8 +106,8 @@ def index(request):
             paginator = Paginator(all_news, 8)
             if page > paginator.num_pages:
                 page = 1
-            news_list = paginator.get_page(page)
-            # news_list = get_news()
+            # news_list = paginator.get_page(page)
+            news_list = get_news()
             top10stock = get_top10()
             context = {
                 'top10stock': top10stock,
@@ -700,6 +700,22 @@ def comment_detail(request, comment_id):
         'user': user
     }
     return render(request, 'comment_detail.html', context)
+
+
+def add_reply(request):
+    if request.POST:
+        comment_id = request.POST.get('comment_id')
+        phone_number = request.POST.get('phone_number')
+        content = request.POST.get('content')
+        comment = StockComment.objects.get(id=comment_id)
+        user = UserTable.objects.get(phone_number=phone_number)
+        reply = CommentReply.objects.create(
+            user_id=user,
+            comment=comment,
+            content=content
+        )
+        # reply.save()
+        return redirect('tradingSystem:comment_detail', comment_id=comment_id)
 
 
 def get_real_quotes(request):
