@@ -34,9 +34,9 @@ def gen_news():
     return news
 
 
-news_list = gen_news()
+# news_list = gen_news()
 
-print(news_list)
+# print(news_list)
 
 # for news in news_list:
 #     title = news['title']

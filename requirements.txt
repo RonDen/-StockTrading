@@ -12,4 +12,4 @@ lxml
 tushare
 chinesecalendar
 my-fake-useragent
-
+django-mptt

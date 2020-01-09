@@ -708,7 +708,7 @@ def update_img(request):
             with open(save_name, 'wb') as file:
                 file.write(my_file.read())
             code = 0
-            user.photo_url = '../' + save_name
+            user.photo_url = '/' + save_name
             user.save()
             print("修改成功呢")
         else:
