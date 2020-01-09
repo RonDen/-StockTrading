@@ -75,10 +75,7 @@ password: `65815609`
 
 ### 用户首页
 
-<figure class="half">
-    <img src="doc/user_index1.png">
-    <img src="doc/user_index2.png">
-</figure>
+![index1](doc/user_index1.png)![index2](doc/user_index2.png)
 
 首页可以分为4个模块，传递的信息也是比较的丰富。分别是：
 1. 热门牛股：根据每天的股票收盘价格和次日的开盘价格计算差值和涨幅，按照涨幅进行排序得到的前10只热门牛股；
@@ -107,10 +104,8 @@ password: `65815609`
 
 ### 股票详情
 
-<figure class="half">
-    <img src="doc/stock_detail1.png">
-    <img src="doc/stock_detail2.png">
-</figure>
+![stock_detail](doc/stock_detail1.png)![stock_detail2](doc/stock_detail2.png)
+
 
 用户在此页面可以进行买入操作，也可以查看返回到上级页面查看股票列表。
 左上方图表显示了这支股票的股价变化日K线图与实时股价，右侧是该股票的股权占比，均是通过tushare
@@ -164,10 +159,8 @@ python manage.py createsuperuser
 
 这样就可以以超级管理员身份登录后台了。
 
-<figure class="half">
-    <img src="doc/super_index1.png">
-    <img src="doc/super_index.png">
-</figure>
+![super_index1](doc/super_index1.png)![super_index](doc/super_index.png)
+
 
 管理员界面与用户界面大同小异，只是内容更加丰富了一些。
 
@@ -197,11 +190,7 @@ python manage.py createsuperuser
 
 ### 股票信息维护
 
-
-<figure class="half">
-    <img src="doc/stock_uphold.png">
-    <img src="doc/update.png">
-</figure>
+![uphold](doc/stock_uphold.png)![update](doc/update.png)
 
 
 在此界面，管理员可以点击面板上的按钮，进行每天股票信息的维护操作。
