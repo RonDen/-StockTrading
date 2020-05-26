@@ -9,36 +9,17 @@ Author: [LuoD](https://github.com/RonDen/)，何显，文淳正
 $ git clone https://github.com/RonDen/-StockTrading.git
 ```
 
-2. 激活对应Python开发环境
+2. 创建或激活对应Python开发环境
 
+这里使用了conda来管理环境，强烈推荐，避免不同环境包干扰、依赖的问题。
 ```bash
 $ conda activate Webdev
 (Webdev)$ 
+# 或者
+$ conda acreate -n Webdev --python=3.6
 ```
 
-3. 创建对应数据库（stocktrading）和用户（trading）
-```sql
-create database stocktrading;
-create user 'trading'@'localhost' identified by trading;
-grant all privileges on stocktrading to 'trading'@'localhost';
-flush privileges;
-```
-
-4. 执行迁移命令，创建模型数据表映射
-
-```bash
-$ python manage.py makemigrations
-$ python manage.py migrate
-```
-
-5. 将`config/`下的sql文件导入数据库中
-
-```sql
-use stocktrading;
-source stocktrading.sql;
-```
-
-6. 安装所需要的依赖包
+3. 安装所需要的依赖包
 
 ```bash
 pip install -r requirements.txt
@@ -46,6 +27,33 @@ pip install -r requirements.txt
 本项目依赖的核心包有：Django 2.1.15与tushare pro，前者作为主要开发框架，后者是爬取股票数据的核心包。tushare需要依赖pandas等包，用于数据分析和处理。
 my-fake-useragent用于生成伪请求头，爬取相应的新闻数据。
 django-mptt用于生成树形多级评论。
+
+
+4. 创建对应数据库（stocktrading）和用户（trading）
+```sql
+create database stocktrading;
+create user 'trading'@'localhost' identified by trading;
+grant all privileges on stocktrading to 'trading'@'localhost';
+flush privileges;
+```
+
+5. 执行迁移命令，创建模型数据表映射
+
+改命令会根据`models.py`文件中定义的模型创建数据表结构（无数据）。
+
+```bash
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
+
+6. 将`config/`下的sql文件导入数据库中
+
+在mysql环境中执行，会将`stocktrading.sql`中定义的表结构和数据全部导入。
+
+```sql
+use stocktrading;
+source stocktrading.sql;
+```
 
 7. 开始运行和测试
 
