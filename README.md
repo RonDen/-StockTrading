@@ -18,7 +18,7 @@ $ git clone https://github.com/RonDen/-StockTrading.git
 $ conda activate Webdev
 (Webdev)$ 
 # 或者
-$ conda create -n Webdev --python=3.6
+$ conda create -n Webdev python=3.6
 $ conda activate Webdev
 (Webdev)$ 
 ```
