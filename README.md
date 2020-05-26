@@ -4,6 +4,8 @@ Author: [LuoD](https://github.com/RonDen/)，何显，文淳正
 
 ## 安装说明
 
+本项目基于Python3.6、Django2.1、MySql8.0（最好不要使用5.6，字符集等方面均不兼容，否则导入数据库会出错）与股票信息工具包TuShare实现。
+
 1. 克隆该项目
 ```bash
 $ git clone https://github.com/RonDen/-StockTrading.git
@@ -16,7 +18,9 @@ $ git clone https://github.com/RonDen/-StockTrading.git
 $ conda activate Webdev
 (Webdev)$ 
 # 或者
-$ conda acreate -n Webdev --python=3.6
+$ conda create -n Webdev --python=3.6
+$ conda activate Webdev
+(Webdev)$ 
 ```
 
 3. 安装所需要的依赖包
